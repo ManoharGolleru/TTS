@@ -3,12 +3,13 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Boson Higgs TTS 3 Browser Tester</title>
+  <title>Higgs TTS 3 Conversational Analysis Playground</title>
   <style>
     :root {
       color-scheme: light dark;
       --bg: #0f1218;
       --panel: #171c26;
+      --panel-2: #1d2431;
       --soft: #202737;
       --text: #eef2f8;
       --muted: #a9b4c7;
@@ -26,6 +27,7 @@
       :root {
         --bg: #f5f7fb;
         --panel: #ffffff;
+        --panel-2: #f9fbff;
         --soft: #eef2f7;
         --text: #172033;
         --muted: #5b667a;
@@ -39,6 +41,7 @@
       }
     }
     * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
       margin: 0;
       font-family: var(--sans);
@@ -46,14 +49,14 @@
       color: var(--text);
       line-height: 1.45;
     }
-    header {
+    header.hero {
       padding: 28px 24px 18px;
       border-bottom: 1px solid var(--border);
       background: linear-gradient(180deg, rgba(125,176,255,.12), transparent 75%);
     }
-    header h1 { margin: 0 0 8px; font-size: clamp(26px, 4vw, 42px); letter-spacing: -0.03em; }
-    header p { margin: 0; color: var(--muted); max-width: 980px; }
-    main { width: min(1420px, 100%); margin: 0 auto; padding: 22px; }
+    header.hero h1 { margin: 0 0 8px; font-size: clamp(26px, 4vw, 42px); letter-spacing: -0.03em; }
+    header.hero p { margin: 0; color: var(--muted); max-width: 1060px; }
+    main { width: min(1440px, 100%); margin: 0 auto; padding: 22px; }
     section, .card {
       background: var(--panel);
       border: 1px solid var(--border);
@@ -64,17 +67,20 @@
     section { margin-bottom: 18px; }
     h2 { margin: 0 0 14px; font-size: 22px; }
     h3 { margin: 0 0 10px; font-size: 17px; }
+    h4 { margin: 0 0 8px; font-size: 14px; color: var(--muted); }
     .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 14px; }
     .col-12 { grid-column: span 12; }
+    .col-9 { grid-column: span 9; }
     .col-8 { grid-column: span 8; }
+    .col-7 { grid-column: span 7; }
     .col-6 { grid-column: span 6; }
     .col-5 { grid-column: span 5; }
     .col-4 { grid-column: span 4; }
     .col-3 { grid-column: span 3; }
     .col-2 { grid-column: span 2; }
-    @media (max-width: 900px) {
+    @media (max-width: 950px) {
       .grid { grid-template-columns: 1fr; }
-      .col-12, .col-8, .col-6, .col-5, .col-4, .col-3, .col-2 { grid-column: 1; }
+      .col-12, .col-9, .col-8, .col-7, .col-6, .col-5, .col-4, .col-3, .col-2 { grid-column: 1; }
     }
     label { display: block; margin-bottom: 6px; color: var(--muted); font-size: 13px; font-weight: 650; }
     input, select, textarea, button {
@@ -90,9 +96,9 @@
       outline: none;
     }
     input:focus, select:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(125,176,255,.18); }
-    textarea { min-height: 148px; resize: vertical; font-family: var(--mono); font-size: 14px; }
-    .short-textarea { min-height: 90px; }
-    .tiny-textarea { min-height: 62px; }
+    textarea { min-height: 178px; resize: vertical; font-family: var(--mono); font-size: 14px; }
+    .short-textarea { min-height: 92px; }
+    .tiny-textarea { min-height: 58px; }
     button {
       border: 1px solid var(--border);
       border-radius: 12px;
@@ -100,36 +106,42 @@
       background: var(--soft);
       cursor: pointer;
       font-weight: 750;
+      transition: transform .08s ease, border-color .12s ease, background .12s ease;
     }
     button:hover { border-color: var(--accent); }
     button.primary { background: var(--accent); color: white; border-color: transparent; }
     button.secondary { background: rgba(156,226,190,.12); border-color: rgba(156,226,190,.5); }
     button.warn { background: rgba(255,213,128,.12); border-color: rgba(255,213,128,.5); }
     button.danger { background: rgba(255,154,154,.12); border-color: rgba(255,154,154,.5); }
+    button.ghost { background: transparent; }
     button:disabled { opacity: .55; cursor: not-allowed; }
+    button.pressed { transform: scale(.985); box-shadow: 0 0 0 3px rgba(125,176,255,.18); }
     .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-    .row > * { flex: 1 1 160px; }
+    .row > * { flex: 1 1 150px; }
     .tight > * { flex: 0 0 auto; }
-    .hint, .note { color: var(--muted); font-size: 13px; }
+    .hint, .note, .small { color: var(--muted); font-size: 13px; }
     .note { background: var(--soft); border: 1px solid var(--border); border-radius: 14px; padding: 12px; }
     .note strong { color: var(--text); }
-    .pill-list { display: flex; gap: 8px; flex-wrap: wrap; }
-    .pill {
+    .status {
+      font-size: 14px;
+      color: var(--muted);
+      background: var(--panel-2);
       border: 1px solid var(--border);
-      background: var(--soft);
-      color: var(--text);
-      border-radius: 999px;
-      padding: 7px 10px;
-      font-size: 13px;
-      cursor: pointer;
-      user-select: none;
+      border-radius: 14px;
+      padding: 11px 12px;
+      min-height: 44px;
     }
-    .pill:hover { border-color: var(--accent); }
-    .pill.active { background: rgba(125,176,255,.18); border-color: var(--accent); }
-    .status { font-size: 13px; color: var(--muted); }
     .status.ok { color: var(--ok); }
     .status.warn { color: var(--warn); }
     .status.danger { color: var(--danger); }
+    .meter {
+      height: 8px;
+      background: var(--soft);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .meter span { display: block; height: 100%; width: 0%; background: var(--accent); }
     details { border: 1px solid var(--border); background: var(--soft); border-radius: 14px; padding: 12px; }
     details summary { cursor: pointer; font-weight: 750; }
     pre, code { font-family: var(--mono); }
@@ -143,6 +155,26 @@
       overflow: auto;
       border: 1px solid rgba(255,255,255,.08);
     }
+    .pill-list { display: flex; gap: 8px; flex-wrap: wrap; }
+    .pill {
+      border: 1px solid var(--border);
+      background: var(--soft);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: 13px;
+      cursor: pointer;
+      user-select: none;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .pill:hover { border-color: var(--accent); }
+    .pill.active { background: rgba(125,176,255,.18); border-color: var(--accent); }
+    .tag-chip { color: var(--accent-2); }
+    .analysis-list { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+    .analysis-list li { background: var(--soft); border: 1px solid var(--border); border-radius: 12px; padding: 10px; }
     .output-list { display: grid; gap: 14px; }
     .output-card {
       background: var(--soft);
@@ -151,14 +183,12 @@
       padding: 14px;
     }
     .output-card header {
-      background: transparent;
-      border: 0;
-      padding: 0 0 10px;
       display: flex;
       gap: 10px;
       justify-content: space-between;
       align-items: flex-start;
       flex-wrap: wrap;
+      margin-bottom: 10px;
     }
     .output-card h3 { margin: 0; }
     audio { width: 100%; margin: 8px 0; }
@@ -174,86 +204,83 @@
     table { width: 100%; border-collapse: collapse; }
     th, td { border-bottom: 1px solid var(--border); padding: 8px; text-align: left; vertical-align: top; }
     th { color: var(--muted); font-size: 13px; }
-    .small { font-size: 12px; }
     .hidden { display: none !important; }
     .divider { height: 1px; background: var(--border); margin: 14px 0; }
     .kbd { font-family: var(--mono); border: 1px solid var(--border); border-bottom-width: 2px; border-radius: 6px; padding: 1px 5px; background: var(--soft); }
     a { color: var(--accent); }
+    .two-column-list { columns: 2; column-gap: 18px; }
+    @media (max-width: 800px) { .two-column-list { columns: 1; } }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Boson Higgs TTS 3 Browser Tester</h1>
-    <p>Use this browser test bench for preset voices, reference-audio cloning, custom voice IDs, inline emotion/style/prosody/sfx tags, output formats, streaming PCM, and batch comparisons.</p>
+  <header class="hero">
+    <h1>Higgs TTS 3 Conversational Analysis Playground</h1>
+    <p>Test inline emotion, style, prosody, pauses, sound effects, voice choice, streaming PCM, and conversational delivery patterns. This page does not use SSML or voice cloning workflows.</p>
   </header>
 
   <main>
-
     <section id="fileProtocolWarning" class="hidden">
-      <h2>Run this through localhost</h2>
+      <h2>Open through localhost or GitHub Pages</h2>
       <div class="note">
-        Your browser opened this page with <span class="kbd">file://</span>. Chrome treats local files as separate security origins, which breaks some browser APIs and sometimes blocks file or network calls.
-        Start a tiny local server in the folder that contains this file, then open the localhost URL instead.
+        This page is open with <span class="kbd">file://</span>. Use GitHub Pages or a small local server so browser storage, downloads, and network calls behave consistently.
       </div>
-      <pre>cd ~/Downloads
-python3 -m http.server 8080</pre>
-      <div class="note">Then open <span class="kbd">http://localhost:8080/index.html</span>.</div>
+      <pre>python3 -m http.server 8080</pre>
+      <div class="note">Then open <span class="kbd">http://localhost:8080/higgs-tts-conversation-playground.html</span>.</div>
     </section>
+
     <section>
       <h2>1. API settings</h2>
       <div class="grid">
-        <div class="col-5">
+        <div class="col-4">
           <label for="apiKey">Boson API key</label>
           <input id="apiKey" type="password" autocomplete="off" placeholder="bai-xxxx" />
-          <div class="hint">The key stays in this browser tab unless you press one of the save buttons.</div>
+          <div class="hint">The key stays in this browser unless you save it below.</div>
         </div>
         <div class="col-3">
           <label for="endpoint">API base URL</label>
           <input id="endpoint" value="https://api.boson.ai" />
         </div>
+        <div class="col-3">
+          <label for="proxyBase">Optional proxy base URL</label>
+          <input id="proxyBase" placeholder="https://your-proxy.example.com" />
+          <div class="hint">Leave blank for direct API calls.</div>
+        </div>
         <div class="col-2">
           <label for="model">Model</label>
           <input id="model" value="higgs-tts-3" />
         </div>
-        <div class="col-2">
-          <label>&nbsp;</label>
-          <button type="button" id="pingBtn" class="secondary">List voices test</button>
-        </div>
         <div class="col-12 row">
+          <button type="button" id="testAuthBtn" class="secondary">Test API key</button>
           <button type="button" id="saveSessionBtn">Save key for this tab</button>
           <button type="button" id="saveLocalBtn">Save key in this browser</button>
           <button type="button" id="clearKeyBtn" class="danger">Clear saved key</button>
-          <button type="button" id="copyCurlBtn">Copy cURL for current request</button>
         </div>
         <div class="col-12 note">
-          <strong>Security note.</strong> A key entered into a browser page is visible to that browser page. Use this hosted page only with your own key. Do not publish a version that contains a hardcoded API key. For production, call Boson from your own server and keep the key in an environment variable or secret manager.
+          <strong>Security note.</strong> On GitHub Pages, requests come from the browser. Do not hardcode your Boson key in this file. For a public demo, use a small server or worker proxy and store the key as a secret.
         </div>
       </div>
     </section>
 
     <section>
-      <h2>2. Speech request</h2>
+      <h2>2. Speech setup</h2>
       <div class="grid">
         <div class="col-8">
-          <label for="inputText">Input text</label>
-          <textarea id="inputText"><|emotion:enthusiasm|><|prosody:expressive_high|>Hello, this is a browser test for Higgs TTS 3. <|prosody:pause|>I want to hear timing, tone, and clarity.</textarea>
+          <label for="inputText">Input text with Higgs inline tags</label>
+          <textarea id="inputText"><|emotion:contemplation|><|prosody:expressive_low|>Okay, so let me think about that for a second. <|prosody:pause|> I think the key moment is when the speaker holds the turn.</textarea>
           <div class="row tight" style="margin-top: 8px;">
             <button type="button" id="insertPauseBtn">Insert pause</button>
             <button type="button" id="insertLongPauseBtn">Insert long pause</button>
-            <button type="button" id="clearTagsBtn">Remove tags</button>
-            <button type="button" id="sampleTextBtn">Load sample</button>
+            <button type="button" id="insertHesitationBtn">Insert hesitation</button>
+            <button type="button" id="convertSsmlBtn" class="warn">Convert simple SSML</button>
+            <button type="button" id="clearTagsBtn" class="danger">Remove inline tags</button>
           </div>
+          <div style="margin-top: 10px;" class="meter" aria-hidden="true"><span id="charMeter"></span></div>
+          <div id="charCount" class="hint" style="margin-top: 6px;">0 / 5000 characters</div>
         </div>
+
         <div class="col-4">
           <div class="grid">
-            <div class="col-12">
-              <label for="voiceMode">Voice mode</label>
-              <select id="voiceMode">
-                <option value="preset">Preset or voice ID</option>
-                <option value="reference">One-off reference audio clone</option>
-              </select>
-            </div>
-            <div class="col-6 voice-preset-area">
+            <div class="col-6">
               <label for="presetVoice">Preset voice</label>
               <select id="presetVoice">
                 <option value="default">default</option>
@@ -265,9 +292,9 @@ python3 -m http.server 8080</pre>
                 <option value="oliver">oliver</option>
               </select>
             </div>
-            <div class="col-6 voice-preset-area">
-              <label for="customVoice">Custom voice ID</label>
-              <input id="customVoice" placeholder="voice_... overrides preset" />
+            <div class="col-6">
+              <label for="customVoice">Manual voice ID</label>
+              <input id="customVoice" placeholder="voice_... optional" />
             </div>
             <div class="col-6">
               <label for="format">Response format</label>
@@ -289,156 +316,146 @@ python3 -m http.server 8080</pre>
             </div>
             <div class="col-12">
               <label for="extraJson">Extra JSON fields, optional</label>
-              <textarea id="extraJson" class="tiny-textarea" placeholder='{"temperature":0.8}'></textarea>
-              <div class="hint">Leave blank for hosted API docs compatibility.</div>
+              <textarea id="extraJson" class="tiny-textarea" placeholder='{"temperature":0.7}'></textarea>
+              <div class="hint">Use only fields supported by your endpoint.</div>
+            </div>
+            <div class="col-12 row">
+              <button type="button" id="generateBtn" class="primary">Generate speech</button>
+              <button type="button" id="streamBtn" class="secondary">Generate streaming PCM</button>
             </div>
           </div>
         </div>
+      </div>
+    </section>
 
-        <div class="col-12 reference-area hidden">
+    <section>
+      <h2>3. Fine controls</h2>
+      <div class="grid">
+        <div class="col-4 card">
+          <h3>Leading delivery tags</h3>
           <div class="grid">
-            <div class="col-4">
-              <label for="refAudioUrl">Reference audio URL</label>
-              <input id="refAudioUrl" placeholder="https://.../sample.mp3" />
-            </div>
-            <div class="col-4">
-              <label for="refAudioFile">Or choose local audio file</label>
-              <input id="refAudioFile" type="file" accept="audio/*" />
-            </div>
-            <div class="col-4">
-              <label for="refText">Reference transcript</label>
-              <textarea id="refText" class="tiny-textarea" placeholder="Transcript of the reference audio."></textarea>
-            </div>
-            <div class="col-12 note">
-              Use reference voice cloning only for voices you own or have consent to clone. The API accepts URL, data URI, or base64 reference audio. Local file mode sends a data URI.
-            </div>
-          </div>
-        </div>
-
-        <div class="col-12">
-          <h3>Control token helper</h3>
-          <div class="grid">
-            <div class="col-3">
+            <div class="col-6">
               <label for="emotionSelect">Emotion</label>
               <select id="emotionSelect"></select>
             </div>
-            <div class="col-3">
+            <div class="col-6">
               <label for="styleSelect">Style</label>
               <select id="styleSelect"></select>
             </div>
-            <div class="col-3">
-              <label for="prosodySelect">Prosody</label>
-              <select id="prosodySelect"></select>
+            <div class="col-6">
+              <label for="speedSelect">Speed</label>
+              <select id="speedSelect"></select>
             </div>
-            <div class="col-3">
+            <div class="col-6">
+              <label for="pitchSelect">Pitch</label>
+              <select id="pitchSelect"></select>
+            </div>
+            <div class="col-12">
+              <label for="expressiveSelect">Expressiveness</label>
+              <select id="expressiveSelect"></select>
+            </div>
+            <div class="col-12 row">
+              <button type="button" id="applyLeadingBtn" class="secondary">Apply leading tags</button>
+              <button type="button" id="clearLeadingBtn">Clear leading tags</button>
+            </div>
+          </div>
+          <div class="hint" style="margin-top: 10px;">Use these at the start of a turn. Pause and sound effect tags belong inside the turn.</div>
+        </div>
+
+        <div class="col-4 card">
+          <h3>Positional tags</h3>
+          <div class="grid">
+            <div class="col-6">
               <label for="sfxSelect">Sound effect</label>
               <select id="sfxSelect"></select>
             </div>
+            <div class="col-6">
+              <label for="sfxCue">Written cue</label>
+              <input id="sfxCue" value="Haha" />
+            </div>
             <div class="col-12 row">
-              <button type="button" id="applyLeadingBtn">Apply selected leading tags</button>
-              <button type="button" id="insertSfxBtn">Insert selected sfx and cue</button>
-              <button type="button" id="showPayloadBtn">Show request JSON</button>
-              <button type="button" id="copyPayloadBtn">Copy request JSON</button>
+              <button type="button" id="insertSfxBtn" class="secondary">Insert sfx plus cue</button>
+              <button type="button" id="insertRepairBtn">Insert repair phrase</button>
+              <button type="button" id="insertOverlapBtn">Insert overlap resumption</button>
             </div>
           </div>
+          <div class="hint" style="margin-top: 10px;">The sound effect is vocalized by the speaker. Pair it with a written cue like Haha, Ahh, or Achoo.</div>
         </div>
 
-        <div class="col-12 row">
-          <button type="button" id="generateBtn" class="primary">Generate speech</button>
-          <button type="button" id="streamBtn" class="secondary">Generate streaming PCM</button>
-          <button type="button" id="stopBatchBtn" class="danger" disabled>Stop batch</button>
+        <div class="col-4 card">
+          <h3>Conversation templates</h3>
+          <label for="templateSelect">Template</label>
+          <select id="templateSelect"></select>
+          <div class="row" style="margin-top: 10px;">
+            <button type="button" id="loadTemplateBtn" class="secondary">Load template</button>
+            <button type="button" id="appendTemplateBtn">Append template</button>
+          </div>
+          <div class="row" style="margin-top: 10px;">
+            <button type="button" id="okayPeriodBtn">Okay.</button>
+            <button type="button" id="okayQuestionBtn">Okay?</button>
+            <button type="button" id="okayCommaBtn">Okay,</button>
+            <button type="button" id="okayExclaimBtn">Okay!</button>
+          </div>
+          <div class="hint" style="margin-top: 10px;">These are small CA-style test prompts for turn holding, repair, backchannels, questions, and response tokens.</div>
+        </div>
+
+        <div class="col-12 card">
+          <h3>Tag library</h3>
+          <div id="tagLibrary" class="pill-list"></div>
         </div>
       </div>
     </section>
 
     <section>
-      <h2>3. Reusable custom voices</h2>
+      <h2>4. Payload, validation, and feedback</h2>
       <div class="grid">
         <div class="col-4">
-          <label for="voiceDescription">Voice description</label>
-          <input id="voiceDescription" placeholder="My clean sample voice" />
+          <div id="status" class="status" role="status" aria-live="polite">Ready.</div>
         </div>
-        <div class="col-4">
-          <label for="createVoiceRefAudio">Reference audio URL for reusable voice</label>
-          <input id="createVoiceRefAudio" placeholder="https://.../sample.wav" />
+        <div class="col-8 row">
+          <button type="button" id="validateBtn" class="secondary">Validate input</button>
+          <button type="button" id="showPayloadBtn">Show request JSON</button>
+          <button type="button" id="copyPayloadBtn">Copy request JSON</button>
+          <button type="button" id="copyCurlBtn">Copy cURL</button>
         </div>
-        <div class="col-4">
-          <label for="createVoiceFile">Or local reference file</label>
-          <input id="createVoiceFile" type="file" accept="audio/*" />
+        <div class="col-6">
+          <h3>Input analysis</h3>
+          <ul id="analysisList" class="analysis-list"></ul>
         </div>
-        <div class="col-12">
-          <label for="createVoiceRefText">Reference transcript</label>
-          <textarea id="createVoiceRefText" class="short-textarea"></textarea>
-        </div>
-        <div class="col-12 row">
-          <button type="button" id="createVoiceBtn" class="secondary">Create reusable voice</button>
-          <button type="button" id="listVoicesBtn">List reusable voices</button>
-          <input id="getVoiceId" placeholder="voice_..." />
-          <button type="button" id="getVoiceBtn">Get voice</button>
-        </div>
-        <div class="col-12" id="voicesTableWrap"></div>
-      </div>
-    </section>
-
-    <section>
-      <h2>4. Batch tests</h2>
-      <div class="grid">
-        <div class="col-4">
-          <label for="batchSuite">Test suite</label>
-          <select id="batchSuite">
-            <option value="voices">Preset voice comparison</option>
-            <option value="emotions">Emotion comparison</option>
-            <option value="prosody">Prosody comparison</option>
-            <option value="styles">Style comparison</option>
-            <option value="sfx">Sound effect comparison</option>
-            <option value="languages">Language comparison</option>
-            <option value="formats">Format comparison</option>
-          </select>
-        </div>
-        <div class="col-4">
-          <label for="batchLimit">Max requests</label>
-          <input id="batchLimit" type="number" min="1" max="30" value="8" />
-        </div>
-        <div class="col-4">
-          <label for="batchGap">Delay between requests, ms</label>
-          <input id="batchGap" type="number" min="0" value="600" />
+        <div class="col-6">
+          <h3>Recognized tags in current input</h3>
+          <div id="tagPreview" class="pill-list"></div>
         </div>
         <div class="col-12">
-          <label for="batchBaseText">Base text for batch tests</label>
-          <textarea id="batchBaseText" class="short-textarea">The package arrived this morning, and the note inside changed the whole plan.</textarea>
+          <details>
+            <summary>Log</summary>
+            <pre id="log"></pre>
+          </details>
         </div>
-        <div class="col-12 row">
-          <button type="button" id="runBatchBtn" class="primary">Run batch</button>
-          <button type="button" id="previewBatchBtn">Preview batch cases</button>
-          <button type="button" id="clearOutputsBtn" class="warn">Clear outputs</button>
-        </div>
-        <div class="col-12" id="batchPreview"></div>
       </div>
     </section>
 
     <section>
       <h2>5. Outputs</h2>
       <div class="row tight" style="margin-bottom: 12px;">
-        <button type="button" id="exportResultsBtn">Export results JSON</button>
+        <button type="button" id="exportResultsBtn">Export session JSON</button>
+        <button type="button" id="clearOutputsBtn" class="warn">Clear outputs</button>
         <button type="button" id="clearLogBtn">Clear log</button>
       </div>
-      <div id="status" class="status">Ready.</div>
-      <div class="divider"></div>
       <div id="outputs" class="output-list"></div>
-      <details style="margin-top: 14px;">
-        <summary>Log</summary>
-        <pre id="log"></pre>
-      </details>
     </section>
 
     <section>
-      <h2>Notes built into this tester</h2>
+      <h2>Built-in notes</h2>
       <div class="grid">
-        <div class="col-6 note">
-          <strong>Streaming.</strong> Streaming requests send <span class="kbd">stream: true</span> and <span class="kbd">response_format: "pcm"</span>. The player treats incoming bytes as 16-bit mono PCM and uses 24 kHz unless the server sends a sample-rate header.
+        <div class="col-4 note">
+          <strong>Inline tags, not SSML.</strong> The docs describe Higgs control through tags like <span class="kbd">&lt;|emotion:enthusiasm|&gt;</span> and <span class="kbd">&lt;|prosody:pause|&gt;</span> inside the input text.
         </div>
-        <div class="col-6 note">
-          <strong>Browser limits.</strong> If a direct call fails with a CORS error, run the request through a local server proxy. The same request JSON and cURL buttons help with that step.
+        <div class="col-4 note">
+          <strong>Streaming rule.</strong> Streaming uses <span class="kbd">stream: true</span> and <span class="kbd">response_format: "pcm"</span>. This page converts returned PCM to WAV for playback and download.
+        </div>
+        <div class="col-4 note">
+          <strong>Browser rule.</strong> If direct calls fail on GitHub Pages with a network or CORS error, use the optional proxy base URL and keep the API key on the server side for public demos.
         </div>
       </div>
     </section>
@@ -450,7 +467,10 @@ python3 -m http.server 8080</pre>
     const PRESET_VOICES = ["default", "chloe", "eleanor", "jake", "marcus", "nora", "oliver"];
     const EMOTIONS = ["", "elation", "amusement", "enthusiasm", "determination", "pride", "contentment", "affection", "relief", "contemplation", "confusion", "surprise", "awe", "longing", "arousal", "anger", "fear", "disgust", "bitterness", "sadness", "shame", "helplessness"];
     const STYLES = ["", "singing", "shouting", "whispering"];
-    const PROSODY = ["", "speed_very_slow", "speed_slow", "speed_fast", "speed_very_fast", "pitch_low", "pitch_high", "pause", "long_pause", "expressive_high", "expressive_low"];
+    const SPEEDS = ["", "speed_very_slow", "speed_slow", "speed_fast", "speed_very_fast"];
+    const PITCHES = ["", "pitch_low", "pitch_high"];
+    const EXPRESSIVENESS = ["", "expressive_high", "expressive_low"];
+    const PROSODY_POSITIONAL = ["pause", "long_pause"];
     const SFX = ["", "cough", "laughter", "crying", "screaming", "burping", "humming", "sigh", "sniff", "sneeze"];
     const SFX_CUES = {
       cough: "Ahem",
@@ -471,29 +491,103 @@ python3 -m http.server 8080</pre>
       aac: "audio/aac",
       pcm: "audio/wav"
     };
-    const LANGUAGE_CASES = [
-      { name: "English", text: "Hello, this is a clarity test for conversational speech." },
-      { name: "Spanish", text: "Hola, esta es una prueba de claridad para voz conversacional." },
-      { name: "French", text: "Bonjour, ceci est un test de clarté pour une voix conversationnelle." },
-      { name: "German", text: "Hallo, dies ist ein Klarheitstest für gesprochene Sprache." },
-      { name: "Hindi", text: "नमस्ते, यह बातचीत वाली आवाज़ की स्पष्टता की परीक्षा है।" },
-      { name: "Japanese", text: "こんにちは。これは会話音声の明瞭さを確認するテストです。" },
-      { name: "Arabic", text: "مرحبا، هذا اختبار لوضوح الصوت في المحادثة." },
-      { name: "Swahili", text: "Hujambo, huu ni mtihani wa uwazi wa sauti ya mazungumzo." }
+    const TEMPLATES = [
+      {
+        name: "Turn holding with pause",
+        text: "<|emotion:contemplation|><|prosody:expressive_low|>Uh, give me a second <|prosody:pause|> I’m trying to remember the exact word."
+      },
+      {
+        name: "Repair initiation",
+        text: "<|emotion:confusion|>Wait, sorry, what did you mean by that?"
+      },
+      {
+        name: "Self-repair",
+        text: "<|emotion:contemplation|>I went on Monday, no sorry, <|prosody:pause|> Tuesday, right after lunch."
+      },
+      {
+        name: "Backchannel sequence",
+        text: "<|emotion:contentment|><|prosody:expressive_low|>Mm-hmm. <|prosody:pause|> Yeah. <|prosody:pause|> Right."
+      },
+      {
+        name: "News receipt",
+        text: "<|emotion:surprise|>Oh wow. <|prosody:pause|> I didn’t expect that."
+      },
+      {
+        name: "Question contour test",
+        text: "<|emotion:contemplation|><|prosody:pitch_high|>So you’re saying it changed after lunch?"
+      },
+      {
+        name: "Dispreferred response",
+        text: "<|emotion:contemplation|><|prosody:speed_slow|>Well, <|prosody:pause|> I’m not sure that works for me."
+      },
+      {
+        name: "Laughter repair",
+        text: "<|emotion:amusement|><|sfx:laughter|>Haha, no, I said Tuesday, not Thursday."
+      },
+      {
+        name: "Flat institutional reading",
+        text: "<|prosody:expressive_low|>The meeting starts at noon. Bring the report. That is all."
+      },
+      {
+        name: "High involvement response",
+        text: "<|emotion:enthusiasm|><|prosody:speed_fast|>Yes, exactly, that is the part I was trying to explain."
+      }
     ];
+    const RECOGNIZED_TAGS = new Set([
+      ...EMOTIONS.filter(Boolean).map((x) => `emotion:${x}`),
+      ...STYLES.filter(Boolean).map((x) => `style:${x}`),
+      ...SPEEDS.filter(Boolean).map((x) => `prosody:${x}`),
+      ...PITCHES.filter(Boolean).map((x) => `prosody:${x}`),
+      ...EXPRESSIVENESS.filter(Boolean).map((x) => `prosody:${x}`),
+      ...PROSODY_POSITIONAL.map((x) => `prosody:${x}`),
+      ...SFX.filter(Boolean).map((x) => `sfx:${x}`)
+    ]);
 
     let outputs = [];
-    let stopBatch = false;
     let audioContext = null;
 
     function initSelect(id, values) {
       const el = $(id);
       el.innerHTML = "";
-      values.forEach((v) => {
+      values.forEach((value) => {
         const opt = document.createElement("option");
-        opt.value = v;
-        opt.textContent = v || "none";
+        opt.value = value;
+        opt.textContent = value || "none";
         el.appendChild(opt);
+      });
+    }
+
+    function initTemplates() {
+      const el = $("templateSelect");
+      el.innerHTML = "";
+      TEMPLATES.forEach((item, index) => {
+        const opt = document.createElement("option");
+        opt.value = String(index);
+        opt.textContent = item.name;
+        el.appendChild(opt);
+      });
+    }
+
+    function initTagLibrary() {
+      const items = [];
+      EMOTIONS.filter(Boolean).forEach((v) => items.push({ label: `emotion:${v}`, token: tag("emotion", v) }));
+      STYLES.filter(Boolean).forEach((v) => items.push({ label: `style:${v}`, token: tag("style", v) }));
+      [...SPEEDS, ...PITCHES, ...EXPRESSIVENESS, ...PROSODY_POSITIONAL].filter(Boolean).forEach((v) => items.push({ label: `prosody:${v}`, token: tag("prosody", v) }));
+      SFX.filter(Boolean).forEach((v) => items.push({ label: `sfx:${v}`, token: tag("sfx", v) + (SFX_CUES[v] ? SFX_CUES[v] : "") }));
+      const wrap = $("tagLibrary");
+      wrap.innerHTML = "";
+      items.forEach((item) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "pill";
+        button.textContent = item.label;
+        button.dataset.token = item.token;
+        button.addEventListener("click", () => {
+          insertAtCursor($("inputText"), item.token + " ");
+          setStatus(`Inserted ${item.label}.`, "ok");
+          updateAnalysis();
+        });
+        wrap.appendChild(button);
       });
     }
 
@@ -507,6 +601,14 @@ python3 -m http.server 8080</pre>
       const el = $("status");
       el.textContent = message;
       el.className = "status" + (kind ? ` ${kind}` : "");
+    }
+
+    function markButton(button) {
+      if (!button || button.disabled) return;
+      button.classList.add("pressed");
+      window.setTimeout(() => button.classList.remove("pressed"), 180);
+      const label = (button.textContent || "Button").trim();
+      setStatus(`${label} pressed.`);
     }
 
     function stringify(value) {
@@ -530,7 +632,8 @@ python3 -m http.server 8080</pre>
     }
 
     function apiUrl(path) {
-      const base = $("endpoint").value.trim().replace(/\/+$/, "");
+      const proxy = $("proxyBase").value.trim().replace(/\/+$/, "");
+      const base = (proxy || $("endpoint").value.trim()).replace(/\/+$/, "");
       return `${base}${path}`;
     }
 
@@ -543,18 +646,8 @@ python3 -m http.server 8080</pre>
     }
 
     function currentVoice() {
-      const custom = $("customVoice").value.trim();
-      return custom || $("presetVoice").value;
-    }
-
-    async function fileToDataUri(file) {
-      if (!file) return "";
-      return await new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = () => reject(reader.error || new Error("File read failed."));
-        reader.readAsDataURL(file);
-      });
+      const manual = $("customVoice").value.trim();
+      return manual || $("presetVoice").value;
     }
 
     function mergeExtraJson(payload) {
@@ -575,25 +668,30 @@ python3 -m http.server 8080</pre>
       let payload = {
         model: overrides.model || $("model").value.trim() || "higgs-tts-3",
         input: overrides.input || $("inputText").value,
+        voice: overrides.voice || currentVoice(),
         response_format: format,
         stream: !!streamRequested
       };
-
-      const voiceMode = overrides.voiceMode || $("voiceMode").value;
-      if (voiceMode === "reference") {
-        const file = overrides.refFile || $("refAudioFile").files[0];
-        const fileDataUri = file ? await fileToDataUri(file) : "";
-        const refAudio = overrides.ref_audio || fileDataUri || $("refAudioUrl").value.trim();
-        const refText = overrides.ref_text || $("refText").value.trim();
-        if (refAudio) payload.ref_audio = refAudio;
-        if (refText) payload.ref_text = refText;
-      } else {
-        payload.voice = overrides.voice || currentVoice();
-      }
-
       if (!payload.input || !payload.input.trim()) throw new Error("Input text is required.");
+      if (payload.input.length > 5000) throw new Error("Input is longer than 5000 characters. Shorten it before sending.");
       payload = mergeExtraJson(payload);
       return payload;
+    }
+
+    async function testAuth() {
+      setStatus("Testing API key with the voices endpoint...");
+      const response = await fetch(apiUrl("/v1/audio/voices"), {
+        method: "GET",
+        headers: authHeaders(false)
+      });
+      const text = await safeResponseText(response);
+      if (!response.ok) throw new Error(`API key test failed: ${response.status} ${response.statusText}\n${text}`);
+      let data = {};
+      try { data = JSON.parse(text || "{}"); } catch (err) { data = { raw: text }; }
+      const count = Array.isArray(data.data) ? data.data.length : 0;
+      setStatus(`API key worked. ${count} reusable voice record${count === 1 ? "" : "s"} returned.`, "ok");
+      log("API key test response", data);
+      return data;
     }
 
     async function postSpeech(payload) {
@@ -625,7 +723,7 @@ python3 -m http.server 8080</pre>
 
     async function generateSpeech(overrides = {}, label = "Manual request") {
       const payload = await buildSpeechPayload(overrides);
-      if (payload.stream) return generateStreaming(overrides, label);
+      if (payload.stream) return generateStreaming({ ...overrides, stream: true }, label);
       setStatus(`Generating ${label}...`);
       log("Speech request", redactedPayload(payload));
       const result = await postSpeech(payload);
@@ -667,14 +765,9 @@ python3 -m http.server 8080</pre>
         throw new Error(`Streaming request failed: ${response.status} ${response.statusText}\n${text}`);
       }
       if (!response.body) throw new Error("This browser did not expose a readable stream for the response.");
-
       const sampleRate = parseInt(response.headers.get("x-sample-rate") || response.headers.get("x-audio-sample-rate") || "24000", 10);
       const channels = parseInt(response.headers.get("x-channels") || "1", 10);
       const bitDepth = parseInt(response.headers.get("x-bit-depth") || "16", 10);
-      if (channels !== 1 || bitDepth !== 16) {
-        log("Streaming metadata differs from the built-in player assumption", { sampleRate, channels, bitDepth });
-      }
-
       audioContext = audioContext || new (window.AudioContext || window.webkitAudioContext)({ sampleRate });
       if (audioContext.state === "suspended") await audioContext.resume();
       const reader = response.body.getReader();
@@ -683,7 +776,6 @@ python3 -m http.server 8080</pre>
       let ttfa = null;
       let scheduler = { nextTime: audioContext.currentTime + 0.12 };
       let carry = new Uint8Array(0);
-
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
@@ -698,10 +790,9 @@ python3 -m http.server 8080</pre>
         playPcm16Chunk(playable, sampleRate, scheduler);
         setStatus(`Streaming ${label}: ${bytesRead.toLocaleString()} bytes received...`, "ok");
       }
-
       const elapsed = performance.now() - t0;
       const pcm = concatManyUint8(chunks);
-      const wavBuffer = encodeWavFromPcm(pcm, sampleRate, 1, 16);
+      const wavBuffer = encodeWavFromPcm(pcm, sampleRate, channels, bitDepth);
       const blob = new Blob([wavBuffer], { type: "audio/wav" });
       addOutput({
         label,
@@ -783,17 +874,19 @@ python3 -m http.server 8080</pre>
     }
 
     function redactedPayload(payload) {
-      const copy = { ...payload };
-      if (copy.ref_audio && copy.ref_audio.length > 160) {
-        copy.ref_audio = copy.ref_audio.slice(0, 120) + `... (${copy.ref_audio.length} chars)`;
-      }
-      return copy;
+      return { ...payload };
+    }
+
+    function makeId() {
+      if (window.crypto && typeof window.crypto.randomUUID === "function") return window.crypto.randomUUID();
+      return `id-${Date.now()}-${Math.random().toString(16).slice(2)}`;
     }
 
     function addOutput(item) {
       outputs.unshift({
-        id: crypto.randomUUID(),
+        id: makeId(),
         createdAt: new Date().toISOString(),
+        analystNote: "",
         ...item
       });
       renderOutputs();
@@ -829,9 +922,12 @@ python3 -m http.server 8080</pre>
             <div class="row tight">
               <a class="pill" href="${url}" download="${fileName}">Download audio</a>
               <button type="button" data-action="copy-payload" data-id="${item.id}">Copy payload</button>
+              <button type="button" data-action="reuse-input" data-id="${item.id}">Reuse input</button>
             </div>
           </header>
           <audio controls src="${url}"></audio>
+          <label for="note-${item.id}">Analyst note</label>
+          <textarea id="note-${item.id}" class="tiny-textarea" data-action="note" data-id="${item.id}" placeholder="Add notes about timing, affect, intonation, or tag behavior.">${escapeHtml(item.analystNote || "")}</textarea>
           <details>
             <summary>Payload</summary>
             <pre>${escapeHtml(stringify(item.payload))}</pre>
@@ -841,8 +937,26 @@ python3 -m http.server 8080</pre>
       });
       wrap.querySelectorAll("button[data-action='copy-payload']").forEach((button) => {
         button.addEventListener("click", () => {
+          markButton(button);
           const item = outputs.find((x) => x.id === button.dataset.id);
           if (item) copyText(stringify(item.payload));
+        });
+      });
+      wrap.querySelectorAll("button[data-action='reuse-input']").forEach((button) => {
+        button.addEventListener("click", () => {
+          markButton(button);
+          const item = outputs.find((x) => x.id === button.dataset.id);
+          if (item) {
+            $("inputText").value = item.payload.input || "";
+            setStatus("Output input copied back to editor.", "ok");
+            updateAnalysis();
+          }
+        });
+      });
+      wrap.querySelectorAll("textarea[data-action='note']").forEach((textarea) => {
+        textarea.addEventListener("input", () => {
+          const item = outputs.find((x) => x.id === textarea.dataset.id);
+          if (item) item.analystNote = textarea.value;
         });
       });
     }
@@ -879,18 +993,33 @@ python3 -m http.server 8080</pre>
       return text.replace(/<\|[^|]+\|>/g, "").replace(/\s+/g, " ").trim();
     }
 
-    function applyLeadingTags() {
-      const emotion = tag("emotion", $("emotionSelect").value);
-      const style = tag("style", $("styleSelect").value);
-      const prosodyValue = $("prosodySelect").value;
-      const prosody = prosodyValue && !["pause", "long_pause"].includes(prosodyValue) ? tag("prosody", prosodyValue) : "";
-      const leading = emotion + style + prosody;
-      const clean = removeLeadingDeliveryTags($("inputText").value);
-      $("inputText").value = leading + clean;
+    function removeLeadingDeliveryTags(text) {
+      return text.replace(/^(\s*<\|(emotion|style|prosody):(?!pause|long_pause)[^|]+\|>)+\s*/, "");
     }
 
-    function removeLeadingDeliveryTags(text) {
-      return text.replace(/^(<\|(emotion|style|prosody):(?!pause|long_pause)[^|]+\|>)+/, "");
+    function buildLeadingTags() {
+      const parts = [];
+      if ($("emotionSelect").value) parts.push(tag("emotion", $("emotionSelect").value));
+      if ($("styleSelect").value) parts.push(tag("style", $("styleSelect").value));
+      if ($("speedSelect").value) parts.push(tag("prosody", $("speedSelect").value));
+      if ($("pitchSelect").value) parts.push(tag("prosody", $("pitchSelect").value));
+      if ($("expressiveSelect").value) parts.push(tag("prosody", $("expressiveSelect").value));
+      return parts.join("");
+    }
+
+    function applyLeadingTags() {
+      const leading = buildLeadingTags();
+      const clean = removeLeadingDeliveryTags($("inputText").value);
+      $("inputText").value = leading ? `${leading}${clean}` : clean;
+      setStatus(leading ? "Leading delivery tags applied." : "No leading tags selected. Existing leading tags cleared.", "ok");
+      updateAnalysis();
+    }
+
+    function clearLeadingTags() {
+      $("inputText").value = removeLeadingDeliveryTags($("inputText").value);
+      ["emotionSelect", "styleSelect", "speedSelect", "pitchSelect", "expressiveSelect"].forEach((id) => { $(id).value = ""; });
+      setStatus("Leading tags cleared.", "ok");
+      updateAnalysis();
     }
 
     function insertAtCursor(textarea, insertion) {
@@ -900,193 +1029,116 @@ python3 -m http.server 8080</pre>
       textarea.focus();
       const pos = start + insertion.length;
       textarea.setSelectionRange(pos, pos);
+      updateAnalysis();
     }
 
-    function buildBatchCases() {
-      const suite = $("batchSuite").value;
-      const baseText = $("batchBaseText").value.trim() || "This is a speech test.";
-      const format = $("format").value;
-      const common = {
-        model: $("model").value.trim() || "higgs-tts-3",
-        response_format: format,
-        stream: false,
-        voiceMode: "preset",
-        voice: currentVoice()
-      };
-      if (suite === "voices") {
-        return PRESET_VOICES.map((voice) => ({ label: `voice ${voice}`, payload: { ...common, voice, input: baseText } }));
+    function loadTemplate(append = false) {
+      const item = TEMPLATES[Number($("templateSelect").value || 0)];
+      if (!item) return;
+      if (append) {
+        const spacer = $("inputText").value.trim() ? "\n\n" : "";
+        $("inputText").value += spacer + item.text;
+        setStatus(`Appended template: ${item.name}.`, "ok");
+      } else {
+        $("inputText").value = item.text;
+        setStatus(`Loaded template: ${item.name}.`, "ok");
       }
-      if (suite === "emotions") {
-        return EMOTIONS.filter(Boolean).map((e) => ({ label: `emotion ${e}`, payload: { ...common, input: `${tag("emotion", e)}${baseText}` } }));
-      }
-      if (suite === "prosody") {
-        const values = PROSODY.filter(Boolean);
-        return values.map((p) => ({ label: `prosody ${p}`, payload: { ...common, input: ["pause", "long_pause"].includes(p) ? baseText.replace(/,| and |\s/, ` ${tag("prosody", p)} `) : `${tag("prosody", p)}${baseText}` } }));
-      }
-      if (suite === "styles") {
-        return STYLES.filter(Boolean).map((s) => ({ label: `style ${s}`, payload: { ...common, input: `${tag("style", s)}${baseText}` } }));
-      }
-      if (suite === "sfx") {
-        return SFX.filter(Boolean).map((s) => ({ label: `sfx ${s}`, payload: { ...common, input: `${tag("sfx", s)}${SFX_CUES[s]}, ${baseText}` } }));
-      }
-      if (suite === "languages") {
-        return LANGUAGE_CASES.map((l) => ({ label: `language ${l.name}`, payload: { ...common, input: l.text } }));
-      }
-      if (suite === "formats") {
-        return ["mp3", "wav", "flac", "opus", "aac", "pcm"].map((f) => ({ label: `format ${f}`, payload: { ...common, response_format: f, input: baseText } }));
-      }
-      return [];
+      updateAnalysis();
     }
 
-    function previewBatch() {
-      const max = Number($("batchLimit").value || 8);
-      const cases = buildBatchCases().slice(0, max);
-      const wrap = $("batchPreview");
-      if (!cases.length) {
-        wrap.innerHTML = `<div class="note">No batch cases.</div>`;
+    function convertSimpleSsml() {
+      let text = $("inputText").value;
+      text = text.replace(/<\s*break\s+[^>]*time=["']?(\d+(?:\.\d+)?)(ms|s)["']?[^>]*\/?>/gi, (match, amount, unit) => {
+        const ms = unit.toLowerCase() === "s" ? Number(amount) * 1000 : Number(amount);
+        return ms >= 700 ? " <|prosody:long_pause|> " : " <|prosody:pause|> ";
+      });
+      text = text.replace(/<\s*emphasis[^>]*>/gi, "<|prosody:expressive_high|>");
+      text = text.replace(/<\s*\/\s*(speak|emphasis|p|s)\s*>/gi, " ");
+      text = text.replace(/<\s*(speak|p|s)[^>]*>/gi, " ");
+      text = text.replace(/<(?!\|)[^>]+>/g, " ").replace(/[ \t]+/g, " ").replace(/\n\s+/g, "\n").trim();
+      $("inputText").value = text;
+      setStatus("Converted simple SSML-like tags to Higgs inline tags or plain text.", "ok");
+      updateAnalysis();
+    }
+
+    function validateInput(showStatus = true) {
+      const issues = analyzeInput();
+      renderAnalysis(issues);
+      if (showStatus) {
+        const errors = issues.filter((x) => x.kind === "danger").length;
+        const warnings = issues.filter((x) => x.kind === "warn").length;
+        setStatus(errors ? `${errors} issue${errors === 1 ? "" : "s"} must be fixed before sending.` : warnings ? `Input looks usable with ${warnings} warning${warnings === 1 ? "" : "s"}.` : "Input looks ready.", errors ? "danger" : warnings ? "warn" : "ok");
+      }
+      return issues;
+    }
+
+    function analyzeInput() {
+      const text = $("inputText").value || "";
+      const issues = [];
+      const plain = removeControlTags(text);
+      const tags = getTags(text);
+      if (!text.trim()) issues.push({ kind: "danger", text: "Input text is empty." });
+      if (text.length > 5000) issues.push({ kind: "danger", text: `Input has ${text.length} characters. The API limit is 5000.` });
+      if (/<\/?speak|<break\b|<prosody\b|<emphasis\b/i.test(text)) issues.push({ kind: "warn", text: "SSML-like markup detected. Use Higgs inline tags or press Convert simple SSML." });
+      if (!tags.length) issues.push({ kind: "warn", text: "No Higgs inline tags found. Plain speech still works, but this will not test fine controls." });
+      const unknown = tags.filter((item) => !RECOGNIZED_TAGS.has(item.key));
+      if (unknown.length) issues.push({ kind: "warn", text: `Unknown Higgs tags found: ${unknown.map((x) => x.raw).join(", ")}.` });
+      const streamOn = $("streamMode").value === "true";
+      if (streamOn && /<\|prosody:speed_[^|]+\|>/.test(text)) issues.push({ kind: "warn", text: "Streaming requires PCM. Boson notes speed adjustment is not supported when streaming." });
+      const leadingProblem = tags.some((item) => ["emotion", "style"].includes(item.category) && item.index > 3 && plain.length > 0);
+      if (leadingProblem) issues.push({ kind: "warn", text: "Emotion and style tags usually work best at the start of the turn." });
+      if (!issues.length) issues.push({ kind: "ok", text: "Ready to generate." });
+      return issues;
+    }
+
+    function getTags(text) {
+      const tags = [];
+      const re = /<\|([^:|]+):([^|]+)\|>/g;
+      let match;
+      while ((match = re.exec(text)) !== null) {
+        tags.push({ raw: match[0], category: match[1], value: match[2], key: `${match[1]}:${match[2]}`, index: match.index });
+      }
+      return tags;
+    }
+
+    function renderAnalysis(issues) {
+      const list = $("analysisList");
+      list.innerHTML = "";
+      issues.forEach((item) => {
+        const li = document.createElement("li");
+        li.className = item.kind;
+        li.textContent = item.text;
+        list.appendChild(li);
+      });
+    }
+
+    function renderTagPreview() {
+      const wrap = $("tagPreview");
+      const tags = getTags($("inputText").value || "");
+      wrap.innerHTML = "";
+      if (!tags.length) {
+        wrap.innerHTML = `<span class="note">No inline tags in the current input.</span>`;
         return;
       }
-      const rows = cases.map((c, i) => `<tr><td>${i + 1}</td><td>${escapeHtml(c.label)}</td><td><code>${escapeHtml(c.payload.input)}</code></td></tr>`).join("");
-      wrap.innerHTML = `<table><thead><tr><th>#</th><th>Case</th><th>Input</th></tr></thead><tbody>${rows}</tbody></table>`;
-    }
-
-    async function runBatch() {
-      const max = Number($("batchLimit").value || 8);
-      const gap = Number($("batchGap").value || 0);
-      const cases = buildBatchCases().slice(0, max);
-      if (!cases.length) return;
-      stopBatch = false;
-      $("stopBatchBtn").disabled = false;
-      setStatus(`Running batch: ${cases.length} requests...`);
-      for (let i = 0; i < cases.length; i++) {
-        if (stopBatch) break;
-        const item = cases[i];
-        try {
-          setStatus(`Batch ${i + 1}/${cases.length}: ${item.label}`);
-          await generateSpeech(item.payload, item.label);
-        } catch (err) {
-          setStatus(`Batch error: ${item.label}`, "danger");
-          log(`Batch error for ${item.label}`, String(err.stack || err));
-        }
-        if (gap > 0 && i < cases.length - 1 && !stopBatch) await sleep(gap);
-      }
-      $("stopBatchBtn").disabled = true;
-      setStatus(stopBatch ? "Batch stopped." : "Batch done.", stopBatch ? "warn" : "ok");
-    }
-
-    function sleep(ms) {
-      return new Promise((resolve) => setTimeout(resolve, ms));
-    }
-
-    async function createVoice() {
-      const file = $("createVoiceFile").files[0];
-      const fileDataUri = file ? await fileToDataUri(file) : "";
-      const refAudio = fileDataUri || $("createVoiceRefAudio").value.trim();
-      const refText = $("createVoiceRefText").value.trim();
-      if (!refAudio) throw new Error("Reference audio is required for voice creation.");
-      if (!refText) throw new Error("Reference transcript is required for voice creation.");
-      const payload = {
-        ref_audio: refAudio,
-        ref_text: refText,
-        description: $("voiceDescription").value.trim() || null
-      };
-      setStatus("Creating reusable voice...");
-      const response = await fetch(apiUrl("/v1/audio/voices"), {
-        method: "POST",
-        headers: authHeaders(true),
-        body: JSON.stringify(payload)
-      });
-      const text = await safeResponseText(response);
-      if (!response.ok) throw new Error(`Create voice failed: ${response.status} ${response.statusText}\n${text}`);
-      const data = JSON.parse(text);
-      $("customVoice").value = data.voice || "";
-      $("getVoiceId").value = data.voice || "";
-      log("Created voice", data);
-      setStatus(`Created voice ${data.voice}`, "ok");
-      await listVoices(false);
-    }
-
-    async function listVoices(showStatus = true) {
-      if (showStatus) setStatus("Listing voices...");
-      const response = await fetch(apiUrl("/v1/audio/voices"), {
-        method: "GET",
-        headers: authHeaders(false)
-      });
-      const text = await safeResponseText(response);
-      if (!response.ok) throw new Error(`List voices failed: ${response.status} ${response.statusText}\n${text}`);
-      const data = JSON.parse(text);
-      renderVoices(data.data || []);
-      log("List voices", data);
-      if (showStatus) setStatus(`Loaded ${(data.data || []).length} voices.`, "ok");
-      return data;
-    }
-
-    async function getVoice() {
-      const id = $("getVoiceId").value.trim();
-      if (!id) throw new Error("Enter a voice ID.");
-      setStatus(`Fetching ${id}...`);
-      const response = await fetch(apiUrl(`/v1/audio/voices/${encodeURIComponent(id)}`), {
-        method: "GET",
-        headers: authHeaders(false)
-      });
-      const text = await safeResponseText(response);
-      if (!response.ok) throw new Error(`Get voice failed: ${response.status} ${response.statusText}\n${text}`);
-      const data = JSON.parse(text);
-      log("Get voice", data);
-      $("customVoice").value = data.voice || id;
-      setStatus(`Loaded ${data.voice || id}.`, "ok");
-    }
-
-    function renderVoices(voices) {
-      const wrap = $("voicesTableWrap");
-      if (!voices.length) {
-        wrap.innerHTML = `<div class="note">No reusable voices returned for this API key.</div>`;
-        return;
-      }
-      const rows = voices.map((v) => `
-        <tr>
-          <td><code>${escapeHtml(v.voice)}</code></td>
-          <td>${escapeHtml(v.description || "")}</td>
-          <td>${escapeHtml(v.created_at || "")}</td>
-          <td><button type="button" data-voice="${escapeHtml(v.voice)}">Use</button></td>
-        </tr>`).join("");
-      wrap.innerHTML = `<table><thead><tr><th>Voice ID</th><th>Description</th><th>Created</th><th></th></tr></thead><tbody>${rows}</tbody></table>`;
-      wrap.querySelectorAll("button[data-voice]").forEach((button) => {
-        button.addEventListener("click", () => {
-          $("customVoice").value = button.dataset.voice;
-          $("voiceMode").value = "preset";
-          syncVoiceMode();
-          setStatus(`Using ${button.dataset.voice}.`, "ok");
-        });
+      tags.forEach((item) => {
+        const span = document.createElement("span");
+        span.className = "pill" + (RECOGNIZED_TAGS.has(item.key) ? "" : " warn");
+        span.textContent = item.raw;
+        wrap.appendChild(span);
       });
     }
 
-    function exportResults() {
-      const data = outputs.map((item) => ({
-        id: item.id,
-        createdAt: item.createdAt,
-        label: item.label,
-        payload: item.payload,
-        stream: item.stream,
-        elapsedMs: Math.round(item.elapsed),
-        ttfaMs: item.ttfa == null ? null : Math.round(item.ttfa),
-        sizeBytes: item.size,
-        contentType: item.contentType,
-        metadata: item.metadata || null
-      }));
-      const blob = new Blob([stringify(data)], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `boson-higgs-tts-results-${Date.now()}.json`;
-      a.click();
-      URL.revokeObjectURL(url);
+    function updateCharCount() {
+      const len = ($("inputText").value || "").length;
+      const pct = Math.min(100, Math.round((len / 5000) * 100));
+      $("charCount").textContent = `${len} / 5000 characters`;
+      $("charMeter").style.width = `${pct}%`;
     }
 
-    function syncVoiceMode() {
-      const reference = $("voiceMode").value === "reference";
-      document.querySelectorAll(".reference-area").forEach((el) => el.classList.toggle("hidden", !reference));
-      document.querySelectorAll(".voice-preset-area").forEach((el) => el.classList.toggle("hidden", reference));
+    function updateAnalysis() {
+      updateCharCount();
+      renderTagPreview();
+      validateInput(false);
     }
 
     async function showPayload() {
@@ -1105,19 +1157,49 @@ python3 -m http.server 8080</pre>
       await copyText(currentCurl(payload));
     }
 
+    function exportResults() {
+      const data = outputs.map((item) => ({
+        id: item.id,
+        createdAt: item.createdAt,
+        label: item.label,
+        payload: item.payload,
+        analystNote: item.analystNote || "",
+        stream: item.stream,
+        elapsedMs: Math.round(item.elapsed),
+        ttfaMs: item.ttfa == null ? null : Math.round(item.ttfa),
+        sizeBytes: item.size,
+        contentType: item.contentType,
+        metadata: item.metadata || null
+      }));
+      const blob = new Blob([stringify(data)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `higgs-tts-conversation-session-${Date.now()}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      setStatus("Session JSON exported.", "ok");
+    }
+
     function loadSavedKey() {
       const saved = storageGet(sessionStorage, "boson_api_key") || storageGet(localStorage, "boson_api_key") || "";
       if (saved) $("apiKey").value = saved;
     }
 
     function attachHandlers() {
+      document.addEventListener("click", (event) => {
+        const button = event.target.closest("button");
+        if (button) markButton(button);
+      }, true);
+
+      $("testAuthBtn").addEventListener("click", () => handle(testAuth));
       $("saveSessionBtn").addEventListener("click", () => {
         const ok = storageSet(sessionStorage, "boson_api_key", $("apiKey").value.trim());
-        setStatus(ok ? "Saved key for this tab." : "This browser blocked session storage. The key still works while it is typed into the field.", ok ? "ok" : "warn");
+        setStatus(ok ? "Saved key for this tab." : "This browser blocked session storage.", ok ? "ok" : "warn");
       });
       $("saveLocalBtn").addEventListener("click", () => {
         const ok = storageSet(localStorage, "boson_api_key", $("apiKey").value.trim());
-        setStatus(ok ? "Saved key in this browser." : "This browser blocked local storage. The key still works while it is typed into the field.", ok ? "ok" : "warn");
+        setStatus(ok ? "Saved key in this browser." : "This browser blocked local storage.", ok ? "ok" : "warn");
       });
       $("clearKeyBtn").addEventListener("click", () => {
         storageRemove(sessionStorage, "boson_api_key");
@@ -1125,37 +1207,81 @@ python3 -m http.server 8080</pre>
         $("apiKey").value = "";
         setStatus("Cleared saved key.", "ok");
       });
-      $("voiceMode").addEventListener("change", syncVoiceMode);
       $("streamMode").addEventListener("change", () => {
-        if ($("streamMode").value === "true") $("format").value = "pcm";
+        if ($("streamMode").value === "true") {
+          $("format").value = "pcm";
+          setStatus("Streaming enabled. Response format changed to PCM.", "ok");
+        } else {
+          setStatus("Streaming disabled.", "ok");
+        }
+        updateAnalysis();
+      });
+      $("format").addEventListener("change", () => setStatus(`Response format set to ${$("format").value}.`, "ok"));
+      $("presetVoice").addEventListener("change", () => setStatus(`Preset voice set to ${$("presetVoice").value}.`, "ok"));
+      $("sfxSelect").addEventListener("change", () => {
+        const cue = SFX_CUES[$("sfxSelect").value] || "";
+        if (cue) $("sfxCue").value = cue;
+      });
+      ["inputText", "extraJson", "customVoice", "model", "endpoint", "proxyBase"].forEach((id) => {
+        $(id).addEventListener("input", updateAnalysis);
       });
       $("generateBtn").addEventListener("click", () => handle(async () => generateSpeech({}, "Manual request")));
       $("streamBtn").addEventListener("click", () => handle(async () => generateStreaming({}, "Manual streaming request")));
+      $("insertPauseBtn").addEventListener("click", () => {
+        insertAtCursor($("inputText"), " <|prosody:pause|> ");
+        setStatus("Inserted pause tag.", "ok");
+      });
+      $("insertLongPauseBtn").addEventListener("click", () => {
+        insertAtCursor($("inputText"), " <|prosody:long_pause|> ");
+        setStatus("Inserted long pause tag.", "ok");
+      });
+      $("insertHesitationBtn").addEventListener("click", () => {
+        insertAtCursor($("inputText"), " uh, <|prosody:pause|> ");
+        setStatus("Inserted hesitation cue plus pause.", "ok");
+      });
+      $("convertSsmlBtn").addEventListener("click", convertSimpleSsml);
+      $("clearTagsBtn").addEventListener("click", () => {
+        $("inputText").value = removeControlTags($("inputText").value);
+        setStatus("Removed Higgs inline tags from input.", "ok");
+        updateAnalysis();
+      });
+      $("applyLeadingBtn").addEventListener("click", applyLeadingTags);
+      $("clearLeadingBtn").addEventListener("click", clearLeadingTags);
+      $("insertSfxBtn").addEventListener("click", () => {
+        const s = $("sfxSelect").value;
+        if (!s) throw new Error("Choose a sound effect first.");
+        const cue = $("sfxCue").value.trim() || SFX_CUES[s] || "";
+        insertAtCursor($("inputText"), `${tag("sfx", s)}${cue}${cue ? ", " : ""}`);
+        setStatus(`Inserted ${s} sound effect.`, "ok");
+      });
+      $("insertRepairBtn").addEventListener("click", () => {
+        insertAtCursor($("inputText"), " sorry, I mean, <|prosody:pause|> ");
+        setStatus("Inserted repair phrase.", "ok");
+      });
+      $("insertOverlapBtn").addEventListener("click", () => {
+        insertAtCursor($("inputText"), " no wait, let me finish that thought, ");
+        setStatus("Inserted overlap resumption phrase.", "ok");
+      });
+      $("loadTemplateBtn").addEventListener("click", () => loadTemplate(false));
+      $("appendTemplateBtn").addEventListener("click", () => loadTemplate(true));
+      $("okayPeriodBtn").addEventListener("click", () => { $("inputText").value = "Okay."; setStatus("Loaded Okay. token test.", "ok"); updateAnalysis(); });
+      $("okayQuestionBtn").addEventListener("click", () => { $("inputText").value = "Okay?"; setStatus("Loaded Okay? token test.", "ok"); updateAnalysis(); });
+      $("okayCommaBtn").addEventListener("click", () => { $("inputText").value = "Okay,"; setStatus("Loaded Okay, token test.", "ok"); updateAnalysis(); });
+      $("okayExclaimBtn").addEventListener("click", () => { $("inputText").value = "Okay!"; setStatus("Loaded Okay! token test.", "ok"); updateAnalysis(); });
+      $("validateBtn").addEventListener("click", () => validateInput(true));
       $("showPayloadBtn").addEventListener("click", () => handle(showPayload));
       $("copyPayloadBtn").addEventListener("click", () => handle(copyPayload));
       $("copyCurlBtn").addEventListener("click", () => handle(copyCurl));
-      $("insertPauseBtn").addEventListener("click", () => insertAtCursor($("inputText"), " <|prosody:pause|> "));
-      $("insertLongPauseBtn").addEventListener("click", () => insertAtCursor($("inputText"), " <|prosody:long_pause|> "));
-      $("clearTagsBtn").addEventListener("click", () => { $("inputText").value = removeControlTags($("inputText").value); });
-      $("sampleTextBtn").addEventListener("click", () => {
-        $("inputText").value = "<|emotion:amusement|><|prosody:expressive_high|>Wait, that was funnier than expected. <|sfx:laughter|>Haha, let me try that again, slower this time. <|prosody:pause|><|prosody:speed_slow|>Now the words should land with a calmer rhythm.";
-      });
-      $("applyLeadingBtn").addEventListener("click", applyLeadingTags);
-      $("insertSfxBtn").addEventListener("click", () => {
-        const s = $("sfxSelect").value;
-        if (!s) return;
-        insertAtCursor($("inputText"), `${tag("sfx", s)}${SFX_CUES[s]}, `);
-      });
-      $("createVoiceBtn").addEventListener("click", () => handle(createVoice));
-      $("listVoicesBtn").addEventListener("click", () => handle(() => listVoices(true)));
-      $("getVoiceBtn").addEventListener("click", () => handle(getVoice));
-      $("pingBtn").addEventListener("click", () => handle(() => listVoices(true)));
-      $("previewBatchBtn").addEventListener("click", previewBatch);
-      $("runBatchBtn").addEventListener("click", () => handle(runBatch));
-      $("stopBatchBtn").addEventListener("click", () => { stopBatch = true; setStatus("Stopping batch after the current request...", "warn"); });
-      $("clearOutputsBtn").addEventListener("click", () => { outputs = []; renderOutputs(); setStatus("Outputs cleared.", "ok"); });
       $("exportResultsBtn").addEventListener("click", exportResults);
-      $("clearLogBtn").addEventListener("click", () => { $("log").textContent = ""; });
+      $("clearOutputsBtn").addEventListener("click", () => {
+        outputs = [];
+        renderOutputs();
+        setStatus("Outputs cleared.", "ok");
+      });
+      $("clearLogBtn").addEventListener("click", () => {
+        $("log").textContent = "";
+        setStatus("Log cleared.", "ok");
+      });
     }
 
     async function handle(fn) {
@@ -1163,7 +1289,8 @@ python3 -m http.server 8080</pre>
         await fn();
       } catch (err) {
         const message = String(err && err.message ? err.message : err);
-        setStatus(message.includes("Failed to fetch") ? "Request failed. This often means CORS, network, or endpoint settings blocked the browser call." : message, "danger");
+        const friendly = message.includes("Failed to fetch") ? "Request failed. This often means CORS, network, endpoint, or proxy settings blocked the browser call." : message;
+        setStatus(friendly, "danger");
         log("Error", String(err && err.stack ? err.stack : err));
       }
     }
@@ -1172,18 +1299,21 @@ python3 -m http.server 8080</pre>
       const fileWarning = $("fileProtocolWarning");
       if (fileWarning && window.location.protocol === "file:") {
         fileWarning.classList.remove("hidden");
-        setStatus("This page is open with file://. Open it through GitHub Pages or localhost for reliable browser behavior.", "warn");
+        setStatus("Open through GitHub Pages or localhost for reliable browser behavior.", "warn");
       }
       initSelect("emotionSelect", EMOTIONS);
       initSelect("styleSelect", STYLES);
-      initSelect("prosodySelect", PROSODY);
+      initSelect("speedSelect", SPEEDS);
+      initSelect("pitchSelect", PITCHES);
+      initSelect("expressiveSelect", EXPRESSIVENESS);
       initSelect("sfxSelect", SFX);
+      initTemplates();
+      initTagLibrary();
       loadSavedKey();
-      syncVoiceMode();
       attachHandlers();
       renderOutputs();
-      previewBatch();
-      log("Tester loaded. Enter your API key and generate a request.");
+      updateAnalysis();
+      log("Playground loaded. Enter your API key, choose controls, and generate speech.");
     }
 
     boot();
