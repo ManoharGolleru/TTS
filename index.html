@@ -1,0 +1,1192 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Boson Higgs TTS 3 Browser Tester</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #0f1218;
+      --panel: #171c26;
+      --soft: #202737;
+      --text: #eef2f8;
+      --muted: #a9b4c7;
+      --border: #334058;
+      --accent: #7db0ff;
+      --accent-2: #9ce2be;
+      --danger: #ff9a9a;
+      --warn: #ffd580;
+      --ok: #93e6a5;
+      --shadow: rgba(0,0,0,.25);
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f5f7fb;
+        --panel: #ffffff;
+        --soft: #eef2f7;
+        --text: #172033;
+        --muted: #5b667a;
+        --border: #d2d9e7;
+        --accent: #185bbd;
+        --accent-2: #14683e;
+        --danger: #b42318;
+        --warn: #8a5a00;
+        --ok: #0d6b2f;
+        --shadow: rgba(20,30,50,.10);
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.45;
+    }
+    header {
+      padding: 28px 24px 18px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(125,176,255,.12), transparent 75%);
+    }
+    header h1 { margin: 0 0 8px; font-size: clamp(26px, 4vw, 42px); letter-spacing: -0.03em; }
+    header p { margin: 0; color: var(--muted); max-width: 980px; }
+    main { width: min(1420px, 100%); margin: 0 auto; padding: 22px; }
+    section, .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 10px 30px var(--shadow);
+    }
+    section { margin-bottom: 18px; }
+    h2 { margin: 0 0 14px; font-size: 22px; }
+    h3 { margin: 0 0 10px; font-size: 17px; }
+    .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 14px; }
+    .col-12 { grid-column: span 12; }
+    .col-8 { grid-column: span 8; }
+    .col-6 { grid-column: span 6; }
+    .col-5 { grid-column: span 5; }
+    .col-4 { grid-column: span 4; }
+    .col-3 { grid-column: span 3; }
+    .col-2 { grid-column: span 2; }
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: 1fr; }
+      .col-12, .col-8, .col-6, .col-5, .col-4, .col-3, .col-2 { grid-column: 1; }
+    }
+    label { display: block; margin-bottom: 6px; color: var(--muted); font-size: 13px; font-weight: 650; }
+    input, select, textarea, button {
+      width: 100%;
+      font: inherit;
+      color: var(--text);
+    }
+    input, select, textarea {
+      background: var(--soft);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 11px 12px;
+      outline: none;
+    }
+    input:focus, select:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(125,176,255,.18); }
+    textarea { min-height: 148px; resize: vertical; font-family: var(--mono); font-size: 14px; }
+    .short-textarea { min-height: 90px; }
+    .tiny-textarea { min-height: 62px; }
+    button {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 12px;
+      background: var(--soft);
+      cursor: pointer;
+      font-weight: 750;
+    }
+    button:hover { border-color: var(--accent); }
+    button.primary { background: var(--accent); color: white; border-color: transparent; }
+    button.secondary { background: rgba(156,226,190,.12); border-color: rgba(156,226,190,.5); }
+    button.warn { background: rgba(255,213,128,.12); border-color: rgba(255,213,128,.5); }
+    button.danger { background: rgba(255,154,154,.12); border-color: rgba(255,154,154,.5); }
+    button:disabled { opacity: .55; cursor: not-allowed; }
+    .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .row > * { flex: 1 1 160px; }
+    .tight > * { flex: 0 0 auto; }
+    .hint, .note { color: var(--muted); font-size: 13px; }
+    .note { background: var(--soft); border: 1px solid var(--border); border-radius: 14px; padding: 12px; }
+    .note strong { color: var(--text); }
+    .pill-list { display: flex; gap: 8px; flex-wrap: wrap; }
+    .pill {
+      border: 1px solid var(--border);
+      background: var(--soft);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: 13px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .pill:hover { border-color: var(--accent); }
+    .pill.active { background: rgba(125,176,255,.18); border-color: var(--accent); }
+    .status { font-size: 13px; color: var(--muted); }
+    .status.ok { color: var(--ok); }
+    .status.warn { color: var(--warn); }
+    .status.danger { color: var(--danger); }
+    details { border: 1px solid var(--border); background: var(--soft); border-radius: 14px; padding: 12px; }
+    details summary { cursor: pointer; font-weight: 750; }
+    pre, code { font-family: var(--mono); }
+    pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+      background: #05070a;
+      color: #dbe7ff;
+      padding: 12px;
+      border-radius: 12px;
+      overflow: auto;
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .output-list { display: grid; gap: 14px; }
+    .output-card {
+      background: var(--soft);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px;
+    }
+    .output-card header {
+      background: transparent;
+      border: 0;
+      padding: 0 0 10px;
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .output-card h3 { margin: 0; }
+    audio { width: 100%; margin: 8px 0; }
+    .metrics { display: flex; gap: 8px; flex-wrap: wrap; }
+    .metric {
+      font-size: 12px;
+      color: var(--muted);
+      background: rgba(255,255,255,.06);
+      border: 1px solid var(--border);
+      padding: 5px 8px;
+      border-radius: 999px;
+    }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px; text-align: left; vertical-align: top; }
+    th { color: var(--muted); font-size: 13px; }
+    .small { font-size: 12px; }
+    .hidden { display: none !important; }
+    .divider { height: 1px; background: var(--border); margin: 14px 0; }
+    .kbd { font-family: var(--mono); border: 1px solid var(--border); border-bottom-width: 2px; border-radius: 6px; padding: 1px 5px; background: var(--soft); }
+    a { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Boson Higgs TTS 3 Browser Tester</h1>
+    <p>Use this browser test bench for preset voices, reference-audio cloning, custom voice IDs, inline emotion/style/prosody/sfx tags, output formats, streaming PCM, and batch comparisons.</p>
+  </header>
+
+  <main>
+
+    <section id="fileProtocolWarning" class="hidden">
+      <h2>Run this through localhost</h2>
+      <div class="note">
+        Your browser opened this page with <span class="kbd">file://</span>. Chrome treats local files as separate security origins, which breaks some browser APIs and sometimes blocks file or network calls.
+        Start a tiny local server in the folder that contains this file, then open the localhost URL instead.
+      </div>
+      <pre>cd ~/Downloads
+python3 -m http.server 8080</pre>
+      <div class="note">Then open <span class="kbd">http://localhost:8080/index.html</span>.</div>
+    </section>
+    <section>
+      <h2>1. API settings</h2>
+      <div class="grid">
+        <div class="col-5">
+          <label for="apiKey">Boson API key</label>
+          <input id="apiKey" type="password" autocomplete="off" placeholder="bai-xxxx" />
+          <div class="hint">The key stays in this browser tab unless you press one of the save buttons.</div>
+        </div>
+        <div class="col-3">
+          <label for="endpoint">API base URL</label>
+          <input id="endpoint" value="https://api.boson.ai" />
+        </div>
+        <div class="col-2">
+          <label for="model">Model</label>
+          <input id="model" value="higgs-tts-3" />
+        </div>
+        <div class="col-2">
+          <label>&nbsp;</label>
+          <button type="button" id="pingBtn" class="secondary">List voices test</button>
+        </div>
+        <div class="col-12 row">
+          <button type="button" id="saveSessionBtn">Save key for this tab</button>
+          <button type="button" id="saveLocalBtn">Save key in this browser</button>
+          <button type="button" id="clearKeyBtn" class="danger">Clear saved key</button>
+          <button type="button" id="copyCurlBtn">Copy cURL for current request</button>
+        </div>
+        <div class="col-12 note">
+          <strong>Security note.</strong> A key entered into a browser page is visible to that browser page. Use this hosted page only with your own key. Do not publish a version that contains a hardcoded API key. For production, call Boson from your own server and keep the key in an environment variable or secret manager.
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>2. Speech request</h2>
+      <div class="grid">
+        <div class="col-8">
+          <label for="inputText">Input text</label>
+          <textarea id="inputText"><|emotion:enthusiasm|><|prosody:expressive_high|>Hello, this is a browser test for Higgs TTS 3. <|prosody:pause|>I want to hear timing, tone, and clarity.</textarea>
+          <div class="row tight" style="margin-top: 8px;">
+            <button type="button" id="insertPauseBtn">Insert pause</button>
+            <button type="button" id="insertLongPauseBtn">Insert long pause</button>
+            <button type="button" id="clearTagsBtn">Remove tags</button>
+            <button type="button" id="sampleTextBtn">Load sample</button>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="grid">
+            <div class="col-12">
+              <label for="voiceMode">Voice mode</label>
+              <select id="voiceMode">
+                <option value="preset">Preset or voice ID</option>
+                <option value="reference">One-off reference audio clone</option>
+              </select>
+            </div>
+            <div class="col-6 voice-preset-area">
+              <label for="presetVoice">Preset voice</label>
+              <select id="presetVoice">
+                <option value="default">default</option>
+                <option value="chloe">chloe</option>
+                <option value="eleanor">eleanor</option>
+                <option value="jake">jake</option>
+                <option value="marcus">marcus</option>
+                <option value="nora">nora</option>
+                <option value="oliver">oliver</option>
+              </select>
+            </div>
+            <div class="col-6 voice-preset-area">
+              <label for="customVoice">Custom voice ID</label>
+              <input id="customVoice" placeholder="voice_... overrides preset" />
+            </div>
+            <div class="col-6">
+              <label for="format">Response format</label>
+              <select id="format">
+                <option>mp3</option>
+                <option>wav</option>
+                <option>flac</option>
+                <option>opus</option>
+                <option>aac</option>
+                <option>pcm</option>
+              </select>
+            </div>
+            <div class="col-6">
+              <label for="streamMode">Streaming</label>
+              <select id="streamMode">
+                <option value="false">off</option>
+                <option value="true">on, force PCM</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <label for="extraJson">Extra JSON fields, optional</label>
+              <textarea id="extraJson" class="tiny-textarea" placeholder='{"temperature":0.8}'></textarea>
+              <div class="hint">Leave blank for hosted API docs compatibility.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 reference-area hidden">
+          <div class="grid">
+            <div class="col-4">
+              <label for="refAudioUrl">Reference audio URL</label>
+              <input id="refAudioUrl" placeholder="https://.../sample.mp3" />
+            </div>
+            <div class="col-4">
+              <label for="refAudioFile">Or choose local audio file</label>
+              <input id="refAudioFile" type="file" accept="audio/*" />
+            </div>
+            <div class="col-4">
+              <label for="refText">Reference transcript</label>
+              <textarea id="refText" class="tiny-textarea" placeholder="Transcript of the reference audio."></textarea>
+            </div>
+            <div class="col-12 note">
+              Use reference voice cloning only for voices you own or have consent to clone. The API accepts URL, data URI, or base64 reference audio. Local file mode sends a data URI.
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <h3>Control token helper</h3>
+          <div class="grid">
+            <div class="col-3">
+              <label for="emotionSelect">Emotion</label>
+              <select id="emotionSelect"></select>
+            </div>
+            <div class="col-3">
+              <label for="styleSelect">Style</label>
+              <select id="styleSelect"></select>
+            </div>
+            <div class="col-3">
+              <label for="prosodySelect">Prosody</label>
+              <select id="prosodySelect"></select>
+            </div>
+            <div class="col-3">
+              <label for="sfxSelect">Sound effect</label>
+              <select id="sfxSelect"></select>
+            </div>
+            <div class="col-12 row">
+              <button type="button" id="applyLeadingBtn">Apply selected leading tags</button>
+              <button type="button" id="insertSfxBtn">Insert selected sfx and cue</button>
+              <button type="button" id="showPayloadBtn">Show request JSON</button>
+              <button type="button" id="copyPayloadBtn">Copy request JSON</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 row">
+          <button type="button" id="generateBtn" class="primary">Generate speech</button>
+          <button type="button" id="streamBtn" class="secondary">Generate streaming PCM</button>
+          <button type="button" id="stopBatchBtn" class="danger" disabled>Stop batch</button>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>3. Reusable custom voices</h2>
+      <div class="grid">
+        <div class="col-4">
+          <label for="voiceDescription">Voice description</label>
+          <input id="voiceDescription" placeholder="My clean sample voice" />
+        </div>
+        <div class="col-4">
+          <label for="createVoiceRefAudio">Reference audio URL for reusable voice</label>
+          <input id="createVoiceRefAudio" placeholder="https://.../sample.wav" />
+        </div>
+        <div class="col-4">
+          <label for="createVoiceFile">Or local reference file</label>
+          <input id="createVoiceFile" type="file" accept="audio/*" />
+        </div>
+        <div class="col-12">
+          <label for="createVoiceRefText">Reference transcript</label>
+          <textarea id="createVoiceRefText" class="short-textarea"></textarea>
+        </div>
+        <div class="col-12 row">
+          <button type="button" id="createVoiceBtn" class="secondary">Create reusable voice</button>
+          <button type="button" id="listVoicesBtn">List reusable voices</button>
+          <input id="getVoiceId" placeholder="voice_..." />
+          <button type="button" id="getVoiceBtn">Get voice</button>
+        </div>
+        <div class="col-12" id="voicesTableWrap"></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>4. Batch tests</h2>
+      <div class="grid">
+        <div class="col-4">
+          <label for="batchSuite">Test suite</label>
+          <select id="batchSuite">
+            <option value="voices">Preset voice comparison</option>
+            <option value="emotions">Emotion comparison</option>
+            <option value="prosody">Prosody comparison</option>
+            <option value="styles">Style comparison</option>
+            <option value="sfx">Sound effect comparison</option>
+            <option value="languages">Language comparison</option>
+            <option value="formats">Format comparison</option>
+          </select>
+        </div>
+        <div class="col-4">
+          <label for="batchLimit">Max requests</label>
+          <input id="batchLimit" type="number" min="1" max="30" value="8" />
+        </div>
+        <div class="col-4">
+          <label for="batchGap">Delay between requests, ms</label>
+          <input id="batchGap" type="number" min="0" value="600" />
+        </div>
+        <div class="col-12">
+          <label for="batchBaseText">Base text for batch tests</label>
+          <textarea id="batchBaseText" class="short-textarea">The package arrived this morning, and the note inside changed the whole plan.</textarea>
+        </div>
+        <div class="col-12 row">
+          <button type="button" id="runBatchBtn" class="primary">Run batch</button>
+          <button type="button" id="previewBatchBtn">Preview batch cases</button>
+          <button type="button" id="clearOutputsBtn" class="warn">Clear outputs</button>
+        </div>
+        <div class="col-12" id="batchPreview"></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>5. Outputs</h2>
+      <div class="row tight" style="margin-bottom: 12px;">
+        <button type="button" id="exportResultsBtn">Export results JSON</button>
+        <button type="button" id="clearLogBtn">Clear log</button>
+      </div>
+      <div id="status" class="status">Ready.</div>
+      <div class="divider"></div>
+      <div id="outputs" class="output-list"></div>
+      <details style="margin-top: 14px;">
+        <summary>Log</summary>
+        <pre id="log"></pre>
+      </details>
+    </section>
+
+    <section>
+      <h2>Notes built into this tester</h2>
+      <div class="grid">
+        <div class="col-6 note">
+          <strong>Streaming.</strong> Streaming requests send <span class="kbd">stream: true</span> and <span class="kbd">response_format: "pcm"</span>. The player treats incoming bytes as 16-bit mono PCM and uses 24 kHz unless the server sends a sample-rate header.
+        </div>
+        <div class="col-6 note">
+          <strong>Browser limits.</strong> If a direct call fails with a CORS error, run the request through a local server proxy. The same request JSON and cURL buttons help with that step.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+
+    const PRESET_VOICES = ["default", "chloe", "eleanor", "jake", "marcus", "nora", "oliver"];
+    const EMOTIONS = ["", "elation", "amusement", "enthusiasm", "determination", "pride", "contentment", "affection", "relief", "contemplation", "confusion", "surprise", "awe", "longing", "arousal", "anger", "fear", "disgust", "bitterness", "sadness", "shame", "helplessness"];
+    const STYLES = ["", "singing", "shouting", "whispering"];
+    const PROSODY = ["", "speed_very_slow", "speed_slow", "speed_fast", "speed_very_fast", "pitch_low", "pitch_high", "pause", "long_pause", "expressive_high", "expressive_low"];
+    const SFX = ["", "cough", "laughter", "crying", "screaming", "burping", "humming", "sigh", "sniff", "sneeze"];
+    const SFX_CUES = {
+      cough: "Ahem",
+      laughter: "Haha",
+      crying: "Sob",
+      screaming: "Ahh",
+      burping: "Burp",
+      humming: "Hmm",
+      sigh: "Ahh",
+      sniff: "Sff",
+      sneeze: "Achoo"
+    };
+    const MIME_BY_FORMAT = {
+      mp3: "audio/mpeg",
+      wav: "audio/wav",
+      flac: "audio/flac",
+      opus: "audio/ogg; codecs=opus",
+      aac: "audio/aac",
+      pcm: "audio/wav"
+    };
+    const LANGUAGE_CASES = [
+      { name: "English", text: "Hello, this is a clarity test for conversational speech." },
+      { name: "Spanish", text: "Hola, esta es una prueba de claridad para voz conversacional." },
+      { name: "French", text: "Bonjour, ceci est un test de clarté pour une voix conversationnelle." },
+      { name: "German", text: "Hallo, dies ist ein Klarheitstest für gesprochene Sprache." },
+      { name: "Hindi", text: "नमस्ते, यह बातचीत वाली आवाज़ की स्पष्टता की परीक्षा है।" },
+      { name: "Japanese", text: "こんにちは。これは会話音声の明瞭さを確認するテストです。" },
+      { name: "Arabic", text: "مرحبا، هذا اختبار لوضوح الصوت في المحادثة." },
+      { name: "Swahili", text: "Hujambo, huu ni mtihani wa uwazi wa sauti ya mazungumzo." }
+    ];
+
+    let outputs = [];
+    let stopBatch = false;
+    let audioContext = null;
+
+    function initSelect(id, values) {
+      const el = $(id);
+      el.innerHTML = "";
+      values.forEach((v) => {
+        const opt = document.createElement("option");
+        opt.value = v;
+        opt.textContent = v || "none";
+        el.appendChild(opt);
+      });
+    }
+
+    function log(message, data) {
+      const stamp = new Date().toLocaleTimeString();
+      const suffix = data === undefined ? "" : "\n" + stringify(data);
+      $("log").textContent = `[${stamp}] ${message}${suffix}\n\n` + $("log").textContent;
+    }
+
+    function setStatus(message, kind = "") {
+      const el = $("status");
+      el.textContent = message;
+      el.className = "status" + (kind ? ` ${kind}` : "");
+    }
+
+    function stringify(value) {
+      return JSON.stringify(value, null, 2);
+    }
+
+    function storageGet(store, key) {
+      try { return store.getItem(key) || ""; } catch (err) { return ""; }
+    }
+
+    function storageSet(store, key, value) {
+      try { store.setItem(key, value); return true; } catch (err) { return false; }
+    }
+
+    function storageRemove(store, key) {
+      try { store.removeItem(key); return true; } catch (err) { return false; }
+    }
+
+    function getApiKey() {
+      return $("apiKey").value.trim() || storageGet(sessionStorage, "boson_api_key") || storageGet(localStorage, "boson_api_key") || "";
+    }
+
+    function apiUrl(path) {
+      const base = $("endpoint").value.trim().replace(/\/+$/, "");
+      return `${base}${path}`;
+    }
+
+    function authHeaders(json = true) {
+      const key = getApiKey();
+      if (!key) throw new Error("Enter a Boson API key first.");
+      const headers = { Authorization: `Bearer ${key}` };
+      if (json) headers["Content-Type"] = "application/json";
+      return headers;
+    }
+
+    function currentVoice() {
+      const custom = $("customVoice").value.trim();
+      return custom || $("presetVoice").value;
+    }
+
+    async function fileToDataUri(file) {
+      if (!file) return "";
+      return await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(reader.error || new Error("File read failed."));
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function mergeExtraJson(payload) {
+      const raw = $("extraJson").value.trim();
+      if (!raw) return payload;
+      let extra;
+      try {
+        extra = JSON.parse(raw);
+      } catch (err) {
+        throw new Error("Extra JSON is not valid JSON: " + err.message);
+      }
+      return { ...payload, ...extra };
+    }
+
+    async function buildSpeechPayload(overrides = {}) {
+      const streamRequested = overrides.stream !== undefined ? overrides.stream : $("streamMode").value === "true";
+      const format = streamRequested ? "pcm" : (overrides.response_format || $("format").value);
+      let payload = {
+        model: overrides.model || $("model").value.trim() || "higgs-tts-3",
+        input: overrides.input || $("inputText").value,
+        response_format: format,
+        stream: !!streamRequested
+      };
+
+      const voiceMode = overrides.voiceMode || $("voiceMode").value;
+      if (voiceMode === "reference") {
+        const file = overrides.refFile || $("refAudioFile").files[0];
+        const fileDataUri = file ? await fileToDataUri(file) : "";
+        const refAudio = overrides.ref_audio || fileDataUri || $("refAudioUrl").value.trim();
+        const refText = overrides.ref_text || $("refText").value.trim();
+        if (refAudio) payload.ref_audio = refAudio;
+        if (refText) payload.ref_text = refText;
+      } else {
+        payload.voice = overrides.voice || currentVoice();
+      }
+
+      if (!payload.input || !payload.input.trim()) throw new Error("Input text is required.");
+      payload = mergeExtraJson(payload);
+      return payload;
+    }
+
+    async function postSpeech(payload) {
+      const t0 = performance.now();
+      const response = await fetch(apiUrl("/v1/audio/speech"), {
+        method: "POST",
+        headers: authHeaders(true),
+        body: JSON.stringify(payload)
+      });
+      const elapsed = performance.now() - t0;
+      if (!response.ok) {
+        const text = await safeResponseText(response);
+        throw new Error(`Speech request failed: ${response.status} ${response.statusText}\n${text}`);
+      }
+      const contentType = response.headers.get("content-type") || MIME_BY_FORMAT[payload.response_format] || "application/octet-stream";
+      const blob = await response.blob();
+      return { blob, contentType, elapsed, headers: response.headers };
+    }
+
+    async function safeResponseText(response) {
+      try { return await response.text(); } catch (err) { return String(err); }
+    }
+
+    function extForPayload(payload) {
+      if (payload.stream) return "wav";
+      if (payload.response_format === "pcm") return "wav";
+      return payload.response_format || "mp3";
+    }
+
+    async function generateSpeech(overrides = {}, label = "Manual request") {
+      const payload = await buildSpeechPayload(overrides);
+      if (payload.stream) return generateStreaming(overrides, label);
+      setStatus(`Generating ${label}...`);
+      log("Speech request", redactedPayload(payload));
+      const result = await postSpeech(payload);
+      let blob = result.blob;
+      let contentType = result.contentType;
+      if (payload.response_format === "pcm") {
+        const bytes = new Uint8Array(await blob.arrayBuffer());
+        const wav = encodeWavFromPcm(bytes, 24000, 1, 16);
+        blob = new Blob([wav], { type: "audio/wav" });
+        contentType = "audio/wav";
+      }
+      addOutput({
+        label,
+        payload: redactedPayload(payload),
+        blob,
+        contentType,
+        elapsed: result.elapsed,
+        stream: false,
+        ttfa: null,
+        size: blob.size,
+        extension: extForPayload(payload)
+      });
+      setStatus(`Done: ${label}`, "ok");
+      return result;
+    }
+
+    async function generateStreaming(overrides = {}, label = "Streaming request") {
+      const payload = await buildSpeechPayload({ ...overrides, stream: true, response_format: "pcm" });
+      setStatus(`Streaming ${label}...`);
+      log("Streaming request", redactedPayload(payload));
+      const t0 = performance.now();
+      const response = await fetch(apiUrl("/v1/audio/speech"), {
+        method: "POST",
+        headers: authHeaders(true),
+        body: JSON.stringify(payload)
+      });
+      if (!response.ok) {
+        const text = await safeResponseText(response);
+        throw new Error(`Streaming request failed: ${response.status} ${response.statusText}\n${text}`);
+      }
+      if (!response.body) throw new Error("This browser did not expose a readable stream for the response.");
+
+      const sampleRate = parseInt(response.headers.get("x-sample-rate") || response.headers.get("x-audio-sample-rate") || "24000", 10);
+      const channels = parseInt(response.headers.get("x-channels") || "1", 10);
+      const bitDepth = parseInt(response.headers.get("x-bit-depth") || "16", 10);
+      if (channels !== 1 || bitDepth !== 16) {
+        log("Streaming metadata differs from the built-in player assumption", { sampleRate, channels, bitDepth });
+      }
+
+      audioContext = audioContext || new (window.AudioContext || window.webkitAudioContext)({ sampleRate });
+      if (audioContext.state === "suspended") await audioContext.resume();
+      const reader = response.body.getReader();
+      const chunks = [];
+      let bytesRead = 0;
+      let ttfa = null;
+      let scheduler = { nextTime: audioContext.currentTime + 0.12 };
+      let carry = new Uint8Array(0);
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        if (!value || !value.byteLength) continue;
+        if (ttfa === null) ttfa = performance.now() - t0;
+        chunks.push(value);
+        bytesRead += value.byteLength;
+        const combined = concatUint8(carry, value);
+        const evenLength = combined.byteLength - (combined.byteLength % 2);
+        const playable = combined.slice(0, evenLength);
+        carry = combined.slice(evenLength);
+        playPcm16Chunk(playable, sampleRate, scheduler);
+        setStatus(`Streaming ${label}: ${bytesRead.toLocaleString()} bytes received...`, "ok");
+      }
+
+      const elapsed = performance.now() - t0;
+      const pcm = concatManyUint8(chunks);
+      const wavBuffer = encodeWavFromPcm(pcm, sampleRate, 1, 16);
+      const blob = new Blob([wavBuffer], { type: "audio/wav" });
+      addOutput({
+        label,
+        payload: redactedPayload(payload),
+        blob,
+        contentType: "audio/wav",
+        elapsed,
+        stream: true,
+        ttfa,
+        size: blob.size,
+        extension: "wav",
+        metadata: { sampleRate, channels, bitDepth }
+      });
+      setStatus(`Streaming done: ${label}`, "ok");
+      return { blob, elapsed, ttfa };
+    }
+
+    function concatUint8(a, b) {
+      if (!a || a.byteLength === 0) return b;
+      const out = new Uint8Array(a.byteLength + b.byteLength);
+      out.set(a, 0);
+      out.set(b, a.byteLength);
+      return out;
+    }
+
+    function concatManyUint8(chunks) {
+      const total = chunks.reduce((sum, c) => sum + c.byteLength, 0);
+      const out = new Uint8Array(total);
+      let offset = 0;
+      for (const chunk of chunks) {
+        out.set(chunk, offset);
+        offset += chunk.byteLength;
+      }
+      return out;
+    }
+
+    function playPcm16Chunk(bytes, sampleRate, scheduler) {
+      if (!bytes || bytes.byteLength < 2) return;
+      const samples = bytes.byteLength / 2;
+      const audioBuffer = audioContext.createBuffer(1, samples, sampleRate);
+      const channel = audioBuffer.getChannelData(0);
+      const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+      for (let i = 0; i < samples; i++) {
+        channel[i] = Math.max(-1, Math.min(1, view.getInt16(i * 2, true) / 32768));
+      }
+      const source = audioContext.createBufferSource();
+      source.buffer = audioBuffer;
+      source.connect(audioContext.destination);
+      const startAt = Math.max(audioContext.currentTime + 0.03, scheduler.nextTime);
+      source.start(startAt);
+      scheduler.nextTime = startAt + audioBuffer.duration;
+    }
+
+    function encodeWavFromPcm(pcmBytes, sampleRate = 24000, channels = 1, bitDepth = 16) {
+      const dataLength = pcmBytes.byteLength;
+      const blockAlign = channels * bitDepth / 8;
+      const byteRate = sampleRate * blockAlign;
+      const buffer = new ArrayBuffer(44 + dataLength);
+      const view = new DataView(buffer);
+      writeAscii(view, 0, "RIFF");
+      view.setUint32(4, 36 + dataLength, true);
+      writeAscii(view, 8, "WAVE");
+      writeAscii(view, 12, "fmt ");
+      view.setUint32(16, 16, true);
+      view.setUint16(20, 1, true);
+      view.setUint16(22, channels, true);
+      view.setUint32(24, sampleRate, true);
+      view.setUint32(28, byteRate, true);
+      view.setUint16(32, blockAlign, true);
+      view.setUint16(34, bitDepth, true);
+      writeAscii(view, 36, "data");
+      view.setUint32(40, dataLength, true);
+      new Uint8Array(buffer, 44).set(pcmBytes);
+      return buffer;
+    }
+
+    function writeAscii(view, offset, str) {
+      for (let i = 0; i < str.length; i++) view.setUint8(offset + i, str.charCodeAt(i));
+    }
+
+    function redactedPayload(payload) {
+      const copy = { ...payload };
+      if (copy.ref_audio && copy.ref_audio.length > 160) {
+        copy.ref_audio = copy.ref_audio.slice(0, 120) + `... (${copy.ref_audio.length} chars)`;
+      }
+      return copy;
+    }
+
+    function addOutput(item) {
+      outputs.unshift({
+        id: crypto.randomUUID(),
+        createdAt: new Date().toISOString(),
+        ...item
+      });
+      renderOutputs();
+    }
+
+    function renderOutputs() {
+      const wrap = $("outputs");
+      wrap.innerHTML = "";
+      if (!outputs.length) {
+        wrap.innerHTML = `<div class="note">No outputs yet.</div>`;
+        return;
+      }
+      outputs.forEach((item, index) => {
+        const url = URL.createObjectURL(item.blob);
+        const fileName = safeFileName(`${index + 1}-${item.label}.${item.extension || "mp3"}`);
+        const card = document.createElement("div");
+        card.className = "output-card";
+        const ttfa = item.ttfa == null ? "" : `<span class="metric">TTFA ${Math.round(item.ttfa)} ms</span>`;
+        const meta = item.metadata ? `<span class="metric">${item.metadata.sampleRate} Hz</span>` : "";
+        card.innerHTML = `
+          <header>
+            <div>
+              <h3>${escapeHtml(item.label)}</h3>
+              <div class="metrics">
+                <span class="metric">${item.stream ? "stream" : "blocking"}</span>
+                <span class="metric">${escapeHtml(item.payload.response_format || "")}</span>
+                <span class="metric">${Math.round(item.elapsed)} ms</span>
+                ${ttfa}
+                <span class="metric">${formatBytes(item.size)}</span>
+                ${meta}
+              </div>
+            </div>
+            <div class="row tight">
+              <a class="pill" href="${url}" download="${fileName}">Download audio</a>
+              <button type="button" data-action="copy-payload" data-id="${item.id}">Copy payload</button>
+            </div>
+          </header>
+          <audio controls src="${url}"></audio>
+          <details>
+            <summary>Payload</summary>
+            <pre>${escapeHtml(stringify(item.payload))}</pre>
+          </details>
+        `;
+        wrap.appendChild(card);
+      });
+      wrap.querySelectorAll("button[data-action='copy-payload']").forEach((button) => {
+        button.addEventListener("click", () => {
+          const item = outputs.find((x) => x.id === button.dataset.id);
+          if (item) copyText(stringify(item.payload));
+        });
+      });
+    }
+
+    function safeFileName(name) {
+      return name.toLowerCase().replace(/[^a-z0-9_.-]+/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");
+    }
+
+    function formatBytes(bytes) {
+      if (bytes < 1024) return `${bytes} B`;
+      if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+      return `${(bytes / 1024 / 1024).toFixed(2)} MB`;
+    }
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"]/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
+    }
+
+    async function copyText(text) {
+      await navigator.clipboard.writeText(text);
+      setStatus("Copied to clipboard.", "ok");
+    }
+
+    function currentCurl(payload) {
+      const body = JSON.stringify(payload, null, 2).replace(/'/g, "'\\''");
+      return `curl ${apiUrl("/v1/audio/speech")} \\\n  -H "Authorization: Bearer $BOSON_API_KEY" \\\n  -H "Content-Type: application/json" \\\n  -d '${body}' \\\n  --output out.${extForPayload(payload)}`;
+    }
+
+    function tag(category, value) {
+      return value ? `<|${category}:${value}|>` : "";
+    }
+
+    function removeControlTags(text) {
+      return text.replace(/<\|[^|]+\|>/g, "").replace(/\s+/g, " ").trim();
+    }
+
+    function applyLeadingTags() {
+      const emotion = tag("emotion", $("emotionSelect").value);
+      const style = tag("style", $("styleSelect").value);
+      const prosodyValue = $("prosodySelect").value;
+      const prosody = prosodyValue && !["pause", "long_pause"].includes(prosodyValue) ? tag("prosody", prosodyValue) : "";
+      const leading = emotion + style + prosody;
+      const clean = removeLeadingDeliveryTags($("inputText").value);
+      $("inputText").value = leading + clean;
+    }
+
+    function removeLeadingDeliveryTags(text) {
+      return text.replace(/^(<\|(emotion|style|prosody):(?!pause|long_pause)[^|]+\|>)+/, "");
+    }
+
+    function insertAtCursor(textarea, insertion) {
+      const start = textarea.selectionStart ?? textarea.value.length;
+      const end = textarea.selectionEnd ?? textarea.value.length;
+      textarea.value = textarea.value.slice(0, start) + insertion + textarea.value.slice(end);
+      textarea.focus();
+      const pos = start + insertion.length;
+      textarea.setSelectionRange(pos, pos);
+    }
+
+    function buildBatchCases() {
+      const suite = $("batchSuite").value;
+      const baseText = $("batchBaseText").value.trim() || "This is a speech test.";
+      const format = $("format").value;
+      const common = {
+        model: $("model").value.trim() || "higgs-tts-3",
+        response_format: format,
+        stream: false,
+        voiceMode: "preset",
+        voice: currentVoice()
+      };
+      if (suite === "voices") {
+        return PRESET_VOICES.map((voice) => ({ label: `voice ${voice}`, payload: { ...common, voice, input: baseText } }));
+      }
+      if (suite === "emotions") {
+        return EMOTIONS.filter(Boolean).map((e) => ({ label: `emotion ${e}`, payload: { ...common, input: `${tag("emotion", e)}${baseText}` } }));
+      }
+      if (suite === "prosody") {
+        const values = PROSODY.filter(Boolean);
+        return values.map((p) => ({ label: `prosody ${p}`, payload: { ...common, input: ["pause", "long_pause"].includes(p) ? baseText.replace(/,| and |\s/, ` ${tag("prosody", p)} `) : `${tag("prosody", p)}${baseText}` } }));
+      }
+      if (suite === "styles") {
+        return STYLES.filter(Boolean).map((s) => ({ label: `style ${s}`, payload: { ...common, input: `${tag("style", s)}${baseText}` } }));
+      }
+      if (suite === "sfx") {
+        return SFX.filter(Boolean).map((s) => ({ label: `sfx ${s}`, payload: { ...common, input: `${tag("sfx", s)}${SFX_CUES[s]}, ${baseText}` } }));
+      }
+      if (suite === "languages") {
+        return LANGUAGE_CASES.map((l) => ({ label: `language ${l.name}`, payload: { ...common, input: l.text } }));
+      }
+      if (suite === "formats") {
+        return ["mp3", "wav", "flac", "opus", "aac", "pcm"].map((f) => ({ label: `format ${f}`, payload: { ...common, response_format: f, input: baseText } }));
+      }
+      return [];
+    }
+
+    function previewBatch() {
+      const max = Number($("batchLimit").value || 8);
+      const cases = buildBatchCases().slice(0, max);
+      const wrap = $("batchPreview");
+      if (!cases.length) {
+        wrap.innerHTML = `<div class="note">No batch cases.</div>`;
+        return;
+      }
+      const rows = cases.map((c, i) => `<tr><td>${i + 1}</td><td>${escapeHtml(c.label)}</td><td><code>${escapeHtml(c.payload.input)}</code></td></tr>`).join("");
+      wrap.innerHTML = `<table><thead><tr><th>#</th><th>Case</th><th>Input</th></tr></thead><tbody>${rows}</tbody></table>`;
+    }
+
+    async function runBatch() {
+      const max = Number($("batchLimit").value || 8);
+      const gap = Number($("batchGap").value || 0);
+      const cases = buildBatchCases().slice(0, max);
+      if (!cases.length) return;
+      stopBatch = false;
+      $("stopBatchBtn").disabled = false;
+      setStatus(`Running batch: ${cases.length} requests...`);
+      for (let i = 0; i < cases.length; i++) {
+        if (stopBatch) break;
+        const item = cases[i];
+        try {
+          setStatus(`Batch ${i + 1}/${cases.length}: ${item.label}`);
+          await generateSpeech(item.payload, item.label);
+        } catch (err) {
+          setStatus(`Batch error: ${item.label}`, "danger");
+          log(`Batch error for ${item.label}`, String(err.stack || err));
+        }
+        if (gap > 0 && i < cases.length - 1 && !stopBatch) await sleep(gap);
+      }
+      $("stopBatchBtn").disabled = true;
+      setStatus(stopBatch ? "Batch stopped." : "Batch done.", stopBatch ? "warn" : "ok");
+    }
+
+    function sleep(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    }
+
+    async function createVoice() {
+      const file = $("createVoiceFile").files[0];
+      const fileDataUri = file ? await fileToDataUri(file) : "";
+      const refAudio = fileDataUri || $("createVoiceRefAudio").value.trim();
+      const refText = $("createVoiceRefText").value.trim();
+      if (!refAudio) throw new Error("Reference audio is required for voice creation.");
+      if (!refText) throw new Error("Reference transcript is required for voice creation.");
+      const payload = {
+        ref_audio: refAudio,
+        ref_text: refText,
+        description: $("voiceDescription").value.trim() || null
+      };
+      setStatus("Creating reusable voice...");
+      const response = await fetch(apiUrl("/v1/audio/voices"), {
+        method: "POST",
+        headers: authHeaders(true),
+        body: JSON.stringify(payload)
+      });
+      const text = await safeResponseText(response);
+      if (!response.ok) throw new Error(`Create voice failed: ${response.status} ${response.statusText}\n${text}`);
+      const data = JSON.parse(text);
+      $("customVoice").value = data.voice || "";
+      $("getVoiceId").value = data.voice || "";
+      log("Created voice", data);
+      setStatus(`Created voice ${data.voice}`, "ok");
+      await listVoices(false);
+    }
+
+    async function listVoices(showStatus = true) {
+      if (showStatus) setStatus("Listing voices...");
+      const response = await fetch(apiUrl("/v1/audio/voices"), {
+        method: "GET",
+        headers: authHeaders(false)
+      });
+      const text = await safeResponseText(response);
+      if (!response.ok) throw new Error(`List voices failed: ${response.status} ${response.statusText}\n${text}`);
+      const data = JSON.parse(text);
+      renderVoices(data.data || []);
+      log("List voices", data);
+      if (showStatus) setStatus(`Loaded ${(data.data || []).length} voices.`, "ok");
+      return data;
+    }
+
+    async function getVoice() {
+      const id = $("getVoiceId").value.trim();
+      if (!id) throw new Error("Enter a voice ID.");
+      setStatus(`Fetching ${id}...`);
+      const response = await fetch(apiUrl(`/v1/audio/voices/${encodeURIComponent(id)}`), {
+        method: "GET",
+        headers: authHeaders(false)
+      });
+      const text = await safeResponseText(response);
+      if (!response.ok) throw new Error(`Get voice failed: ${response.status} ${response.statusText}\n${text}`);
+      const data = JSON.parse(text);
+      log("Get voice", data);
+      $("customVoice").value = data.voice || id;
+      setStatus(`Loaded ${data.voice || id}.`, "ok");
+    }
+
+    function renderVoices(voices) {
+      const wrap = $("voicesTableWrap");
+      if (!voices.length) {
+        wrap.innerHTML = `<div class="note">No reusable voices returned for this API key.</div>`;
+        return;
+      }
+      const rows = voices.map((v) => `
+        <tr>
+          <td><code>${escapeHtml(v.voice)}</code></td>
+          <td>${escapeHtml(v.description || "")}</td>
+          <td>${escapeHtml(v.created_at || "")}</td>
+          <td><button type="button" data-voice="${escapeHtml(v.voice)}">Use</button></td>
+        </tr>`).join("");
+      wrap.innerHTML = `<table><thead><tr><th>Voice ID</th><th>Description</th><th>Created</th><th></th></tr></thead><tbody>${rows}</tbody></table>`;
+      wrap.querySelectorAll("button[data-voice]").forEach((button) => {
+        button.addEventListener("click", () => {
+          $("customVoice").value = button.dataset.voice;
+          $("voiceMode").value = "preset";
+          syncVoiceMode();
+          setStatus(`Using ${button.dataset.voice}.`, "ok");
+        });
+      });
+    }
+
+    function exportResults() {
+      const data = outputs.map((item) => ({
+        id: item.id,
+        createdAt: item.createdAt,
+        label: item.label,
+        payload: item.payload,
+        stream: item.stream,
+        elapsedMs: Math.round(item.elapsed),
+        ttfaMs: item.ttfa == null ? null : Math.round(item.ttfa),
+        sizeBytes: item.size,
+        contentType: item.contentType,
+        metadata: item.metadata || null
+      }));
+      const blob = new Blob([stringify(data)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `boson-higgs-tts-results-${Date.now()}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function syncVoiceMode() {
+      const reference = $("voiceMode").value === "reference";
+      document.querySelectorAll(".reference-area").forEach((el) => el.classList.toggle("hidden", !reference));
+      document.querySelectorAll(".voice-preset-area").forEach((el) => el.classList.toggle("hidden", reference));
+    }
+
+    async function showPayload() {
+      const payload = await buildSpeechPayload();
+      log("Current request JSON", redactedPayload(payload));
+      setStatus("Request JSON added to log.", "ok");
+    }
+
+    async function copyPayload() {
+      const payload = await buildSpeechPayload();
+      await copyText(stringify(redactedPayload(payload)));
+    }
+
+    async function copyCurl() {
+      const payload = await buildSpeechPayload();
+      await copyText(currentCurl(payload));
+    }
+
+    function loadSavedKey() {
+      const saved = storageGet(sessionStorage, "boson_api_key") || storageGet(localStorage, "boson_api_key") || "";
+      if (saved) $("apiKey").value = saved;
+    }
+
+    function attachHandlers() {
+      $("saveSessionBtn").addEventListener("click", () => {
+        const ok = storageSet(sessionStorage, "boson_api_key", $("apiKey").value.trim());
+        setStatus(ok ? "Saved key for this tab." : "This browser blocked session storage. The key still works while it is typed into the field.", ok ? "ok" : "warn");
+      });
+      $("saveLocalBtn").addEventListener("click", () => {
+        const ok = storageSet(localStorage, "boson_api_key", $("apiKey").value.trim());
+        setStatus(ok ? "Saved key in this browser." : "This browser blocked local storage. The key still works while it is typed into the field.", ok ? "ok" : "warn");
+      });
+      $("clearKeyBtn").addEventListener("click", () => {
+        storageRemove(sessionStorage, "boson_api_key");
+        storageRemove(localStorage, "boson_api_key");
+        $("apiKey").value = "";
+        setStatus("Cleared saved key.", "ok");
+      });
+      $("voiceMode").addEventListener("change", syncVoiceMode);
+      $("streamMode").addEventListener("change", () => {
+        if ($("streamMode").value === "true") $("format").value = "pcm";
+      });
+      $("generateBtn").addEventListener("click", () => handle(async () => generateSpeech({}, "Manual request")));
+      $("streamBtn").addEventListener("click", () => handle(async () => generateStreaming({}, "Manual streaming request")));
+      $("showPayloadBtn").addEventListener("click", () => handle(showPayload));
+      $("copyPayloadBtn").addEventListener("click", () => handle(copyPayload));
+      $("copyCurlBtn").addEventListener("click", () => handle(copyCurl));
+      $("insertPauseBtn").addEventListener("click", () => insertAtCursor($("inputText"), " <|prosody:pause|> "));
+      $("insertLongPauseBtn").addEventListener("click", () => insertAtCursor($("inputText"), " <|prosody:long_pause|> "));
+      $("clearTagsBtn").addEventListener("click", () => { $("inputText").value = removeControlTags($("inputText").value); });
+      $("sampleTextBtn").addEventListener("click", () => {
+        $("inputText").value = "<|emotion:amusement|><|prosody:expressive_high|>Wait, that was funnier than expected. <|sfx:laughter|>Haha, let me try that again, slower this time. <|prosody:pause|><|prosody:speed_slow|>Now the words should land with a calmer rhythm.";
+      });
+      $("applyLeadingBtn").addEventListener("click", applyLeadingTags);
+      $("insertSfxBtn").addEventListener("click", () => {
+        const s = $("sfxSelect").value;
+        if (!s) return;
+        insertAtCursor($("inputText"), `${tag("sfx", s)}${SFX_CUES[s]}, `);
+      });
+      $("createVoiceBtn").addEventListener("click", () => handle(createVoice));
+      $("listVoicesBtn").addEventListener("click", () => handle(() => listVoices(true)));
+      $("getVoiceBtn").addEventListener("click", () => handle(getVoice));
+      $("pingBtn").addEventListener("click", () => handle(() => listVoices(true)));
+      $("previewBatchBtn").addEventListener("click", previewBatch);
+      $("runBatchBtn").addEventListener("click", () => handle(runBatch));
+      $("stopBatchBtn").addEventListener("click", () => { stopBatch = true; setStatus("Stopping batch after the current request...", "warn"); });
+      $("clearOutputsBtn").addEventListener("click", () => { outputs = []; renderOutputs(); setStatus("Outputs cleared.", "ok"); });
+      $("exportResultsBtn").addEventListener("click", exportResults);
+      $("clearLogBtn").addEventListener("click", () => { $("log").textContent = ""; });
+    }
+
+    async function handle(fn) {
+      try {
+        await fn();
+      } catch (err) {
+        const message = String(err && err.message ? err.message : err);
+        setStatus(message.includes("Failed to fetch") ? "Request failed. This often means CORS, network, or endpoint settings blocked the browser call." : message, "danger");
+        log("Error", String(err && err.stack ? err.stack : err));
+      }
+    }
+
+    function boot() {
+      const fileWarning = $("fileProtocolWarning");
+      if (fileWarning && window.location.protocol === "file:") {
+        fileWarning.classList.remove("hidden");
+        setStatus("This page is open with file://. Open it through GitHub Pages or localhost for reliable browser behavior.", "warn");
+      }
+      initSelect("emotionSelect", EMOTIONS);
+      initSelect("styleSelect", STYLES);
+      initSelect("prosodySelect", PROSODY);
+      initSelect("sfxSelect", SFX);
+      loadSavedKey();
+      syncVoiceMode();
+      attachHandlers();
+      renderOutputs();
+      previewBatch();
+      log("Tester loaded. Enter your API key and generate a request.");
+    }
+
+    boot();
+  </script>
+</body>
+</html>
