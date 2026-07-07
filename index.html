@@ -3,41 +3,49 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Higgs TTS 3 CA Playground</title>
+  <title>Higgs TTS 3 playground</title>
   <style>
     :root {
       color-scheme: light dark;
-      --bg: #0f1218;
-      --panel: #171c26;
-      --panel-2: #1d2431;
-      --soft: #202737;
-      --text: #eef2f8;
-      --muted: #a9b4c7;
-      --border: #334058;
-      --accent: #7db0ff;
-      --accent-2: #9ce2be;
-      --danger: #ff9a9a;
-      --warn: #ffd580;
-      --ok: #93e6a5;
-      --shadow: rgba(0,0,0,.25);
+      --bg: #0f1117;
+      --panel: #171b24;
+      --panel-2: #1e2430;
+      --soft: #232a37;
+      --soft-2: #2a3242;
+      --text: #f4f7fb;
+      --muted: #a7b0c0;
+      --border: rgba(148, 163, 184, .24);
+      --accent: #16a34a;
+      --accent-2: #22c55e;
+      --accent-3: #15803d;
+      --danger: #fca5a5;
+      --warn: #facc15;
+      --ok: #4ade80;
+      --shadow: rgba(0, 0, 0, .28);
+      --glow: rgba(34, 197, 94, .18);
+      --grid: rgba(255, 255, 255, .025);
       --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
       --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
     @media (prefers-color-scheme: light) {
       :root {
-        --bg: #f5f7fb;
+        --bg: #f6f7fb;
         --panel: #ffffff;
-        --panel-2: #f9fbff;
-        --soft: #eef2f7;
-        --text: #172033;
-        --muted: #5b667a;
-        --border: #d2d9e7;
-        --accent: #185bbd;
-        --accent-2: #14683e;
+        --panel-2: #f9fafb;
+        --soft: #f1f5f9;
+        --soft-2: #e9eef5;
+        --text: #111827;
+        --muted: #667085;
+        --border: rgba(15, 23, 42, .14);
+        --accent: #16a34a;
+        --accent-2: #15803d;
+        --accent-3: #166534;
         --danger: #b42318;
         --warn: #8a5a00;
-        --ok: #0d6b2f;
-        --shadow: rgba(20,30,50,.10);
+        --ok: #0b7a3b;
+        --shadow: rgba(15, 23, 42, .10);
+        --glow: rgba(22, 163, 74, .15);
+        --grid: rgba(15, 23, 42, .035);
       }
     }
     * { box-sizing: border-box; }
@@ -45,15 +53,30 @@
     body {
       margin: 0;
       font-family: var(--sans);
-      background: var(--bg);
+      background:
+        radial-gradient(circle at 18% -8%, rgba(148, 163, 184, .16), transparent 30%),
+        radial-gradient(circle at 88% 10%, rgba(22, 163, 74, .07), transparent 28%),
+        var(--bg);
       color: var(--text);
       line-height: 1.45;
+      min-height: 100vh;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+      background-size: 36px 36px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,.42), transparent 70%);
     }
     a { color: var(--accent); }
     header.hero {
       border-bottom: 1px solid var(--border);
-      background: linear-gradient(180deg, rgba(125,176,255,.12), transparent 80%);
-      padding: 18px 20px 12px;
+      background: linear-gradient(135deg, rgba(148, 163, 184, .12), rgba(22, 163, 74, .08), transparent 82%);
+      padding: 16px 20px 12px;
     }
     .hero-inner {
       width: min(1360px, 100%);
@@ -64,9 +87,10 @@
       align-items: end;
     }
     header h1 {
-      margin: 0 0 4px;
-      font-size: clamp(22px, 3vw, 34px);
-      letter-spacing: -0.03em;
+      margin: 0;
+      font-size: clamp(24px, 3vw, 36px);
+      letter-spacing: -0.04em;
+      font-weight: 830;
     }
     header p { margin: 0; color: var(--muted); max-width: 900px; }
     main {
@@ -85,8 +109,8 @@
     section, .card, details.panel {
       background: var(--panel);
       border: 1px solid var(--border);
-      border-radius: 16px;
-      box-shadow: 0 10px 30px var(--shadow);
+      border-radius: 18px;
+      box-shadow: 0 14px 34px var(--shadow), inset 0 1px 0 rgba(255,255,255,.035);
     }
     section, .card { padding: 14px; }
     details.panel { padding: 0; overflow: hidden; }
@@ -119,13 +143,14 @@
     input, select, textarea {
       background: var(--soft);
       border: 1px solid var(--border);
-      border-radius: 11px;
+      border-radius: 14px;
       padding: 10px 11px;
       outline: none;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.03);
     }
     input:focus, select:focus, textarea:focus {
       border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(125,176,255,.18);
+      box-shadow: 0 0 0 4px var(--glow);
     }
     textarea {
       min-height: 245px;
@@ -137,22 +162,23 @@
     .note-textarea { min-height: 76px; }
     button {
       border: 1px solid var(--border);
-      border-radius: 11px;
+      border-radius: 14px;
       padding: 9px 11px;
-      background: var(--soft);
+      background: linear-gradient(180deg, var(--soft-2), var(--soft));
       cursor: pointer;
       font-weight: 740;
-      transition: transform .08s ease, border-color .12s ease, background .12s ease;
+      transition: transform .08s ease, border-color .12s ease, background .12s ease, box-shadow .12s ease;
     }
-    button:hover { border-color: var(--accent); }
-    button.primary { background: var(--accent); color: white; border-color: transparent; }
-    button.secondary { background: rgba(156,226,190,.12); border-color: rgba(156,226,190,.5); }
-    button.warn { background: rgba(255,213,128,.12); border-color: rgba(255,213,128,.5); }
-    button.danger { background: rgba(255,154,154,.12); border-color: rgba(255,154,154,.5); }
+    button:hover { border-color: var(--accent); transform: translateY(-1px); }
+    button.primary { background: linear-gradient(135deg, #22c55e, #16a34a 60%, #15803d); color: white; border-color: transparent; box-shadow: 0 10px 22px rgba(22, 163, 74, .22); }
+    button.secondary { background: var(--soft); border-color: var(--border); color: var(--text); }
+    button.secondary:hover { border-color: var(--accent); box-shadow: 0 0 0 3px var(--glow); }
+    button.warn { background: rgba(250,204,21,.10); border-color: rgba(250,204,21,.45); }
+    button.danger { background: rgba(252,165,165,.10); border-color: rgba(252,165,165,.45); }
     button.ghost { background: transparent; }
     button.compact { padding: 7px 9px; font-size: 13px; }
     button:disabled { opacity: .55; cursor: not-allowed; }
-    button.pressed { transform: scale(.985); box-shadow: 0 0 0 3px rgba(125,176,255,.18); }
+    button.pressed { transform: scale(.985); box-shadow: 0 0 0 4px var(--glow); }
     .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
     .row > * { flex: 1 1 130px; }
     .row.tight > * { flex: 0 0 auto; }
@@ -280,7 +306,7 @@
       gap: 6px;
     }
     .tag-cats button { text-align: left; }
-    .tag-cats button.active { border-color: var(--accent); background: rgba(125,176,255,.12); }
+    .tag-cats button.active { border-color: var(--accent); background: var(--glow); }
     .tag-results { display: flex; flex-wrap: wrap; gap: 7px; max-height: 260px; overflow: auto; }
     .latest-card audio { width: 100%; margin: 8px 0; }
     .empty-player {
@@ -356,16 +382,60 @@
       .suggest-row { grid-template-columns: 1fr; }
       textarea { min-height: 210px; }
     }
+
+    .composer-card, .latest-card {
+      border-color: rgba(49, 212, 134, .42);
+      background: linear-gradient(180deg, rgba(12, 40, 28, .96), rgba(8, 28, 19, .90));
+    }
+    .latest-card {
+      box-shadow: 0 22px 56px rgba(0,0,0,.38), 0 0 0 1px rgba(49,212,134,.10), 0 0 48px rgba(49,212,134,.08);
+    }
+    .empty-player {
+      background: linear-gradient(135deg, rgba(49,212,134,.10), rgba(255,255,255,.03));
+    }
+    textarea#inputText {
+      min-height: 260px;
+      line-height: 1.55;
+      background: linear-gradient(180deg, rgba(5, 18, 12, .96), rgba(9, 30, 21, .96));
+      border-color: rgba(49, 212, 134, .28);
+    }
+    .quick-controls button:nth-child(1), .quick-controls button:nth-child(2) {
+      border-color: rgba(49, 212, 134, .58);
+      background: rgba(49, 212, 134, .12);
+      color: var(--accent-2);
+    }
+    .suggest-box {
+      border-color: rgba(49, 212, 134, .42);
+      box-shadow: 0 18px 38px rgba(0,0,0,.38), 0 0 0 1px rgba(49,212,134,.08);
+    }
+    .metric {
+      background: rgba(49, 212, 134, .08);
+      border-color: rgba(49, 212, 134, .22);
+    }
+    .meter span { background: linear-gradient(90deg, #10b981, #86efac); }
+    @media (prefers-color-scheme: light) {
+      body {
+        background:
+          radial-gradient(circle at 18% -8%, rgba(15,159,104,.18), transparent 30%),
+          radial-gradient(circle at 88% 12%, rgba(52,211,153,.14), transparent 28%),
+          linear-gradient(180deg, #f1fbf5 0%, var(--bg) 52%, #e8f6ee 100%);
+      }
+      .composer-card, .latest-card {
+        background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(241,251,245,.92));
+      }
+      textarea#inputText {
+        background: linear-gradient(180deg, #ffffff, #f2fbf6);
+      }
+    }
   </style>
 </head>
 <body>
   <header class="hero">
     <div class="hero-inner">
       <div>
-        <h1>Higgs TTS 3 CA Playground</h1>
-        <p>A compact playground for testing Higgs inline tags, timing, affect, repair, and response-token delivery without forcing a fixed workflow.</p>
+        <h1>Higgs TTS 3 playground</h1>
       </div>
-      <div id="topStatus" class="status" role="status" aria-live="polite">Ready. Add a key, write a turn, and generate audio.</div>
+      <div id="topStatus" class="status" role="status" aria-live="polite">Ready.</div>
     </div>
   </header>
 
@@ -432,7 +502,7 @@
               <div class="meter" aria-hidden="true"><span id="charMeter"></span></div>
               <div id="charCount" class="hint" style="margin-top: 5px;">0 / 5000 characters</div>
             </div>
-            <div id="inlineFeedback" class="hint" style="flex: 1 1 280px; text-align: right;">Tip: press Ctrl+Enter to generate.</div>
+            <div id="inlineFeedback" class="hint" style="flex: 1 1 280px; text-align: right;">Tip: Ctrl+Enter generates. Pause buttons use boundary-safe tags.</div>
           </div>
 
           <div class="quick-controls" style="margin-top: 12px;">
@@ -694,7 +764,7 @@
       SPEEDS.filter(Boolean).forEach((value) => items.push({ category: "prosody", value, key: `prosody:${value}`, token: tag("prosody", value), help: "Speaking-rate control. Best near the start of a span." }));
       PITCHES.filter(Boolean).forEach((value) => items.push({ category: "prosody", value, key: `prosody:${value}`, token: tag("prosody", value), help: "Pitch control for contour tests." }));
       EXPRESSIVENESS.filter(Boolean).forEach((value) => items.push({ category: "prosody", value, key: `prosody:${value}`, token: tag("prosody", value), help: "Controls flatter or more expressive delivery." }));
-      PROSODY_POSITIONAL.forEach((value) => items.push({ category: "pause", value, key: `prosody:${value}`, token: tag("prosody", value), help: "Place where timing or turn-holding matters." }));
+      PROSODY_POSITIONAL.forEach((value) => items.push({ category: "pause", value, key: `prosody:${value}`, token: tag("prosody", value), help: "Place after punctuation or let the pause helper add a boundary before sending." }));
       SFX.filter(Boolean).forEach((value) => items.push({ category: "sfx", value, key: `sfx:${value}`, token: tag("sfx", value) + (SFX_CUES[value] || ""), help: "Sound effect plus written cue." }));
       return items;
     }
@@ -840,12 +910,40 @@
       return { ...payload, ...extra };
     }
 
+    function prepareInputForRequest(text) {
+      return normalizePauseTokens(String(text || ""));
+    }
+
+    function normalizePauseTokens(text) {
+      return text.replace(/\s*<\|prosody:(pause|long_pause)\|>\s*/g, (match, kind, offset, full) => {
+        const before = full.slice(0, offset).replace(/\s+$/, "");
+        const boundary = kind === "long_pause" ? "." : ",";
+        const needsBoundary = before.length > 0 && !/[.!?,;:。？！،؛]$/.test(before);
+        const prefix = needsBoundary ? `${boundary} ` : " ";
+        return `${prefix}<|prosody:${kind}|> `;
+      }).replace(/[ 	]{2,}/g, " ").replace(/\s+([,.;:!?])/g, "$1").trim();
+    }
+
+    function pauseTokenForCursor(kind) {
+      const textarea = $("inputText");
+      const start = textarea.selectionStart ?? textarea.value.length;
+      const before = textarea.value.slice(0, start).replace(/\s+$/, "");
+      const boundary = kind === "long_pause" ? "." : ",";
+      const needsBoundary = before.length > 0 && !/[.!?,;:。？！،؛]$/.test(before);
+      return `${needsBoundary ? boundary : ""} <|prosody:${kind}|> `;
+    }
+
+    function insertPauseAtCursor(kind) {
+      insertAtCursor($("inputText"), pauseTokenForCursor(kind));
+      setStatus(kind === "long_pause" ? "Inserted boundary-safe long pause." : "Inserted boundary-safe pause.", "ok");
+    }
+
     async function buildSpeechPayload(overrides = {}) {
       const streamRequested = overrides.stream !== undefined ? overrides.stream : $("streamMode").value === "true";
       const format = streamRequested ? "pcm" : (overrides.response_format || $("format").value);
       let payload = {
         model: overrides.model || $("model").value.trim() || "higgs-tts-3",
-        input: overrides.input || $("inputText").value,
+        input: prepareInputForRequest(overrides.input || $("inputText").value),
         voice: overrides.voice || currentVoice(),
         response_format: format,
         stream: !!streamRequested
@@ -1327,6 +1425,11 @@
       return tags;
     }
 
+    function hasPauseBoundaryBefore(text, index) {
+      const before = text.slice(0, index).replace(/\s+$/, "");
+      return before.length === 0 || /[.!?,;:。？！،؛]$/.test(before);
+    }
+
     function analyzeInput() {
       const text = $("inputText").value || "";
       const issues = [];
@@ -1339,6 +1442,8 @@
       if (unknown.length) issues.push({ kind: "warn", text: `Unknown Higgs tags: ${unknown.map((x) => x.raw).join(", ")}.` });
       const streamOn = $("streamMode").value === "true";
       if (streamOn && /<\|prosody:speed_[^|]+\|>/.test(text)) issues.push({ kind: "warn", text: "Streaming forces PCM. Speed tags have limited support during streaming." });
+      const weakPause = tags.some((item) => item.key === "prosody:pause" || item.key === "prosody:long_pause" ? !hasPauseBoundaryBefore(text, item.index) : false);
+      if (weakPause) issues.push({ kind: "warn", text: "A pause tag sits after a word without punctuation. The request will add a comma or period before that pause." });
       const lateDelivery = tags.some((item) => ["emotion", "style"].includes(item.category) && item.index > Math.max(5, Math.round(text.length * 0.25)) && plain.length > 0);
       if (lateDelivery) issues.push({ kind: "warn", text: "Emotion and style tags usually work best near the start of a turn or span." });
       const sfxWithoutCue = tags.some((item) => item.category === "sfx" && !/\|>[A-Za-z]/.test(text.slice(item.index, item.index + item.raw.length + 14)));
@@ -1563,8 +1668,8 @@
       $("generateBtn").addEventListener("click", () => handle(() => generateSpeech({}, requestLabel("Manual request"))));
       $("streamBtn").addEventListener("click", () => handle(() => generateStreaming({}, requestLabel("Manual streaming request"))));
       $("validateBtn").addEventListener("click", () => validateInput(true));
-      $("insertPauseBtn").addEventListener("click", () => { insertAtCursor($("inputText"), " <|prosody:pause|> "); setStatus("Inserted pause tag.", "ok"); });
-      $("insertLongPauseBtn").addEventListener("click", () => { insertAtCursor($("inputText"), " <|prosody:long_pause|> "); setStatus("Inserted long pause tag.", "ok"); });
+      $("insertPauseBtn").addEventListener("click", () => insertPauseAtCursor("pause"));
+      $("insertLongPauseBtn").addEventListener("click", () => insertPauseAtCursor("long_pause"));
       $("insertHesitationBtn").addEventListener("click", () => { insertAtCursor($("inputText"), " uh, <|prosody:pause|> "); setStatus("Inserted hesitation cue plus pause.", "ok"); });
       $("insertRepairBtn").addEventListener("click", () => { insertAtCursor($("inputText"), " sorry, I mean, <|prosody:pause|> "); setStatus("Inserted repair phrase.", "ok"); });
       $("insertOverlapBtn").addEventListener("click", () => { insertAtCursor($("inputText"), " no wait, let me finish that thought, "); setStatus("Inserted overlap resumption phrase.", "ok"); });
