@@ -3,72 +3,150 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Higgs TTS 3 Conversational Analysis Playground</title>
+  <title>Higgs TTS 3 Conversation Lab</title>
   <style>
     :root {
       color-scheme: light dark;
-      --bg: #0f1218;
-      --panel: #171c26;
-      --panel-2: #1d2431;
-      --soft: #202737;
-      --text: #eef2f8;
-      --muted: #a9b4c7;
+      --bg: #0d1117;
+      --surface: #111827;
+      --surface-2: #172033;
+      --surface-3: #202b3f;
+      --text: #f3f6fb;
+      --muted: #aeb9cc;
       --border: #334058;
       --accent: #7db0ff;
-      --accent-2: #9ce2be;
-      --danger: #ff9a9a;
-      --warn: #ffd580;
-      --ok: #93e6a5;
-      --shadow: rgba(0,0,0,.25);
-      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      --accent-strong: #4891ff;
+      --green: #91e6ac;
+      --yellow: #ffd37a;
+      --red: #ff9b9b;
+      --shadow: rgba(0, 0, 0, .26);
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
       --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
+
     @media (prefers-color-scheme: light) {
       :root {
-        --bg: #f5f7fb;
-        --panel: #ffffff;
-        --panel-2: #f9fbff;
-        --soft: #eef2f7;
+        --bg: #f4f7fb;
+        --surface: #ffffff;
+        --surface-2: #f7f9fd;
+        --surface-3: #edf2f9;
         --text: #172033;
-        --muted: #5b667a;
-        --border: #d2d9e7;
+        --muted: #59667a;
+        --border: #d4dce9;
         --accent: #185bbd;
-        --accent-2: #14683e;
-        --danger: #b42318;
-        --warn: #8a5a00;
-        --ok: #0d6b2f;
-        --shadow: rgba(20,30,50,.10);
+        --accent-strong: #0e4fad;
+        --green: #0c7638;
+        --yellow: #8a5b00;
+        --red: #b3261e;
+        --shadow: rgba(25, 39, 60, .10);
       }
     }
+
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
       margin: 0;
-      font-family: var(--sans);
       background: var(--bg);
       color: var(--text);
+      font-family: var(--sans);
       line-height: 1.45;
     }
-    header.hero {
-      padding: 28px 24px 18px;
+
+    a { color: var(--accent); }
+    h1, h2, h3, h4, p { margin-top: 0; }
+    h1 { font-size: clamp(28px, 4vw, 46px); margin-bottom: 10px; letter-spacing: -.04em; }
+    h2 { font-size: 23px; margin-bottom: 14px; }
+    h3 { font-size: 17px; margin-bottom: 10px; }
+    h4 { font-size: 13px; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: .07em; }
+
+    .hero {
+      padding: 26px 22px 18px;
       border-bottom: 1px solid var(--border);
-      background: linear-gradient(180deg, rgba(125,176,255,.12), transparent 75%);
+      background: radial-gradient(circle at top left, rgba(125, 176, 255, .24), transparent 36%), linear-gradient(180deg, rgba(125, 176, 255, .08), transparent 80%);
     }
-    header.hero h1 { margin: 0 0 8px; font-size: clamp(26px, 4vw, 42px); letter-spacing: -0.03em; }
-    header.hero p { margin: 0; color: var(--muted); max-width: 1060px; }
-    main { width: min(1440px, 100%); margin: 0 auto; padding: 22px; }
-    section, .card {
-      background: var(--panel);
+
+    .hero-inner {
+      width: min(1500px, 100%);
+      margin: 0 auto;
+    }
+
+    .hero p {
+      color: var(--muted);
+      max-width: 980px;
+      margin-bottom: 0;
+    }
+
+    .shell {
+      width: min(1500px, 100%);
+      margin: 0 auto;
+      padding: 18px 22px 26px;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: color-mix(in srgb, var(--bg) 92%, transparent);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .topbar-inner {
+      width: min(1500px, 100%);
+      margin: 0 auto;
+      padding: 10px 22px;
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .nav-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .nav-pills a, .pill, .tag-button {
       border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 18px;
-      box-shadow: 0 10px 30px var(--shadow);
+      background: var(--surface-3);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 7px 10px;
+      text-decoration: none;
+      font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      user-select: none;
     }
-    section { margin-bottom: 18px; }
-    h2 { margin: 0 0 14px; font-size: 22px; }
-    h3 { margin: 0 0 10px; font-size: 17px; }
-    h4 { margin: 0 0 8px; font-size: 14px; color: var(--muted); }
-    .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 14px; }
+
+    .nav-pills a:hover, .pill:hover, .tag-button:hover { border-color: var(--accent); }
+    .pill.success { color: var(--green); }
+    .pill.warn { color: var(--yellow); }
+    .pill.danger { color: var(--red); }
+
+    .status {
+      min-height: 44px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .status.ok { color: var(--green); }
+    .status.warn { color: var(--yellow); }
+    .status.danger { color: var(--red); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+    }
+
     .col-12 { grid-column: span 12; }
     .col-9 { grid-column: span 9; }
     .col-8 { grid-column: span 8; }
@@ -78,73 +156,171 @@
     .col-4 { grid-column: span 4; }
     .col-3 { grid-column: span 3; }
     .col-2 { grid-column: span 2; }
-    @media (max-width: 950px) {
-      .grid { grid-template-columns: 1fr; }
+
+    @media (max-width: 980px) {
+      .topbar-inner, .grid { grid-template-columns: 1fr; }
       .col-12, .col-9, .col-8, .col-7, .col-6, .col-5, .col-4, .col-3, .col-2 { grid-column: 1; }
     }
-    label { display: block; margin-bottom: 6px; color: var(--muted); font-size: 13px; font-weight: 650; }
+
+    section, .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 18px;
+      box-shadow: 0 12px 34px var(--shadow);
+    }
+
+    section { margin-bottom: 18px; }
+    .panel.subtle { background: var(--surface-2); box-shadow: none; }
+    .panel.compact { padding: 14px; }
+
+    label {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
     input, select, textarea, button {
       width: 100%;
       font: inherit;
       color: var(--text);
     }
+
     input, select, textarea {
-      background: var(--soft);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      background: var(--surface-3);
+      border-radius: 13px;
       padding: 11px 12px;
       outline: none;
     }
-    input:focus, select:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(125,176,255,.18); }
-    textarea { min-height: 178px; resize: vertical; font-family: var(--mono); font-size: 14px; }
-    .short-textarea { min-height: 92px; }
-    .tiny-textarea { min-height: 58px; }
+
+    textarea {
+      resize: vertical;
+      min-height: 210px;
+      font-family: var(--mono);
+      font-size: 14px;
+    }
+
+    .small-textarea { min-height: 76px; }
+    .note-textarea { min-height: 72px; }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 24%, transparent);
+    }
+
     button {
       border: 1px solid var(--border);
-      border-radius: 12px;
+      background: var(--surface-3);
+      border-radius: 13px;
       padding: 10px 12px;
-      background: var(--soft);
       cursor: pointer;
-      font-weight: 750;
+      font-weight: 760;
       transition: transform .08s ease, border-color .12s ease, background .12s ease;
     }
+
     button:hover { border-color: var(--accent); }
-    button.primary { background: var(--accent); color: white; border-color: transparent; }
-    button.secondary { background: rgba(156,226,190,.12); border-color: rgba(156,226,190,.5); }
-    button.warn { background: rgba(255,213,128,.12); border-color: rgba(255,213,128,.5); }
-    button.danger { background: rgba(255,154,154,.12); border-color: rgba(255,154,154,.5); }
+    button.primary { background: var(--accent-strong); color: #fff; border-color: transparent; }
+    button.secondary { background: rgba(145, 230, 172, .11); border-color: rgba(145, 230, 172, .42); }
+    button.warn { background: rgba(255, 211, 122, .12); border-color: rgba(255, 211, 122, .48); }
+    button.danger { background: rgba(255, 155, 155, .12); border-color: rgba(255, 155, 155, .48); }
     button.ghost { background: transparent; }
-    button:disabled { opacity: .55; cursor: not-allowed; }
-    button.pressed { transform: scale(.985); box-shadow: 0 0 0 3px rgba(125,176,255,.18); }
+    button:disabled { opacity: .5; cursor: not-allowed; }
+    button.pressed { transform: scale(.985); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent); }
+
     .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
     .row > * { flex: 1 1 150px; }
     .tight > * { flex: 0 0 auto; }
-    .hint, .note, .small { color: var(--muted); font-size: 13px; }
-    .note { background: var(--soft); border: 1px solid var(--border); border-radius: 14px; padding: 12px; }
-    .note strong { color: var(--text); }
-    .status {
-      font-size: 14px;
+    .hint, .small { color: var(--muted); font-size: 13px; }
+    .fineprint { color: var(--muted); font-size: 12px; }
+
+    .step-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
       color: var(--muted);
-      background: var(--panel-2);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 11px 12px;
-      min-height: 44px;
+      font-size: 13px;
+      font-weight: 750;
+      margin-bottom: 8px;
     }
-    .status.ok { color: var(--ok); }
-    .status.warn { color: var(--warn); }
-    .status.danger { color: var(--danger); }
+
+    .step-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--accent-strong);
+      color: #fff;
+      display: inline-grid;
+      place-items: center;
+      font-size: 12px;
+    }
+
+    .card-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 10px;
+    }
+
+    .choice-card {
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      border-radius: 16px;
+      padding: 13px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .choice-card h3 { margin-bottom: 0; }
+    .choice-card p { color: var(--muted); font-size: 13px; margin-bottom: 0; }
+
+    .tag-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 8px;
+    }
+
+    .tag-button {
+      border-radius: 12px;
+      justify-content: flex-start;
+      white-space: normal;
+      text-align: left;
+      padding: 9px 10px;
+      line-height: 1.25;
+    }
+
+    .tag-token { font-family: var(--mono); font-size: 12px; color: var(--accent); }
+
     .meter {
-      height: 8px;
-      background: var(--soft);
+      height: 9px;
+      background: var(--surface-3);
       border: 1px solid var(--border);
       border-radius: 999px;
       overflow: hidden;
     }
-    .meter span { display: block; height: 100%; width: 0%; background: var(--accent); }
-    details { border: 1px solid var(--border); background: var(--soft); border-radius: 14px; padding: 12px; }
-    details summary { cursor: pointer; font-weight: 750; }
-    pre, code { font-family: var(--mono); }
+
+    .meter span { display: block; height: 100%; width: 0%; background: var(--accent-strong); }
+    .meter span.warn { background: var(--yellow); }
+    .meter span.danger { background: var(--red); }
+
+    .analysis-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+    .analysis-list li {
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      border-radius: 12px;
+      padding: 10px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .analysis-list li.ok { color: var(--green); }
+    .analysis-list li.warn { color: var(--yellow); }
+    .analysis-list li.danger { color: var(--red); }
+
+    .tag-preview { display: flex; flex-wrap: wrap; gap: 8px; }
+    .divider { height: 1px; background: var(--border); margin: 14px 0; }
+    .kbd { font-family: var(--mono); border: 1px solid var(--border); border-bottom-width: 2px; border-radius: 6px; padding: 1px 5px; background: var(--surface-3); }
+    code, pre { font-family: var(--mono); }
     pre {
       white-space: pre-wrap;
       word-break: break-word;
@@ -155,86 +331,117 @@
       overflow: auto;
       border: 1px solid rgba(255,255,255,.08);
     }
-    .pill-list { display: flex; gap: 8px; flex-wrap: wrap; }
-    .pill {
-      border: 1px solid var(--border);
-      background: var(--soft);
-      color: var(--text);
-      border-radius: 999px;
-      padding: 7px 10px;
-      font-size: 13px;
-      cursor: pointer;
-      user-select: none;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .pill:hover { border-color: var(--accent); }
-    .pill.active { background: rgba(125,176,255,.18); border-color: var(--accent); }
-    .tag-chip { color: var(--accent-2); }
-    .analysis-list { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
-    .analysis-list li { background: var(--soft); border: 1px solid var(--border); border-radius: 12px; padding: 10px; }
+
+    details { border: 1px solid var(--border); background: var(--surface-2); border-radius: 14px; padding: 12px; }
+    details summary { cursor: pointer; font-weight: 760; }
+
     .output-list { display: grid; gap: 14px; }
     .output-card {
-      background: var(--soft);
       border: 1px solid var(--border);
-      border-radius: 16px;
+      background: var(--surface-2);
+      border-radius: 18px;
       padding: 14px;
     }
-    .output-card header {
+
+    .output-head {
       display: flex;
-      gap: 10px;
       justify-content: space-between;
       align-items: flex-start;
+      gap: 12px;
       flex-wrap: wrap;
       margin-bottom: 10px;
     }
-    .output-card h3 { margin: 0; }
-    audio { width: 100%; margin: 8px 0; }
-    .metrics { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    .metrics { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 7px; }
     .metric {
-      font-size: 12px;
-      color: var(--muted);
-      background: rgba(255,255,255,.06);
       border: 1px solid var(--border);
-      padding: 5px 8px;
+      background: var(--surface-3);
+      color: var(--muted);
       border-radius: 999px;
+      font-size: 12px;
+      padding: 5px 8px;
     }
-    table { width: 100%; border-collapse: collapse; }
-    th, td { border-bottom: 1px solid var(--border); padding: 8px; text-align: left; vertical-align: top; }
-    th { color: var(--muted); font-size: 13px; }
+
+    audio { width: 100%; margin: 8px 0; }
     .hidden { display: none !important; }
-    .divider { height: 1px; background: var(--border); margin: 14px 0; }
-    .kbd { font-family: var(--mono); border: 1px solid var(--border); border-bottom-width: 2px; border-radius: 6px; padding: 1px 5px; background: var(--soft); }
-    a { color: var(--accent); }
-    .two-column-list { columns: 2; column-gap: 18px; }
-    @media (max-width: 800px) { .two-column-list { columns: 1; } }
+
+    .workflow-map {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+    }
+
+    .workflow-item {
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      border-radius: 14px;
+      padding: 11px;
+    }
+
+    .workflow-item strong { display: block; margin-bottom: 4px; }
+    .workflow-item span { color: var(--muted); font-size: 13px; }
+
+    .sticky-actions {
+      position: sticky;
+      bottom: 12px;
+      z-index: 40;
+      border: 1px solid var(--border);
+      background: color-mix(in srgb, var(--surface) 92%, transparent);
+      backdrop-filter: blur(14px);
+      border-radius: 18px;
+      box-shadow: 0 14px 38px var(--shadow);
+      padding: 10px;
+      margin-top: 14px;
+    }
   </style>
 </head>
 <body>
   <header class="hero">
-    <h1>Higgs TTS 3 Conversational Analysis Playground</h1>
-    <p>Test inline emotion, style, prosody, pauses, sound effects, voice choice, streaming PCM, and conversational delivery patterns. This page does not use SSML or voice cloning workflows.</p>
+    <div class="hero-inner">
+      <h1>Higgs TTS 3 Conversation Lab</h1>
+      <p>A guided playground for testing conversational speech behaviors: turn holding, repair, backchannels, question contours, affect, timing, pauses, and sound effects. It uses Higgs inline tags, not SSML.</p>
+    </div>
   </header>
 
-  <main>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <nav class="nav-pills" aria-label="Page sections">
+        <a href="#setup">1. Setup</a>
+        <a href="#scenario">2. Scenario</a>
+        <a href="#compose">3. Compose</a>
+        <a href="#controls">4. Controls</a>
+        <a href="#review">5. Review</a>
+      </nav>
+      <div id="status" class="status" role="status" aria-live="polite">Ready. Start with Setup, then choose a conversational scenario.</div>
+    </div>
+  </div>
+
+  <main class="shell">
     <section id="fileProtocolWarning" class="hidden">
       <h2>Open through localhost or GitHub Pages</h2>
-      <div class="note">
-        This page is open with <span class="kbd">file://</span>. Use GitHub Pages or a small local server so browser storage, downloads, and network calls behave consistently.
-      </div>
+      <p class="hint">This page is open with <span class="kbd">file://</span>. Use GitHub Pages or a local server for browser storage, downloads, and network requests.</p>
       <pre>python3 -m http.server 8080</pre>
-      <div class="note">Then open <span class="kbd">http://localhost:8080/higgs-tts-conversation-playground.html</span>.</div>
     </section>
 
     <section>
-      <h2>1. API settings</h2>
+      <h2>Workflow run-through</h2>
+      <div class="workflow-map">
+        <div class="workflow-item"><strong>Choose a task</strong><span>Pick a conversational phenomenon, not just a voice.</span></div>
+        <div class="workflow-item"><strong>Write the turn</strong><span>Draft the utterance and include the transcript cue you want tested.</span></div>
+        <div class="workflow-item"><strong>Add controls</strong><span>Apply leading tags at the start, insert pauses and sound effects at exact locations.</span></div>
+        <div class="workflow-item"><strong>Validate</strong><span>Check tags, stream settings, text length, and SSML leftovers.</span></div>
+        <div class="workflow-item"><strong>Listen and annotate</strong><span>Capture analyst notes for timing, affect, intelligibility, and failure cases.</span></div>
+      </div>
+    </section>
+
+    <section id="setup">
+      <div class="step-label"><span class="step-dot">1</span> Setup</div>
+      <h2>Connection and voice</h2>
       <div class="grid">
         <div class="col-4">
           <label for="apiKey">Boson API key</label>
           <input id="apiKey" type="password" autocomplete="off" placeholder="bai-xxxx" />
-          <div class="hint">The key stays in this browser unless you save it below.</div>
+          <p class="hint">Leave this empty only when your proxy adds the API key server-side.</p>
         </div>
         <div class="col-3">
           <label for="endpoint">API base URL</label>
@@ -243,96 +450,132 @@
         <div class="col-3">
           <label for="proxyBase">Optional proxy base URL</label>
           <input id="proxyBase" placeholder="https://your-proxy.example.com" />
-          <div class="hint">Leave blank for direct API calls.</div>
         </div>
         <div class="col-2">
           <label for="model">Model</label>
           <input id="model" value="higgs-tts-3" />
         </div>
+
+        <div class="col-3">
+          <label for="presetVoice">Preset voice</label>
+          <select id="presetVoice">
+            <option value="default">default</option>
+            <option value="chloe">chloe</option>
+            <option value="eleanor">eleanor</option>
+            <option value="jake">jake</option>
+            <option value="marcus">marcus</option>
+            <option value="nora">nora</option>
+            <option value="oliver">oliver</option>
+          </select>
+        </div>
+        <div class="col-3">
+          <label for="customVoice">Manual voice ID</label>
+          <input id="customVoice" placeholder="voice_... optional" />
+        </div>
+        <div class="col-3">
+          <label for="format">Response format</label>
+          <select id="format">
+            <option>mp3</option>
+            <option>wav</option>
+            <option>flac</option>
+            <option>opus</option>
+            <option>aac</option>
+            <option>pcm</option>
+          </select>
+        </div>
+        <div class="col-3">
+          <label for="streamMode">Streaming</label>
+          <select id="streamMode">
+            <option value="false">off</option>
+            <option value="true">on, force PCM</option>
+          </select>
+        </div>
+
         <div class="col-12 row">
-          <button type="button" id="testAuthBtn" class="secondary">Test API key</button>
+          <button type="button" id="testAuthBtn" class="secondary">Test connection</button>
           <button type="button" id="saveSessionBtn">Save key for this tab</button>
           <button type="button" id="saveLocalBtn">Save key in this browser</button>
           <button type="button" id="clearKeyBtn" class="danger">Clear saved key</button>
         </div>
-        <div class="col-12 note">
-          <strong>Security note.</strong> On GitHub Pages, requests come from the browser. Do not hardcode your Boson key in this file. For a public demo, use a small server or worker proxy and store the key as a secret.
+        <div class="col-12 panel subtle compact">
+          <strong>Public demo safety.</strong> A GitHub Pages page runs in the browser. Do not hardcode the Boson key. For public sharing, use a proxy and store the key as a server secret.
         </div>
       </div>
     </section>
 
-    <section>
-      <h2>2. Speech setup</h2>
+    <section id="scenario">
+      <div class="step-label"><span class="step-dot">2</span> Scenario</div>
+      <h2>What are you testing?</h2>
+      <div class="grid">
+        <div class="col-3">
+          <label for="phenomenonSelect">Conversational phenomenon</label>
+          <select id="phenomenonSelect"></select>
+        </div>
+        <div class="col-3">
+          <label for="controlFocus">Control under test</label>
+          <select id="controlFocus">
+            <option>pause placement</option>
+            <option>turn-level emotion</option>
+            <option>turn-level style</option>
+            <option>speed</option>
+            <option>pitch</option>
+            <option>expressiveness</option>
+            <option>sound effect plus cue</option>
+            <option>punctuation only</option>
+            <option>voice comparison</option>
+          </select>
+        </div>
+        <div class="col-3">
+          <label for="testLabel">Test label</label>
+          <input id="testLabel" placeholder="repair-pause-v1" />
+        </div>
+        <div class="col-3">
+          <label for="expectedObservation">What should change?</label>
+          <input id="expectedObservation" placeholder="longer turn-holding pause" />
+        </div>
+        <div class="col-12">
+          <div id="templateCards" class="card-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="compose">
+      <div class="step-label"><span class="step-dot">3</span> Compose</div>
+      <h2>Draft the turn</h2>
       <div class="grid">
         <div class="col-8">
           <label for="inputText">Input text with Higgs inline tags</label>
           <textarea id="inputText"><|emotion:contemplation|><|prosody:expressive_low|>Okay, so let me think about that for a second. <|prosody:pause|> I think the key moment is when the speaker holds the turn.</textarea>
-          <div class="row tight" style="margin-top: 8px;">
+          <div class="row tight" style="margin-top: 10px;">
             <button type="button" id="insertPauseBtn">Insert pause</button>
             <button type="button" id="insertLongPauseBtn">Insert long pause</button>
             <button type="button" id="insertHesitationBtn">Insert hesitation</button>
             <button type="button" id="convertSsmlBtn" class="warn">Convert simple SSML</button>
-            <button type="button" id="clearTagsBtn" class="danger">Remove inline tags</button>
+            <button type="button" id="clearTagsBtn" class="danger">Remove tags</button>
           </div>
-          <div style="margin-top: 10px;" class="meter" aria-hidden="true"><span id="charMeter"></span></div>
-          <div id="charCount" class="hint" style="margin-top: 6px;">0 / 5000 characters</div>
+          <div class="meter" style="margin-top: 10px;"><span id="charMeter"></span></div>
+          <p id="charCount" class="hint" style="margin-top: 6px;">0 / 5000 characters</p>
         </div>
-
         <div class="col-4">
-          <div class="grid">
-            <div class="col-6">
-              <label for="presetVoice">Preset voice</label>
-              <select id="presetVoice">
-                <option value="default">default</option>
-                <option value="chloe">chloe</option>
-                <option value="eleanor">eleanor</option>
-                <option value="jake">jake</option>
-                <option value="marcus">marcus</option>
-                <option value="nora">nora</option>
-                <option value="oliver">oliver</option>
-              </select>
-            </div>
-            <div class="col-6">
-              <label for="customVoice">Manual voice ID</label>
-              <input id="customVoice" placeholder="voice_... optional" />
-            </div>
-            <div class="col-6">
-              <label for="format">Response format</label>
-              <select id="format">
-                <option>mp3</option>
-                <option>wav</option>
-                <option>flac</option>
-                <option>opus</option>
-                <option>aac</option>
-                <option>pcm</option>
-              </select>
-            </div>
-            <div class="col-6">
-              <label for="streamMode">Streaming</label>
-              <select id="streamMode">
-                <option value="false">off</option>
-                <option value="true">on, force PCM</option>
-              </select>
-            </div>
-            <div class="col-12">
-              <label for="extraJson">Extra JSON fields, optional</label>
-              <textarea id="extraJson" class="tiny-textarea" placeholder='{"temperature":0.7}'></textarea>
-              <div class="hint">Use only fields supported by your endpoint.</div>
-            </div>
-            <div class="col-12 row">
-              <button type="button" id="generateBtn" class="primary">Generate speech</button>
-              <button type="button" id="streamBtn" class="secondary">Generate streaming PCM</button>
-            </div>
+          <div class="panel subtle">
+            <h3>Current input check</h3>
+            <ul id="analysisList" class="analysis-list"></ul>
+          </div>
+          <div class="panel subtle" style="margin-top: 14px;">
+            <h3>Recognized tags</h3>
+            <div id="tagPreview" class="tag-preview"></div>
           </div>
         </div>
       </div>
     </section>
 
-    <section>
-      <h2>3. Fine controls</h2>
+    <section id="controls">
+      <div class="step-label"><span class="step-dot">4</span> Controls</div>
+      <h2>Fine control builder</h2>
       <div class="grid">
-        <div class="col-4 card">
-          <h3>Leading delivery tags</h3>
+        <div class="col-4 panel subtle">
+          <h3>Turn-level delivery</h3>
+          <p class="hint">These go at the start of the turn.</p>
           <div class="grid">
             <div class="col-6">
               <label for="emotionSelect">Emotion</label>
@@ -355,15 +598,15 @@
               <select id="expressiveSelect"></select>
             </div>
             <div class="col-12 row">
-              <button type="button" id="applyLeadingBtn" class="secondary">Apply leading tags</button>
-              <button type="button" id="clearLeadingBtn">Clear leading tags</button>
+              <button type="button" id="applyLeadingBtn" class="secondary">Apply turn-level tags</button>
+              <button type="button" id="clearLeadingBtn">Clear turn-level tags</button>
             </div>
           </div>
-          <div class="hint" style="margin-top: 10px;">Use these at the start of a turn. Pause and sound effect tags belong inside the turn.</div>
         </div>
 
-        <div class="col-4 card">
-          <h3>Positional tags</h3>
+        <div class="col-4 panel subtle">
+          <h3>Position-level events</h3>
+          <p class="hint">These go at the cursor location.</p>
           <div class="grid">
             <div class="col-6">
               <label for="sfxSelect">Sound effect</label>
@@ -375,96 +618,78 @@
             </div>
             <div class="col-12 row">
               <button type="button" id="insertSfxBtn" class="secondary">Insert sfx plus cue</button>
-              <button type="button" id="insertRepairBtn">Insert repair phrase</button>
+              <button type="button" id="insertRepairBtn">Insert repair</button>
               <button type="button" id="insertOverlapBtn">Insert overlap resumption</button>
             </div>
           </div>
-          <div class="hint" style="margin-top: 10px;">The sound effect is vocalized by the speaker. Pair it with a written cue like Haha, Ahh, or Achoo.</div>
         </div>
 
-        <div class="col-4 card">
-          <h3>Conversation templates</h3>
-          <label for="templateSelect">Template</label>
-          <select id="templateSelect"></select>
-          <div class="row" style="margin-top: 10px;">
-            <button type="button" id="loadTemplateBtn" class="secondary">Load template</button>
-            <button type="button" id="appendTemplateBtn">Append template</button>
-          </div>
-          <div class="row" style="margin-top: 10px;">
+        <div class="col-4 panel subtle">
+          <h3>Minimal tests</h3>
+          <p class="hint">Use these for punctuation and response token studies.</p>
+          <div class="row">
             <button type="button" id="okayPeriodBtn">Okay.</button>
             <button type="button" id="okayQuestionBtn">Okay?</button>
             <button type="button" id="okayCommaBtn">Okay,</button>
             <button type="button" id="okayExclaimBtn">Okay!</button>
           </div>
-          <div class="hint" style="margin-top: 10px;">These are small CA-style test prompts for turn holding, repair, backchannels, questions, and response tokens.</div>
+          <div class="divider"></div>
+          <label for="extraJson">Advanced JSON fields</label>
+          <textarea id="extraJson" class="small-textarea" placeholder='{"temperature":0.7}'></textarea>
         </div>
 
-        <div class="col-12 card">
+        <div class="col-12 panel subtle">
           <h3>Tag library</h3>
-          <div id="tagLibrary" class="pill-list"></div>
+          <p class="hint">Click a tag to insert it at the cursor. Delivery tags still work best at the start of the turn.</p>
+          <div id="tagLibrary" class="tag-grid"></div>
         </div>
       </div>
     </section>
 
-    <section>
-      <h2>4. Payload, validation, and feedback</h2>
+    <section id="review">
+      <div class="step-label"><span class="step-dot">5</span> Review</div>
+      <h2>Generate, compare, and annotate</h2>
       <div class="grid">
-        <div class="col-4">
-          <div id="status" class="status" role="status" aria-live="polite">Ready.</div>
+        <div class="col-5 panel subtle">
+          <h3>Before generating</h3>
+          <p class="hint">Check the request, then create speech. Each output stores the input, tags, test label, phenomenon, and notes.</p>
+          <div class="row">
+            <button type="button" id="validateBtn" class="secondary">Validate input</button>
+            <button type="button" id="showPayloadBtn">Show request JSON</button>
+            <button type="button" id="copyPayloadBtn">Copy request JSON</button>
+            <button type="button" id="copyCurlBtn">Copy cURL</button>
+          </div>
         </div>
-        <div class="col-8 row">
-          <button type="button" id="validateBtn" class="secondary">Validate input</button>
-          <button type="button" id="showPayloadBtn">Show request JSON</button>
-          <button type="button" id="copyPayloadBtn">Copy request JSON</button>
-          <button type="button" id="copyCurlBtn">Copy cURL</button>
-        </div>
-        <div class="col-6">
-          <h3>Input analysis</h3>
-          <ul id="analysisList" class="analysis-list"></ul>
-        </div>
-        <div class="col-6">
-          <h3>Recognized tags in current input</h3>
-          <div id="tagPreview" class="pill-list"></div>
-        </div>
-        <div class="col-12">
-          <details>
+        <div class="col-7 panel subtle">
+          <h3>Session tools</h3>
+          <div class="row">
+            <button type="button" id="exportResultsBtn">Export session JSON</button>
+            <button type="button" id="clearOutputsBtn" class="warn">Clear outputs</button>
+            <button type="button" id="clearLogBtn">Clear log</button>
+          </div>
+          <details style="margin-top: 12px;">
             <summary>Log</summary>
             <pre id="log"></pre>
           </details>
         </div>
+        <div class="col-12">
+          <div id="outputs" class="output-list"></div>
+        </div>
       </div>
     </section>
 
-    <section>
-      <h2>5. Outputs</h2>
-      <div class="row tight" style="margin-bottom: 12px;">
-        <button type="button" id="exportResultsBtn">Export session JSON</button>
-        <button type="button" id="clearOutputsBtn" class="warn">Clear outputs</button>
-        <button type="button" id="clearLogBtn">Clear log</button>
+    <div class="sticky-actions">
+      <div class="row">
+        <button type="button" id="generateBtn" class="primary">Generate speech</button>
+        <button type="button" id="streamBtn" class="secondary">Generate streaming PCM</button>
+        <button type="button" id="saveVariantBtn">Save draft as note-only variant</button>
       </div>
-      <div id="outputs" class="output-list"></div>
-    </section>
-
-    <section>
-      <h2>Built-in notes</h2>
-      <div class="grid">
-        <div class="col-4 note">
-          <strong>Inline tags, not SSML.</strong> The docs describe Higgs control through tags like <span class="kbd">&lt;|emotion:enthusiasm|&gt;</span> and <span class="kbd">&lt;|prosody:pause|&gt;</span> inside the input text.
-        </div>
-        <div class="col-4 note">
-          <strong>Streaming rule.</strong> Streaming uses <span class="kbd">stream: true</span> and <span class="kbd">response_format: "pcm"</span>. This page converts returned PCM to WAV for playback and download.
-        </div>
-        <div class="col-4 note">
-          <strong>Browser rule.</strong> If direct calls fail on GitHub Pages with a network or CORS error, use the optional proxy base URL and keep the API key on the server side for public demos.
-        </div>
-      </div>
-    </section>
+    </div>
   </main>
 
   <script>
     const $ = (id) => document.getElementById(id);
 
-    const PRESET_VOICES = ["default", "chloe", "eleanor", "jake", "marcus", "nora", "oliver"];
     const EMOTIONS = ["", "elation", "amusement", "enthusiasm", "determination", "pride", "contentment", "affection", "relief", "contemplation", "confusion", "surprise", "awe", "longing", "arousal", "anger", "fear", "disgust", "bitterness", "sadness", "shame", "helplessness"];
     const STYLES = ["", "singing", "shouting", "whispering"];
     const SPEEDS = ["", "speed_very_slow", "speed_slow", "speed_fast", "speed_very_fast"];
@@ -491,48 +716,90 @@
       aac: "audio/aac",
       pcm: "audio/wav"
     };
-    const TEMPLATES = [
+
+    const SCENARIOS = [
       {
-        name: "Turn holding with pause",
+        name: "Turn holding",
+        goal: "Check whether a speaker holds the floor while searching for words.",
+        label: "turn-holding-pause",
+        focus: "pause placement",
+        expected: "pause sounds like active word search, not a sentence ending",
         text: "<|emotion:contemplation|><|prosody:expressive_low|>Uh, give me a second <|prosody:pause|> I’m trying to remember the exact word."
       },
       {
         name: "Repair initiation",
+        goal: "Test how confusion and request-for-clarification sound.",
+        label: "repair-initiation-confusion",
+        focus: "turn-level emotion",
+        expected: "confusion sounds mild and interactional",
         text: "<|emotion:confusion|>Wait, sorry, what did you mean by that?"
       },
       {
         name: "Self-repair",
+        goal: "Test a correction after a wrong word or time reference.",
+        label: "self-repair-pause",
+        focus: "pause placement",
+        expected: "repair marker separates the correction cleanly",
         text: "<|emotion:contemplation|>I went on Monday, no sorry, <|prosody:pause|> Tuesday, right after lunch."
       },
       {
-        name: "Backchannel sequence",
+        name: "Backchannel",
+        goal: "Hear low-intrusion listening tokens.",
+        label: "backchannel-low-expressive",
+        focus: "expressiveness",
+        expected: "tokens sound supportive without taking the turn",
         text: "<|emotion:contentment|><|prosody:expressive_low|>Mm-hmm. <|prosody:pause|> Yeah. <|prosody:pause|> Right."
       },
       {
         name: "News receipt",
+        goal: "Check surprise without overacting.",
+        label: "news-receipt-surprise",
+        focus: "turn-level emotion",
+        expected: "surprise is audible but still conversational",
         text: "<|emotion:surprise|>Oh wow. <|prosody:pause|> I didn’t expect that."
       },
       {
-        name: "Question contour test",
+        name: "Question contour",
+        goal: "Test rising intonation and question delivery.",
+        label: "question-pitch-high",
+        focus: "pitch",
+        expected: "final contour reads as a question",
         text: "<|emotion:contemplation|><|prosody:pitch_high|>So you’re saying it changed after lunch?"
       },
       {
         name: "Dispreferred response",
+        goal: "Hear delay, hesitation, and soft disagreement.",
+        label: "dispreferred-slow-pause",
+        focus: "speed",
+        expected: "response sounds delayed and careful",
         text: "<|emotion:contemplation|><|prosody:speed_slow|>Well, <|prosody:pause|> I’m not sure that works for me."
       },
       {
         name: "Laughter repair",
+        goal: "Check vocalized laughter attached to a correction.",
+        label: "laughter-repair",
+        focus: "sound effect plus cue",
+        expected: "laughter is vocalized, then correction stays intelligible",
         text: "<|emotion:amusement|><|sfx:laughter|>Haha, no, I said Tuesday, not Thursday."
       },
       {
-        name: "Flat institutional reading",
+        name: "Institutional reading",
+        goal: "Test low expression and clear task language.",
+        label: "institutional-low-expressive",
+        focus: "expressiveness",
+        expected: "delivery is clear and flat, without sounding robotic",
         text: "<|prosody:expressive_low|>The meeting starts at noon. Bring the report. That is all."
       },
       {
-        name: "High involvement response",
+        name: "High involvement",
+        goal: "Test fast agreement or animated continuation.",
+        label: "high-involvement-fast",
+        focus: "speed",
+        expected: "speech feels engaged but still intelligible",
         text: "<|emotion:enthusiasm|><|prosody:speed_fast|>Yes, exactly, that is the part I was trying to explain."
       }
     ];
+
     const RECOGNIZED_TAGS = new Set([
       ...EMOTIONS.filter(Boolean).map((x) => `emotion:${x}`),
       ...STYLES.filter(Boolean).map((x) => `style:${x}`),
@@ -557,44 +824,84 @@
       });
     }
 
-    function initTemplates() {
-      const el = $("templateSelect");
-      el.innerHTML = "";
-      TEMPLATES.forEach((item, index) => {
+    function initScenarios() {
+      const select = $("phenomenonSelect");
+      select.innerHTML = "";
+      SCENARIOS.forEach((item, index) => {
         const opt = document.createElement("option");
         opt.value = String(index);
         opt.textContent = item.name;
-        el.appendChild(opt);
+        select.appendChild(opt);
       });
+      renderScenarioCards();
+      applyScenario(0, false);
+    }
+
+    function renderScenarioCards() {
+      const wrap = $("templateCards");
+      wrap.innerHTML = "";
+      SCENARIOS.forEach((item, index) => {
+        const card = document.createElement("article");
+        card.className = "choice-card";
+        card.innerHTML = `
+          <h3>${escapeHtml(item.name)}</h3>
+          <p>${escapeHtml(item.goal)}</p>
+          <button type="button" data-scenario="${index}" class="secondary">Use this scenario</button>
+        `;
+        wrap.appendChild(card);
+      });
+      wrap.querySelectorAll("button[data-scenario]").forEach((button) => {
+        button.addEventListener("click", () => applyScenario(Number(button.dataset.scenario), true));
+      });
+    }
+
+    function applyScenario(index, announce = true) {
+      const item = SCENARIOS[index] || SCENARIOS[0];
+      $("phenomenonSelect").value = String(index);
+      $("controlFocus").value = item.focus;
+      $("testLabel").value = item.label;
+      $("expectedObservation").value = item.expected;
+      $("inputText").value = item.text;
+      inferControlsFromInput();
+      updateAnalysis();
+      if (announce) setStatus(`Loaded ${item.name} scenario.`, "ok");
     }
 
     function initTagLibrary() {
-      const items = [];
-      EMOTIONS.filter(Boolean).forEach((v) => items.push({ label: `emotion:${v}`, token: tag("emotion", v) }));
-      STYLES.filter(Boolean).forEach((v) => items.push({ label: `style:${v}`, token: tag("style", v) }));
-      [...SPEEDS, ...PITCHES, ...EXPRESSIVENESS, ...PROSODY_POSITIONAL].filter(Boolean).forEach((v) => items.push({ label: `prosody:${v}`, token: tag("prosody", v) }));
-      SFX.filter(Boolean).forEach((v) => items.push({ label: `sfx:${v}`, token: tag("sfx", v) + (SFX_CUES[v] ? SFX_CUES[v] : "") }));
+      const groups = [
+        { title: "Emotion", items: EMOTIONS.filter(Boolean).map((v) => [v, tag("emotion", v)]) },
+        { title: "Style", items: STYLES.filter(Boolean).map((v) => [v, tag("style", v)]) },
+        { title: "Speed", items: SPEEDS.filter(Boolean).map((v) => [v, tag("prosody", v)]) },
+        { title: "Pitch", items: PITCHES.filter(Boolean).map((v) => [v, tag("prosody", v)]) },
+        { title: "Expressiveness", items: EXPRESSIVENESS.filter(Boolean).map((v) => [v, tag("prosody", v)]) },
+        { title: "Position", items: PROSODY_POSITIONAL.map((v) => [v, tag("prosody", v)]) },
+        { title: "SFX", items: SFX.filter(Boolean).map((v) => [v, tag("sfx", v) + (SFX_CUES[v] || "")]) }
+      ];
       const wrap = $("tagLibrary");
       wrap.innerHTML = "";
-      items.forEach((item) => {
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = "pill";
-        button.textContent = item.label;
-        button.dataset.token = item.token;
-        button.addEventListener("click", () => {
-          insertAtCursor($("inputText"), item.token + " ");
-          setStatus(`Inserted ${item.label}.`, "ok");
-          updateAnalysis();
+      groups.forEach((group) => {
+        const header = document.createElement("h4");
+        header.textContent = group.title;
+        header.style.gridColumn = "1 / -1";
+        wrap.appendChild(header);
+        group.items.forEach(([label, token]) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "tag-button";
+          button.innerHTML = `<span>${escapeHtml(label)}</span><span class="tag-token">${escapeHtml(token)}</span>`;
+          button.dataset.token = token;
+          button.dataset.label = label;
+          button.addEventListener("click", () => {
+            insertAtCursor($("inputText"), token + " ");
+            setStatus(`Inserted ${label}.`, "ok");
+          });
+          wrap.appendChild(button);
         });
-        wrap.appendChild(button);
       });
     }
 
-    function log(message, data) {
-      const stamp = new Date().toLocaleTimeString();
-      const suffix = data === undefined ? "" : "\n" + stringify(data);
-      $("log").textContent = `[${stamp}] ${message}${suffix}\n\n` + $("log").textContent;
+    function tag(category, value) {
+      return value ? `<|${category}:${value}|>` : "";
     }
 
     function setStatus(message, kind = "") {
@@ -606,9 +913,15 @@
     function markButton(button) {
       if (!button || button.disabled) return;
       button.classList.add("pressed");
-      window.setTimeout(() => button.classList.remove("pressed"), 180);
-      const label = (button.textContent || "Button").trim();
+      setTimeout(() => button.classList.remove("pressed"), 170);
+      const label = (button.textContent || "Button").trim().replace(/\s+/g, " ");
       setStatus(`${label} pressed.`);
+    }
+
+    function log(message, data) {
+      const stamp = new Date().toLocaleTimeString();
+      const suffix = data === undefined ? "" : "\n" + stringify(data);
+      $("log").textContent = `[${stamp}] ${message}${suffix}\n\n` + $("log").textContent;
     }
 
     function stringify(value) {
@@ -618,11 +931,9 @@
     function storageGet(store, key) {
       try { return store.getItem(key) || ""; } catch (err) { return ""; }
     }
-
     function storageSet(store, key, value) {
       try { store.setItem(key, value); return true; } catch (err) { return false; }
     }
-
     function storageRemove(store, key) {
       try { store.removeItem(key); return true; } catch (err) { return false; }
     }
@@ -639,26 +950,24 @@
 
     function authHeaders(json = true) {
       const key = getApiKey();
-      if (!key) throw new Error("Enter a Boson API key first.");
-      const headers = { Authorization: `Bearer ${key}` };
+      const proxy = $("proxyBase").value.trim();
+      if (!key && !proxy) throw new Error("Enter a Boson API key, or add a proxy URL that injects the key server-side.");
+      const headers = {};
+      if (key) headers.Authorization = `Bearer ${key}`;
       if (json) headers["Content-Type"] = "application/json";
       return headers;
     }
 
     function currentVoice() {
-      const manual = $("customVoice").value.trim();
-      return manual || $("presetVoice").value;
+      return $("customVoice").value.trim() || $("presetVoice").value;
     }
 
     function mergeExtraJson(payload) {
       const raw = $("extraJson").value.trim();
       if (!raw) return payload;
       let extra;
-      try {
-        extra = JSON.parse(raw);
-      } catch (err) {
-        throw new Error("Extra JSON is not valid JSON: " + err.message);
-      }
+      try { extra = JSON.parse(raw); }
+      catch (err) { throw new Error("Advanced JSON is not valid: " + err.message); }
       return { ...payload, ...extra };
     }
 
@@ -679,18 +988,15 @@
     }
 
     async function testAuth() {
-      setStatus("Testing API key with the voices endpoint...");
-      const response = await fetch(apiUrl("/v1/audio/voices"), {
-        method: "GET",
-        headers: authHeaders(false)
-      });
+      setStatus("Testing connection with the voices endpoint...");
+      const response = await fetch(apiUrl("/v1/audio/voices"), { method: "GET", headers: authHeaders(false) });
       const text = await safeResponseText(response);
-      if (!response.ok) throw new Error(`API key test failed: ${response.status} ${response.statusText}\n${text}`);
+      if (!response.ok) throw new Error(`Connection test failed: ${response.status} ${response.statusText}\n${text}`);
       let data = {};
       try { data = JSON.parse(text || "{}"); } catch (err) { data = { raw: text }; }
       const count = Array.isArray(data.data) ? data.data.length : 0;
-      setStatus(`API key worked. ${count} reusable voice record${count === 1 ? "" : "s"} returned.`, "ok");
-      log("API key test response", data);
+      setStatus(`Connection worked. ${count} reusable voice record${count === 1 ? "" : "s"} returned.`, "ok");
+      log("Connection test response", data);
       return data;
     }
 
@@ -715,16 +1021,13 @@
       try { return await response.text(); } catch (err) { return String(err); }
     }
 
-    function extForPayload(payload) {
-      if (payload.stream) return "wav";
-      if (payload.response_format === "pcm") return "wav";
-      return payload.response_format || "mp3";
-    }
-
     async function generateSpeech(overrides = {}, label = "Manual request") {
+      const issues = validateInput(false);
+      if (issues.some((x) => x.kind === "danger")) throw new Error("Fix the input issue marked in red before generating.");
       const payload = await buildSpeechPayload(overrides);
       if (payload.stream) return generateStreaming({ ...overrides, stream: true }, label);
-      setStatus(`Generating ${label}...`);
+      const meta = currentMeta();
+      setStatus(`Generating ${meta.label}...`);
       log("Speech request", redactedPayload(payload));
       const result = await postSpeech(payload);
       let blob = result.blob;
@@ -736,7 +1039,8 @@
         contentType = "audio/wav";
       }
       addOutput({
-        label,
+        label: meta.label || label,
+        meta,
         payload: redactedPayload(payload),
         blob,
         contentType,
@@ -746,13 +1050,16 @@
         size: blob.size,
         extension: extForPayload(payload)
       });
-      setStatus(`Done: ${label}`, "ok");
+      setStatus(`Done: ${meta.label || label}`, "ok");
       return result;
     }
 
     async function generateStreaming(overrides = {}, label = "Streaming request") {
+      const issues = validateInput(false);
+      if (issues.some((x) => x.kind === "danger")) throw new Error("Fix the input issue marked in red before streaming.");
       const payload = await buildSpeechPayload({ ...overrides, stream: true, response_format: "pcm" });
-      setStatus(`Streaming ${label}...`);
+      const meta = currentMeta();
+      setStatus(`Streaming ${meta.label || label}...`);
       log("Streaming request", redactedPayload(payload));
       const t0 = performance.now();
       const response = await fetch(apiUrl("/v1/audio/speech"), {
@@ -788,14 +1095,15 @@
         const playable = combined.slice(0, evenLength);
         carry = combined.slice(evenLength);
         playPcm16Chunk(playable, sampleRate, scheduler);
-        setStatus(`Streaming ${label}: ${bytesRead.toLocaleString()} bytes received...`, "ok");
+        setStatus(`Streaming ${meta.label || label}: ${bytesRead.toLocaleString()} bytes received...`, "ok");
       }
       const elapsed = performance.now() - t0;
       const pcm = concatManyUint8(chunks);
       const wavBuffer = encodeWavFromPcm(pcm, sampleRate, channels, bitDepth);
       const blob = new Blob([wavBuffer], { type: "audio/wav" });
       addOutput({
-        label,
+        label: meta.label || label,
+        meta,
         payload: redactedPayload(payload),
         blob,
         contentType: "audio/wav",
@@ -806,8 +1114,51 @@
         extension: "wav",
         metadata: { sampleRate, channels, bitDepth }
       });
-      setStatus(`Streaming done: ${label}`, "ok");
+      setStatus(`Streaming done: ${meta.label || label}`, "ok");
       return { blob, elapsed, ttfa };
+    }
+
+    function currentMeta() {
+      const scenario = SCENARIOS[Number($("phenomenonSelect").value || 0)] || SCENARIOS[0];
+      return {
+        label: $("testLabel").value.trim() || scenario.label || "tts-test",
+        phenomenon: scenario.name,
+        focus: $("controlFocus").value,
+        expected: $("expectedObservation").value.trim(),
+        voice: currentVoice(),
+        createdAt: new Date().toISOString(),
+        tags: getTags($("inputText").value || "").map((x) => x.raw)
+      };
+    }
+
+    function saveVariantOnly() {
+      const payload = {
+        model: $("model").value.trim() || "higgs-tts-3",
+        input: $("inputText").value,
+        voice: currentVoice(),
+        response_format: $("format").value,
+        stream: $("streamMode").value === "true"
+      };
+      addOutput({
+        label: currentMeta().label + " draft",
+        meta: currentMeta(),
+        payload: redactedPayload(payload),
+        blob: new Blob([], { type: "application/octet-stream" }),
+        contentType: "draft/no-audio",
+        elapsed: 0,
+        stream: false,
+        ttfa: null,
+        size: 0,
+        extension: "txt",
+        draftOnly: true
+      });
+      setStatus("Saved draft variant without calling the API.", "ok");
+    }
+
+    function extForPayload(payload) {
+      if (payload.stream) return "wav";
+      if (payload.response_format === "pcm") return "wav";
+      return payload.response_format || "mp3";
     }
 
     function concatUint8(a, b) {
@@ -819,7 +1170,7 @@
     }
 
     function concatManyUint8(chunks) {
-      const total = chunks.reduce((sum, c) => sum + c.byteLength, 0);
+      const total = chunks.reduce((sum, chunk) => sum + chunk.byteLength, 0);
       const out = new Uint8Array(total);
       let offset = 0;
       for (const chunk of chunks) {
@@ -835,9 +1186,7 @@
       const audioBuffer = audioContext.createBuffer(1, samples, sampleRate);
       const channel = audioBuffer.getChannelData(0);
       const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
-      for (let i = 0; i < samples; i++) {
-        channel[i] = Math.max(-1, Math.min(1, view.getInt16(i * 2, true) / 32768));
-      }
+      for (let i = 0; i < samples; i++) channel[i] = Math.max(-1, Math.min(1, view.getInt16(i * 2, true) / 32768));
       const source = audioContext.createBufferSource();
       source.buffer = audioBuffer;
       source.connect(audioContext.destination);
@@ -883,12 +1232,7 @@
     }
 
     function addOutput(item) {
-      outputs.unshift({
-        id: makeId(),
-        createdAt: new Date().toISOString(),
-        analystNote: "",
-        ...item
-      });
+      outputs.unshift({ id: makeId(), analystNote: "", ...item });
       renderOutputs();
     }
 
@@ -896,64 +1240,98 @@
       const wrap = $("outputs");
       wrap.innerHTML = "";
       if (!outputs.length) {
-        wrap.innerHTML = `<div class="note">No outputs yet.</div>`;
+        wrap.innerHTML = `<div class="panel subtle compact">No outputs yet. Generate speech or save a note-only variant to begin a comparison set.</div>`;
         return;
       }
       outputs.forEach((item, index) => {
-        const url = URL.createObjectURL(item.blob);
+        const hasAudio = item.blob && item.blob.size > 0 && !item.draftOnly;
+        const url = hasAudio ? URL.createObjectURL(item.blob) : "";
         const fileName = safeFileName(`${index + 1}-${item.label}.${item.extension || "mp3"}`);
-        const card = document.createElement("div");
+        const tags = (item.meta && item.meta.tags && item.meta.tags.length) ? item.meta.tags.map((x) => `<span class="metric">${escapeHtml(x)}</span>`).join("") : `<span class="metric">no tags</span>`;
+        const card = document.createElement("article");
         card.className = "output-card";
-        const ttfa = item.ttfa == null ? "" : `<span class="metric">TTFA ${Math.round(item.ttfa)} ms</span>`;
-        const meta = item.metadata ? `<span class="metric">${item.metadata.sampleRate} Hz</span>` : "";
         card.innerHTML = `
-          <header>
+          <div class="output-head">
             <div>
               <h3>${escapeHtml(item.label)}</h3>
               <div class="metrics">
-                <span class="metric">${item.stream ? "stream" : "blocking"}</span>
+                <span class="metric">${escapeHtml(item.meta?.phenomenon || "scenario")}</span>
+                <span class="metric">${escapeHtml(item.meta?.focus || "focus")}</span>
+                <span class="metric">voice ${escapeHtml(item.meta?.voice || item.payload.voice || "default")}</span>
+                <span class="metric">${item.stream ? "stream" : item.draftOnly ? "draft" : "blocking"}</span>
                 <span class="metric">${escapeHtml(item.payload.response_format || "")}</span>
-                <span class="metric">${Math.round(item.elapsed)} ms</span>
-                ${ttfa}
-                <span class="metric">${formatBytes(item.size)}</span>
-                ${meta}
+                ${item.draftOnly ? "" : `<span class="metric">${Math.round(item.elapsed)} ms</span>`}
+                ${item.ttfa == null ? "" : `<span class="metric">TTFA ${Math.round(item.ttfa)} ms</span>`}
+                ${item.draftOnly ? "" : `<span class="metric">${formatBytes(item.size)}</span>`}
               </div>
             </div>
             <div class="row tight">
-              <a class="pill" href="${url}" download="${fileName}">Download audio</a>
+              ${hasAudio ? `<a class="pill" href="${url}" download="${fileName}">Download audio</a>` : ""}
               <button type="button" data-action="copy-payload" data-id="${item.id}">Copy payload</button>
               <button type="button" data-action="reuse-input" data-id="${item.id}">Reuse input</button>
+              <button type="button" data-action="duplicate" data-id="${item.id}">Duplicate variant</button>
             </div>
-          </header>
-          <audio controls src="${url}"></audio>
-          <label for="note-${item.id}">Analyst note</label>
-          <textarea id="note-${item.id}" class="tiny-textarea" data-action="note" data-id="${item.id}" placeholder="Add notes about timing, affect, intonation, or tag behavior.">${escapeHtml(item.analystNote || "")}</textarea>
-          <details>
+          </div>
+          ${hasAudio ? `<audio controls src="${url}"></audio>` : `<div class="panel compact">Draft variant saved without audio.</div>`}
+          <div class="grid">
+            <div class="col-6">
+              <h4>Expected observation</h4>
+              <p class="hint">${escapeHtml(item.meta?.expected || "No expectation recorded.")}</p>
+            </div>
+            <div class="col-6">
+              <h4>Tags used</h4>
+              <div class="metrics">${tags}</div>
+            </div>
+            <div class="col-12">
+              <label for="note-${item.id}">Analyst note</label>
+              <textarea id="note-${item.id}" class="note-textarea" data-action="note" data-id="${item.id}" placeholder="Timing, affect, intelligibility, tag success, failure cases...">${escapeHtml(item.analystNote || "")}</textarea>
+            </div>
+          </div>
+          <details style="margin-top: 10px;">
             <summary>Payload</summary>
             <pre>${escapeHtml(stringify(item.payload))}</pre>
           </details>
         `;
         wrap.appendChild(card);
       });
-      wrap.querySelectorAll("button[data-action='copy-payload']").forEach((button) => {
+      bindOutputHandlers();
+    }
+
+    function bindOutputHandlers() {
+      document.querySelectorAll("button[data-action='copy-payload']").forEach((button) => {
         button.addEventListener("click", () => {
-          markButton(button);
           const item = outputs.find((x) => x.id === button.dataset.id);
           if (item) copyText(stringify(item.payload));
         });
       });
-      wrap.querySelectorAll("button[data-action='reuse-input']").forEach((button) => {
+      document.querySelectorAll("button[data-action='reuse-input']").forEach((button) => {
         button.addEventListener("click", () => {
-          markButton(button);
           const item = outputs.find((x) => x.id === button.dataset.id);
-          if (item) {
-            $("inputText").value = item.payload.input || "";
-            setStatus("Output input copied back to editor.", "ok");
-            updateAnalysis();
-          }
+          if (!item) return;
+          $("inputText").value = item.payload.input || "";
+          $("testLabel").value = item.meta?.label || item.label || "";
+          $("controlFocus").value = item.meta?.focus || $("controlFocus").value;
+          $("expectedObservation").value = item.meta?.expected || "";
+          inferControlsFromInput();
+          updateAnalysis();
+          setStatus("Copied output input back to the editor.", "ok");
         });
       });
-      wrap.querySelectorAll("textarea[data-action='note']").forEach((textarea) => {
+      document.querySelectorAll("button[data-action='duplicate']").forEach((button) => {
+        button.addEventListener("click", () => {
+          const item = outputs.find((x) => x.id === button.dataset.id);
+          if (!item) return;
+          $("inputText").value = item.payload.input || "";
+          $("testLabel").value = (item.label || "variant") + "-copy";
+          $("controlFocus").value = item.meta?.focus || $("controlFocus").value;
+          $("expectedObservation").value = item.meta?.expected || "";
+          inferControlsFromInput();
+          updateAnalysis();
+          location.hash = "#compose";
+          setStatus("Variant duplicated into the editor. Change one control and generate again.", "ok");
+        });
+      });
+      document.querySelectorAll("textarea[data-action='note']").forEach((textarea) => {
         textarea.addEventListener("input", () => {
           const item = outputs.find((x) => x.id === textarea.dataset.id);
           if (item) item.analystNote = textarea.value;
@@ -976,7 +1354,16 @@
     }
 
     async function copyText(text) {
-      await navigator.clipboard.writeText(text);
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        const area = document.createElement("textarea");
+        area.value = text;
+        document.body.appendChild(area);
+        area.select();
+        document.execCommand("copy");
+        area.remove();
+      }
       setStatus("Copied to clipboard.", "ok");
     }
 
@@ -985,12 +1372,8 @@
       return `curl ${apiUrl("/v1/audio/speech")} \\\n  -H "Authorization: Bearer $BOSON_API_KEY" \\\n  -H "Content-Type: application/json" \\\n  -d '${body}' \\\n  --output out.${extForPayload(payload)}`;
     }
 
-    function tag(category, value) {
-      return value ? `<|${category}:${value}|>` : "";
-    }
-
     function removeControlTags(text) {
-      return text.replace(/<\|[^|]+\|>/g, "").replace(/\s+/g, " ").trim();
+      return text.replace(/<\|[^|]+\|>/g, "").replace(/[ \t]+/g, " ").replace(/\s+([,.?!])/g, "$1").trim();
     }
 
     function removeLeadingDeliveryTags(text) {
@@ -1011,15 +1394,27 @@
       const leading = buildLeadingTags();
       const clean = removeLeadingDeliveryTags($("inputText").value);
       $("inputText").value = leading ? `${leading}${clean}` : clean;
-      setStatus(leading ? "Leading delivery tags applied." : "No leading tags selected. Existing leading tags cleared.", "ok");
+      setStatus(leading ? "Applied turn-level delivery tags." : "No turn-level tags selected. Existing leading delivery tags cleared.", "ok");
       updateAnalysis();
     }
 
     function clearLeadingTags() {
       $("inputText").value = removeLeadingDeliveryTags($("inputText").value);
       ["emotionSelect", "styleSelect", "speedSelect", "pitchSelect", "expressiveSelect"].forEach((id) => { $(id).value = ""; });
-      setStatus("Leading tags cleared.", "ok");
+      setStatus("Cleared turn-level delivery tags.", "ok");
       updateAnalysis();
+    }
+
+    function inferControlsFromInput() {
+      const tags = getTags($("inputText").value || "");
+      ["emotionSelect", "styleSelect", "speedSelect", "pitchSelect", "expressiveSelect"].forEach((id) => { $(id).value = ""; });
+      tags.forEach((item) => {
+        if (item.category === "emotion" && EMOTIONS.includes(item.value)) $("emotionSelect").value = item.value;
+        if (item.category === "style" && STYLES.includes(item.value)) $("styleSelect").value = item.value;
+        if (item.category === "prosody" && SPEEDS.includes(item.value)) $("speedSelect").value = item.value;
+        if (item.category === "prosody" && PITCHES.includes(item.value)) $("pitchSelect").value = item.value;
+        if (item.category === "prosody" && EXPRESSIVENESS.includes(item.value)) $("expressiveSelect").value = item.value;
+      });
     }
 
     function insertAtCursor(textarea, insertion) {
@@ -1029,20 +1424,7 @@
       textarea.focus();
       const pos = start + insertion.length;
       textarea.setSelectionRange(pos, pos);
-      updateAnalysis();
-    }
-
-    function loadTemplate(append = false) {
-      const item = TEMPLATES[Number($("templateSelect").value || 0)];
-      if (!item) return;
-      if (append) {
-        const spacer = $("inputText").value.trim() ? "\n\n" : "";
-        $("inputText").value += spacer + item.text;
-        setStatus(`Appended template: ${item.name}.`, "ok");
-      } else {
-        $("inputText").value = item.text;
-        setStatus(`Loaded template: ${item.name}.`, "ok");
-      }
+      inferControlsFromInput();
       updateAnalysis();
     }
 
@@ -1053,42 +1435,17 @@
         return ms >= 700 ? " <|prosody:long_pause|> " : " <|prosody:pause|> ";
       });
       text = text.replace(/<\s*emphasis[^>]*>/gi, "<|prosody:expressive_high|>");
-      text = text.replace(/<\s*\/\s*(speak|emphasis|p|s)\s*>/gi, " ");
+      text = text.replace(/<\s*prosody[^>]*rate=["']?slow["']?[^>]*>/gi, "<|prosody:speed_slow|>");
+      text = text.replace(/<\s*prosody[^>]*rate=["']?fast["']?[^>]*>/gi, "<|prosody:speed_fast|>");
+      text = text.replace(/<\s*prosody[^>]*pitch=["']?high["']?[^>]*>/gi, "<|prosody:pitch_high|>");
+      text = text.replace(/<\s*prosody[^>]*pitch=["']?low["']?[^>]*>/gi, "<|prosody:pitch_low|>");
+      text = text.replace(/<\s*\/\s*(speak|emphasis|prosody|p|s)\s*>/gi, " ");
       text = text.replace(/<\s*(speak|p|s)[^>]*>/gi, " ");
       text = text.replace(/<(?!\|)[^>]+>/g, " ").replace(/[ \t]+/g, " ").replace(/\n\s+/g, "\n").trim();
       $("inputText").value = text;
-      setStatus("Converted simple SSML-like tags to Higgs inline tags or plain text.", "ok");
+      inferControlsFromInput();
       updateAnalysis();
-    }
-
-    function validateInput(showStatus = true) {
-      const issues = analyzeInput();
-      renderAnalysis(issues);
-      if (showStatus) {
-        const errors = issues.filter((x) => x.kind === "danger").length;
-        const warnings = issues.filter((x) => x.kind === "warn").length;
-        setStatus(errors ? `${errors} issue${errors === 1 ? "" : "s"} must be fixed before sending.` : warnings ? `Input looks usable with ${warnings} warning${warnings === 1 ? "" : "s"}.` : "Input looks ready.", errors ? "danger" : warnings ? "warn" : "ok");
-      }
-      return issues;
-    }
-
-    function analyzeInput() {
-      const text = $("inputText").value || "";
-      const issues = [];
-      const plain = removeControlTags(text);
-      const tags = getTags(text);
-      if (!text.trim()) issues.push({ kind: "danger", text: "Input text is empty." });
-      if (text.length > 5000) issues.push({ kind: "danger", text: `Input has ${text.length} characters. The API limit is 5000.` });
-      if (/<\/?speak|<break\b|<prosody\b|<emphasis\b/i.test(text)) issues.push({ kind: "warn", text: "SSML-like markup detected. Use Higgs inline tags or press Convert simple SSML." });
-      if (!tags.length) issues.push({ kind: "warn", text: "No Higgs inline tags found. Plain speech still works, but this will not test fine controls." });
-      const unknown = tags.filter((item) => !RECOGNIZED_TAGS.has(item.key));
-      if (unknown.length) issues.push({ kind: "warn", text: `Unknown Higgs tags found: ${unknown.map((x) => x.raw).join(", ")}.` });
-      const streamOn = $("streamMode").value === "true";
-      if (streamOn && /<\|prosody:speed_[^|]+\|>/.test(text)) issues.push({ kind: "warn", text: "Streaming requires PCM. Boson notes speed adjustment is not supported when streaming." });
-      const leadingProblem = tags.some((item) => ["emotion", "style"].includes(item.category) && item.index > 3 && plain.length > 0);
-      if (leadingProblem) issues.push({ kind: "warn", text: "Emotion and style tags usually work best at the start of the turn." });
-      if (!issues.length) issues.push({ kind: "ok", text: "Ready to generate." });
-      return issues;
+      setStatus("Converted simple SSML-like markup into Higgs inline tags or plain text.", "ok");
     }
 
     function getTags(text) {
@@ -1099,6 +1456,36 @@
         tags.push({ raw: match[0], category: match[1], value: match[2], key: `${match[1]}:${match[2]}`, index: match.index });
       }
       return tags;
+    }
+
+    function validateInput(showStatus = true) {
+      const issues = analyzeInput();
+      renderAnalysis(issues);
+      if (showStatus) {
+        const errors = issues.filter((x) => x.kind === "danger").length;
+        const warnings = issues.filter((x) => x.kind === "warn").length;
+        setStatus(errors ? `${errors} issue${errors === 1 ? "" : "s"} must be fixed before sending.` : warnings ? `Input is usable with ${warnings} warning${warnings === 1 ? "" : "s"}.` : "Input looks ready.", errors ? "danger" : warnings ? "warn" : "ok");
+      }
+      return issues;
+    }
+
+    function analyzeInput() {
+      const text = $("inputText").value || "";
+      const issues = [];
+      const tags = getTags(text);
+      if (!text.trim()) issues.push({ kind: "danger", text: "Input text is empty." });
+      if (text.length > 5000) issues.push({ kind: "danger", text: `Input has ${text.length} characters. The API limit is 5000.` });
+      if (/<\/?speak|<break\b|<prosody\b|<emphasis\b/i.test(text)) issues.push({ kind: "warn", text: "SSML-like markup detected. Press Convert simple SSML before sending." });
+      if (!tags.length) issues.push({ kind: "warn", text: "No Higgs inline tags found. Plain speech works, but this run will not test fine control." });
+      const unknown = tags.filter((item) => !RECOGNIZED_TAGS.has(item.key));
+      if (unknown.length) issues.push({ kind: "warn", text: `Unknown inline tags found: ${unknown.map((x) => x.raw).join(", ")}.` });
+      if ($("streamMode").value === "true" && /<\|prosody:speed_[^|]+\|>/.test(text)) issues.push({ kind: "warn", text: "Streaming requires PCM. Speed adjustment is not supported while streaming." });
+      const deliveryTagsLate = tags.filter((item) => ["emotion", "style"].includes(item.category) || (["speed_very_slow", "speed_slow", "speed_fast", "speed_very_fast", "pitch_low", "pitch_high", "expressive_high", "expressive_low"].includes(item.value))).filter((item) => item.index > 3);
+      if (deliveryTagsLate.length) issues.push({ kind: "warn", text: "Turn-level delivery tags usually work best at the start of the input." });
+      const sfxMissingCue = tags.some((item) => item.category === "sfx" && !new RegExp(item.raw.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "\\s*\\w+", "i").test(text));
+      if (sfxMissingCue) issues.push({ kind: "warn", text: "Sound effect tags work best with a written cue right after the tag, such as Haha or Achoo." });
+      if (!issues.length) issues.push({ kind: "ok", text: "Ready to generate." });
+      return issues;
     }
 
     function renderAnalysis(issues) {
@@ -1117,12 +1504,12 @@
       const tags = getTags($("inputText").value || "");
       wrap.innerHTML = "";
       if (!tags.length) {
-        wrap.innerHTML = `<span class="note">No inline tags in the current input.</span>`;
+        wrap.innerHTML = `<span class="pill warn">No inline tags</span>`;
         return;
       }
       tags.forEach((item) => {
         const span = document.createElement("span");
-        span.className = "pill" + (RECOGNIZED_TAGS.has(item.key) ? "" : " warn");
+        span.className = "pill " + (RECOGNIZED_TAGS.has(item.key) ? "success" : "warn");
         span.textContent = item.raw;
         wrap.appendChild(span);
       });
@@ -1131,8 +1518,10 @@
     function updateCharCount() {
       const len = ($("inputText").value || "").length;
       const pct = Math.min(100, Math.round((len / 5000) * 100));
+      const meter = $("charMeter");
       $("charCount").textContent = `${len} / 5000 characters`;
-      $("charMeter").style.width = `${pct}%`;
+      meter.style.width = `${pct}%`;
+      meter.className = len > 5000 ? "danger" : len > 4200 ? "warn" : "";
     }
 
     function updateAnalysis() {
@@ -1160,16 +1549,17 @@
     function exportResults() {
       const data = outputs.map((item) => ({
         id: item.id,
-        createdAt: item.createdAt,
         label: item.label,
+        meta: item.meta,
         payload: item.payload,
         analystNote: item.analystNote || "",
         stream: item.stream,
-        elapsedMs: Math.round(item.elapsed),
+        elapsedMs: Math.round(item.elapsed || 0),
         ttfaMs: item.ttfa == null ? null : Math.round(item.ttfa),
-        sizeBytes: item.size,
+        sizeBytes: item.size || 0,
         contentType: item.contentType,
-        metadata: item.metadata || null
+        metadata: item.metadata || null,
+        draftOnly: !!item.draftOnly
       }));
       const blob = new Blob([stringify(data)], { type: "application/json" });
       const url = URL.createObjectURL(blob);
@@ -1207,6 +1597,7 @@
         $("apiKey").value = "";
         setStatus("Cleared saved key.", "ok");
       });
+      $("phenomenonSelect").addEventListener("change", () => applyScenario(Number($("phenomenonSelect").value), true));
       $("streamMode").addEventListener("change", () => {
         if ($("streamMode").value === "true") {
           $("format").value = "pcm";
@@ -1221,30 +1612,19 @@
       $("sfxSelect").addEventListener("change", () => {
         const cue = SFX_CUES[$("sfxSelect").value] || "";
         if (cue) $("sfxCue").value = cue;
+        setStatus(cue ? `Sound effect cue set to ${cue}.` : "Sound effect cleared.", "ok");
       });
-      ["inputText", "extraJson", "customVoice", "model", "endpoint", "proxyBase"].forEach((id) => {
+      ["inputText", "extraJson", "customVoice", "model", "endpoint", "proxyBase", "testLabel", "expectedObservation"].forEach((id) => {
         $(id).addEventListener("input", updateAnalysis);
       });
-      $("generateBtn").addEventListener("click", () => handle(async () => generateSpeech({}, "Manual request")));
-      $("streamBtn").addEventListener("click", () => handle(async () => generateStreaming({}, "Manual streaming request")));
-      $("insertPauseBtn").addEventListener("click", () => {
-        insertAtCursor($("inputText"), " <|prosody:pause|> ");
-        setStatus("Inserted pause tag.", "ok");
+      ["emotionSelect", "styleSelect", "speedSelect", "pitchSelect", "expressiveSelect", "controlFocus"].forEach((id) => {
+        $(id).addEventListener("change", () => setStatus(`${document.querySelector(`label[for='${id}']`).textContent} set to ${$(id).value || "none"}.`, "ok"));
       });
-      $("insertLongPauseBtn").addEventListener("click", () => {
-        insertAtCursor($("inputText"), " <|prosody:long_pause|> ");
-        setStatus("Inserted long pause tag.", "ok");
-      });
-      $("insertHesitationBtn").addEventListener("click", () => {
-        insertAtCursor($("inputText"), " uh, <|prosody:pause|> ");
-        setStatus("Inserted hesitation cue plus pause.", "ok");
-      });
+      $("insertPauseBtn").addEventListener("click", () => { insertAtCursor($("inputText"), " <|prosody:pause|> "); setStatus("Inserted pause tag.", "ok"); });
+      $("insertLongPauseBtn").addEventListener("click", () => { insertAtCursor($("inputText"), " <|prosody:long_pause|> "); setStatus("Inserted long pause tag.", "ok"); });
+      $("insertHesitationBtn").addEventListener("click", () => { insertAtCursor($("inputText"), " uh, <|prosody:pause|> "); setStatus("Inserted hesitation plus pause.", "ok"); });
       $("convertSsmlBtn").addEventListener("click", convertSimpleSsml);
-      $("clearTagsBtn").addEventListener("click", () => {
-        $("inputText").value = removeControlTags($("inputText").value);
-        setStatus("Removed Higgs inline tags from input.", "ok");
-        updateAnalysis();
-      });
+      $("clearTagsBtn").addEventListener("click", () => { $("inputText").value = removeControlTags($("inputText").value); inferControlsFromInput(); updateAnalysis(); setStatus("Removed Higgs inline tags.", "ok"); });
       $("applyLeadingBtn").addEventListener("click", applyLeadingTags);
       $("clearLeadingBtn").addEventListener("click", clearLeadingTags);
       $("insertSfxBtn").addEventListener("click", () => {
@@ -1254,34 +1634,22 @@
         insertAtCursor($("inputText"), `${tag("sfx", s)}${cue}${cue ? ", " : ""}`);
         setStatus(`Inserted ${s} sound effect.`, "ok");
       });
-      $("insertRepairBtn").addEventListener("click", () => {
-        insertAtCursor($("inputText"), " sorry, I mean, <|prosody:pause|> ");
-        setStatus("Inserted repair phrase.", "ok");
-      });
-      $("insertOverlapBtn").addEventListener("click", () => {
-        insertAtCursor($("inputText"), " no wait, let me finish that thought, ");
-        setStatus("Inserted overlap resumption phrase.", "ok");
-      });
-      $("loadTemplateBtn").addEventListener("click", () => loadTemplate(false));
-      $("appendTemplateBtn").addEventListener("click", () => loadTemplate(true));
-      $("okayPeriodBtn").addEventListener("click", () => { $("inputText").value = "Okay."; setStatus("Loaded Okay. token test.", "ok"); updateAnalysis(); });
-      $("okayQuestionBtn").addEventListener("click", () => { $("inputText").value = "Okay?"; setStatus("Loaded Okay? token test.", "ok"); updateAnalysis(); });
-      $("okayCommaBtn").addEventListener("click", () => { $("inputText").value = "Okay,"; setStatus("Loaded Okay, token test.", "ok"); updateAnalysis(); });
-      $("okayExclaimBtn").addEventListener("click", () => { $("inputText").value = "Okay!"; setStatus("Loaded Okay! token test.", "ok"); updateAnalysis(); });
+      $("insertRepairBtn").addEventListener("click", () => { insertAtCursor($("inputText"), " sorry, I mean, <|prosody:pause|> "); setStatus("Inserted repair phrase.", "ok"); });
+      $("insertOverlapBtn").addEventListener("click", () => { insertAtCursor($("inputText"), " no wait, let me finish that thought, "); setStatus("Inserted overlap resumption phrase.", "ok"); });
+      $("okayPeriodBtn").addEventListener("click", () => { $("inputText").value = "Okay."; $("testLabel").value = "okay-period"; $("controlFocus").value = "punctuation only"; inferControlsFromInput(); updateAnalysis(); setStatus("Loaded Okay. token test.", "ok"); });
+      $("okayQuestionBtn").addEventListener("click", () => { $("inputText").value = "Okay?"; $("testLabel").value = "okay-question"; $("controlFocus").value = "punctuation only"; inferControlsFromInput(); updateAnalysis(); setStatus("Loaded Okay? token test.", "ok"); });
+      $("okayCommaBtn").addEventListener("click", () => { $("inputText").value = "Okay,"; $("testLabel").value = "okay-comma"; $("controlFocus").value = "punctuation only"; inferControlsFromInput(); updateAnalysis(); setStatus("Loaded Okay, token test.", "ok"); });
+      $("okayExclaimBtn").addEventListener("click", () => { $("inputText").value = "Okay!"; $("testLabel").value = "okay-exclaim"; $("controlFocus").value = "punctuation only"; inferControlsFromInput(); updateAnalysis(); setStatus("Loaded Okay! token test.", "ok"); });
       $("validateBtn").addEventListener("click", () => validateInput(true));
       $("showPayloadBtn").addEventListener("click", () => handle(showPayload));
       $("copyPayloadBtn").addEventListener("click", () => handle(copyPayload));
       $("copyCurlBtn").addEventListener("click", () => handle(copyCurl));
+      $("generateBtn").addEventListener("click", () => handle(() => generateSpeech({}, currentMeta().label)));
+      $("streamBtn").addEventListener("click", () => handle(() => generateStreaming({}, currentMeta().label)));
+      $("saveVariantBtn").addEventListener("click", saveVariantOnly);
       $("exportResultsBtn").addEventListener("click", exportResults);
-      $("clearOutputsBtn").addEventListener("click", () => {
-        outputs = [];
-        renderOutputs();
-        setStatus("Outputs cleared.", "ok");
-      });
-      $("clearLogBtn").addEventListener("click", () => {
-        $("log").textContent = "";
-        setStatus("Log cleared.", "ok");
-      });
+      $("clearOutputsBtn").addEventListener("click", () => { outputs = []; renderOutputs(); setStatus("Outputs cleared.", "ok"); });
+      $("clearLogBtn").addEventListener("click", () => { $("log").textContent = ""; setStatus("Log cleared.", "ok"); });
     }
 
     async function handle(fn) {
@@ -1307,13 +1675,13 @@
       initSelect("pitchSelect", PITCHES);
       initSelect("expressiveSelect", EXPRESSIVENESS);
       initSelect("sfxSelect", SFX);
-      initTemplates();
+      initScenarios();
       initTagLibrary();
       loadSavedKey();
       attachHandlers();
       renderOutputs();
       updateAnalysis();
-      log("Playground loaded. Enter your API key, choose controls, and generate speech.");
+      log("Conversation lab loaded. Start with a scenario, change one control, and generate speech.");
     }
 
     boot();
