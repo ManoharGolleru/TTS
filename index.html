@@ -9,21 +9,19 @@
       color-scheme: light dark;
       --bg: #0f1117;
       --panel: #171b24;
-      --panel-2: #1e2430;
-      --soft: #232a37;
-      --soft-2: #2a3242;
+      --panel-2: #1f2530;
+      --soft: #242b38;
+      --soft-2: #2c3544;
       --text: #f4f7fb;
-      --muted: #a7b0c0;
-      --border: rgba(148, 163, 184, .24);
+      --muted: #a8b1c2;
+      --border: rgba(148,163,184,.22);
       --accent: #16a34a;
       --accent-2: #22c55e;
-      --accent-3: #15803d;
       --danger: #fca5a5;
       --warn: #facc15;
       --ok: #4ade80;
-      --shadow: rgba(0, 0, 0, .28);
-      --glow: rgba(34, 197, 94, .18);
-      --grid: rgba(255, 255, 255, .025);
+      --shadow: rgba(0,0,0,.24);
+      --glow: rgba(34,197,94,.15);
       --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
       --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
@@ -33,108 +31,65 @@
         --panel: #ffffff;
         --panel-2: #f9fafb;
         --soft: #f1f5f9;
-        --soft-2: #e9eef5;
+        --soft-2: #e8edf4;
         --text: #111827;
         --muted: #667085;
-        --border: rgba(15, 23, 42, .14);
+        --border: rgba(15,23,42,.13);
         --accent: #16a34a;
         --accent-2: #15803d;
-        --accent-3: #166534;
         --danger: #b42318;
         --warn: #8a5a00;
         --ok: #0b7a3b;
-        --shadow: rgba(15, 23, 42, .10);
-        --glow: rgba(22, 163, 74, .15);
-        --grid: rgba(15, 23, 42, .035);
+        --shadow: rgba(15,23,42,.08);
+        --glow: rgba(22,163,74,.12);
       }
     }
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
       margin: 0;
+      min-height: 100vh;
       font-family: var(--sans);
       background:
-        radial-gradient(circle at 18% -8%, rgba(148, 163, 184, .16), transparent 30%),
-        radial-gradient(circle at 88% 10%, rgba(22, 163, 74, .07), transparent 28%),
+        radial-gradient(circle at 18% -10%, rgba(148,163,184,.13), transparent 30%),
+        radial-gradient(circle at 90% 5%, rgba(22,163,74,.055), transparent 28%),
         var(--bg);
       color: var(--text);
       line-height: 1.45;
-      min-height: 100vh;
     }
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      background-image:
-        linear-gradient(var(--grid) 1px, transparent 1px),
-        linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-      background-size: 36px 36px;
-      mask-image: linear-gradient(to bottom, rgba(0,0,0,.42), transparent 70%);
-    }
-    a { color: var(--accent); }
-    header.hero {
+    header {
       border-bottom: 1px solid var(--border);
-      background: linear-gradient(135deg, rgba(148, 163, 184, .12), rgba(22, 163, 74, .08), transparent 82%);
-      padding: 16px 20px 12px;
+      padding: 16px 20px 14px;
     }
-    .hero-inner {
-      width: min(1360px, 100%);
+    .topbar {
+      width: min(1120px, 100%);
       margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr minmax(260px, 430px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       gap: 14px;
-      align-items: end;
+      flex-wrap: wrap;
     }
-    header h1 {
-      margin: 0;
-      font-size: clamp(24px, 3vw, 36px);
-      letter-spacing: -0.04em;
-      font-weight: 830;
-    }
-    header p { margin: 0; color: var(--muted); max-width: 900px; }
-    main {
-      width: min(1360px, 100%);
-      margin: 0 auto;
-      padding: 16px 20px 28px;
-    }
-    .app-shell {
+    h1 { margin: 0; font-size: clamp(22px, 3vw, 30px); letter-spacing: -.035em; }
+    main { width: min(1120px, 100%); margin: 0 auto; padding: 18px 20px 34px; }
+    .app {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(300px, 390px);
+      grid-template-columns: minmax(0, 1fr) minmax(290px, 340px);
       gap: 16px;
       align-items: start;
     }
-    .left-stack, .right-stack { display: grid; gap: 14px; }
-    .right-stack { position: sticky; top: 12px; }
-    section, .card, details.panel {
+    .stack, .side { display: grid; gap: 14px; }
+    .side { position: sticky; top: 14px; }
+    section, details.panel, .popover {
       background: var(--panel);
       border: 1px solid var(--border);
-      border-radius: 18px;
-      box-shadow: 0 14px 34px var(--shadow), inset 0 1px 0 rgba(255,255,255,.035);
+      border-radius: 16px;
+      box-shadow: 0 10px 26px var(--shadow);
     }
-    section, .card { padding: 14px; }
-    details.panel { padding: 0; overflow: hidden; }
-    details.panel > summary {
-      cursor: pointer;
-      padding: 13px 14px;
-      font-weight: 760;
-      border-bottom: 1px solid transparent;
-      list-style-position: inside;
-    }
-    details.panel[open] > summary { border-bottom-color: var(--border); }
-    .panel-body { padding: 14px; }
-    h2 { margin: 0 0 10px; font-size: 19px; }
-    h3 { margin: 0 0 8px; font-size: 16px; }
-    h4 { margin: 0 0 7px; font-size: 13px; color: var(--muted); }
-    .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 10px; }
-    .col-12 { grid-column: span 12; }
-    .col-9 { grid-column: span 9; }
-    .col-8 { grid-column: span 8; }
-    .col-6 { grid-column: span 6; }
-    .col-4 { grid-column: span 4; }
-    .col-3 { grid-column: span 3; }
-    .col-2 { grid-column: span 2; }
-    label { display: block; margin-bottom: 5px; color: var(--muted); font-size: 13px; font-weight: 650; }
+    section { padding: 16px; }
+    h2 { margin: 0 0 10px; font-size: 17px; }
+    h3 { margin: 0 0 8px; font-size: 14px; }
+    label { display: block; margin-bottom: 5px; color: var(--muted); font-size: 13px; font-weight: 600; }
     input, select, textarea, button {
       width: 100%;
       font: inherit;
@@ -143,117 +98,60 @@
     input, select, textarea {
       background: var(--soft);
       border: 1px solid var(--border);
-      border-radius: 14px;
+      border-radius: 12px;
       padding: 10px 11px;
       outline: none;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.03);
     }
     input:focus, select:focus, textarea:focus {
       border-color: var(--accent);
-      box-shadow: 0 0 0 4px var(--glow);
+      box-shadow: 0 0 0 3px var(--glow);
     }
-    textarea {
-      min-height: 245px;
-      resize: vertical;
-      font-family: var(--mono);
-      font-size: 14px;
-    }
-    .tiny-textarea { min-height: 56px; }
-    .note-textarea { min-height: 76px; }
+    textarea { min-height: 235px; resize: vertical; font-family: var(--mono); font-size: 14px; line-height: 1.55; }
+    .note-textarea { min-height: 68px; }
+    .tiny-textarea { min-height: 58px; }
     button {
       border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 9px 11px;
-      background: linear-gradient(180deg, var(--soft-2), var(--soft));
+      border-radius: 12px;
+      padding: 9px 12px;
+      background: var(--soft);
       cursor: pointer;
-      font-weight: 740;
+      font-weight: 700;
       transition: transform .08s ease, border-color .12s ease, background .12s ease, box-shadow .12s ease;
     }
     button:hover { border-color: var(--accent); transform: translateY(-1px); }
-    button.primary { background: linear-gradient(135deg, #22c55e, #16a34a 60%, #15803d); color: white; border-color: transparent; box-shadow: 0 10px 22px rgba(22, 163, 74, .22); }
-    button.secondary { background: var(--soft); border-color: var(--border); color: var(--text); }
-    button.secondary:hover { border-color: var(--accent); box-shadow: 0 0 0 3px var(--glow); }
-    button.warn { background: rgba(250,204,21,.10); border-color: rgba(250,204,21,.45); }
-    button.danger { background: rgba(252,165,165,.10); border-color: rgba(252,165,165,.45); }
-    button.ghost { background: transparent; }
-    button.compact { padding: 7px 9px; font-size: 13px; }
-    button:disabled { opacity: .55; cursor: not-allowed; }
-    button.pressed { transform: scale(.985); box-shadow: 0 0 0 4px var(--glow); }
+    button:disabled { opacity: .52; cursor: not-allowed; transform: none; }
+    .primary { background: linear-gradient(135deg, #22c55e, #16a34a 70%); color: white; border-color: transparent; box-shadow: 0 8px 18px rgba(22,163,74,.22); }
+    .secondary { background: var(--soft); }
+    .ghost { background: transparent; }
+    .danger { background: rgba(252,165,165,.10); border-color: rgba(252,165,165,.40); }
+    .warn { background: rgba(250,204,21,.10); border-color: rgba(250,204,21,.40); }
+    .pressed { transform: scale(.985); box-shadow: 0 0 0 3px var(--glow); }
     .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
     .row > * { flex: 1 1 130px; }
-    .row.tight > * { flex: 0 0 auto; }
+    .tight > * { flex: 0 0 auto; }
+    .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 10px; }
+    .col-12 { grid-column: span 12; }
+    .col-8 { grid-column: span 8; }
+    .col-6 { grid-column: span 6; }
+    .col-4 { grid-column: span 4; }
+    .col-3 { grid-column: span 3; }
+    .col-2 { grid-column: span 2; }
     .muted, .hint, .small { color: var(--muted); font-size: 13px; }
-    .toolbar {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-    .toolbar button, .toolbar select, .toolbar input { width: auto; }
-    .toolbar button { flex: 0 0 auto; }
     .status {
+      max-width: 360px;
       font-size: 13px;
       color: var(--muted);
       background: var(--panel-2);
       border: 1px solid var(--border);
-      border-radius: 13px;
-      padding: 10px 11px;
-      min-height: 42px;
+      border-radius: 12px;
+      padding: 9px 12px;
     }
     .status.ok { color: var(--ok); }
     .status.warn { color: var(--warn); }
     .status.danger { color: var(--danger); }
-    .mini-status { margin-top: 8px; }
-    .meter {
-      height: 7px;
-      background: var(--soft);
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      overflow: hidden;
-    }
-    .meter span { display: block; height: 100%; width: 0%; background: var(--accent); }
-    .pill-list { display: flex; gap: 7px; flex-wrap: wrap; }
-    .pill {
-      border: 1px solid var(--border);
-      background: var(--soft);
-      color: var(--text);
-      border-radius: 999px;
-      padding: 6px 9px;
-      font-size: 13px;
-      cursor: pointer;
-      user-select: none;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      width: auto;
-    }
-    .pill:hover { border-color: var(--accent); }
-    .pill.warn { border-color: rgba(255,213,128,.65); }
-    .pill.ok { border-color: rgba(147,230,165,.65); }
-    .kbd {
-      font-family: var(--mono);
-      border: 1px solid var(--border);
-      border-bottom-width: 2px;
-      border-radius: 6px;
-      padding: 1px 5px;
-      background: var(--soft);
-      white-space: nowrap;
-    }
-    .composer-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      align-items: center;
-      margin-bottom: 10px;
-      flex-wrap: wrap;
-    }
-    .composer-actions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
+    .composer-card { border-color: rgba(34,197,94,.24); }
+    .composer-head { display: flex; justify-content: space-between; gap: 12px; align-items: start; flex-wrap: wrap; margin-bottom: 10px; }
+    .composer-actions { display: flex; gap: 8px; flex-wrap: wrap; }
     .composer-actions button { width: auto; }
     .editor-wrap { position: relative; }
     .suggest-box {
@@ -261,180 +159,77 @@
       left: 10px;
       right: 10px;
       bottom: 10px;
-      background: var(--panel-2);
-      border: 1px solid var(--border);
-      border-radius: 13px;
-      padding: 8px;
-      box-shadow: 0 12px 26px var(--shadow);
-      z-index: 8;
-      max-height: 190px;
-      overflow: auto;
-    }
-    .suggest-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 8px;
-      color: var(--muted);
-      font-size: 12px;
-      margin: 0 0 6px;
-    }
-    .suggest-row {
-      display: grid;
-      grid-template-columns: 210px 1fr;
-      gap: 8px;
-      align-items: start;
-      padding: 7px 8px;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-    .suggest-row:hover, .suggest-row.active { background: var(--soft); }
-    .suggest-token { font-family: var(--mono); color: var(--accent-2); }
-    .suggest-help { color: var(--muted); font-size: 12px; }
-    .quick-controls {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 8px;
-    }
-    .tag-helper-grid {
-      display: grid;
-      grid-template-columns: 200px minmax(0, 1fr);
-      gap: 10px;
-      align-items: start;
-    }
-    .tag-cats {
-      display: grid;
-      gap: 6px;
-    }
-    .tag-cats button { text-align: left; }
-    .tag-cats button.active { border-color: var(--accent); background: var(--glow); }
-    .tag-results { display: flex; flex-wrap: wrap; gap: 7px; max-height: 260px; overflow: auto; }
-    .latest-card audio { width: 100%; margin: 8px 0; }
-    .empty-player {
-      border: 1px dashed var(--border);
-      border-radius: 13px;
-      padding: 14px;
-      color: var(--muted);
-      background: var(--panel-2);
-    }
-    .metrics { display: flex; gap: 6px; flex-wrap: wrap; }
-    .metric {
-      font-size: 12px;
-      color: var(--muted);
-      background: rgba(255,255,255,.06);
-      border: 1px solid var(--border);
-      padding: 5px 8px;
-      border-radius: 999px;
-    }
-    .history-list { display: grid; gap: 8px; }
-    .history-item {
-      background: var(--soft);
-      border: 1px solid var(--border);
-      border-radius: 13px;
-      padding: 10px;
-    }
-    .history-item audio { width: 100%; margin: 5px 0; }
-    .analysis-list { display: grid; gap: 7px; margin: 0; padding: 0; list-style: none; }
-    .analysis-list li {
-      background: var(--soft);
-      border: 1px solid var(--border);
-      border-radius: 11px;
-      padding: 8px;
-      font-size: 13px;
-    }
-    .analysis-list li.ok { border-color: rgba(147,230,165,.45); }
-    .analysis-list li.warn { border-color: rgba(255,213,128,.45); }
-    .analysis-list li.danger { border-color: rgba(255,154,154,.55); }
-    details.slim {
+      z-index: 10;
       background: var(--panel-2);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 0;
-      overflow: hidden;
-    }
-    details.slim summary { cursor: pointer; padding: 10px 11px; font-weight: 720; }
-    details.slim .slim-body { padding: 0 11px 11px; }
-    pre, code { font-family: var(--mono); }
-    pre {
-      white-space: pre-wrap;
-      word-break: break-word;
-      background: #05070a;
-      color: #dbe7ff;
-      padding: 10px;
-      border-radius: 11px;
+      box-shadow: 0 12px 28px var(--shadow);
+      padding: 8px;
+      max-height: 190px;
       overflow: auto;
-      border: 1px solid rgba(255,255,255,.08);
-      max-height: 260px;
     }
+    .suggest-head { display: flex; justify-content: space-between; gap: 8px; color: var(--muted); font-size: 12px; margin: 0 0 6px; }
+    .suggest-row { display: grid; grid-template-columns: 210px 1fr; gap: 8px; padding: 7px 8px; border-radius: 10px; cursor: pointer; }
+    .suggest-row:hover, .suggest-row.active { background: var(--soft); }
+    .suggest-token { font-family: var(--mono); color: var(--accent-2); }
+    .suggest-help { color: var(--muted); font-size: 12px; }
+    .toolbar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 12px; }
+    .toolbar .label { color: var(--muted); font-size: 13px; }
+    .chip { width: auto; border-radius: 999px; padding: 7px 11px; font-size: 13px; }
+    .mode-pill { display: inline-flex; align-items: center; gap: 6px; border: 1px solid rgba(34,197,94,.28); color: var(--ok); background: rgba(34,197,94,.08); border-radius: 999px; padding: 5px 9px; font-size: 12px; white-space: nowrap; }
+    .meter { height: 6px; background: var(--soft); border: 1px solid var(--border); border-radius: 999px; overflow: hidden; }
+    .meter span { display: block; height: 100%; width: 0%; background: linear-gradient(90deg, #16a34a, #4ade80); }
+    .top-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .popover { padding: 14px; display: none; }
+    .popover.open { display: block; }
+    .control-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .control-group { background: var(--panel-2); border: 1px solid var(--border); border-radius: 14px; padding: 12px; }
+    .control-group .row { margin-top: 8px; }
+    .control-group button { margin-top: 6px; }
+    .tone-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
+    .latest-card { border-color: rgba(34,197,94,.24); }
+    .empty-player { border: 1px dashed var(--border); border-radius: 12px; padding: 16px; color: var(--muted); background: var(--panel-2); font-size: 13px; }
+    audio { width: 100%; margin: 9px 0; }
+    .metrics { display: flex; gap: 6px; flex-wrap: wrap; }
+    .metric { font-size: 12px; color: var(--muted); background: rgba(255,255,255,.05); border: 1px solid var(--border); padding: 5px 8px; border-radius: 999px; }
+    .history-list { display: grid; gap: 7px; }
+    .history-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; border: 1px solid var(--border); background: var(--soft); border-radius: 12px; padding: 9px; }
+    .history-title { font-size: 13px; font-weight: 700; }
+    .history-sub { color: var(--muted); font-size: 12px; margin-top: 2px; }
+    .history-actions { display: flex; gap: 6px; }
+    .history-actions button { width: auto; padding: 6px 8px; font-size: 12px; }
+    details.panel { overflow: hidden; }
+    details.panel > summary { cursor: pointer; padding: 13px 16px; font-weight: 700; color: var(--text); }
+    details.panel[open] > summary { border-bottom: 1px solid var(--border); }
+    .panel-body { padding: 14px 16px 16px; }
+    details.slim { border: 1px solid var(--border); background: var(--panel-2); border-radius: 12px; overflow: hidden; margin-top: 10px; }
+    details.slim summary { cursor: pointer; padding: 10px 12px; font-weight: 680; }
+    details.slim .slim-body { padding: 4px 12px 12px; }
+    .analysis-list { display: grid; gap: 7px; margin: 0; padding: 0; list-style: none; }
+    .analysis-list li { background: var(--soft); border: 1px solid var(--border); border-radius: 10px; padding: 8px; font-size: 13px; }
+    .analysis-list li.ok { border-color: rgba(147,230,165,.40); }
+    .analysis-list li.warn { border-color: rgba(250,204,21,.42); }
+    .analysis-list li.danger { border-color: rgba(252,165,165,.50); }
+    .pill-list { display: flex; gap: 7px; flex-wrap: wrap; }
+    .pill { width: auto; border-radius: 999px; padding: 6px 9px; font-size: 13px; background: var(--soft); border: 1px solid var(--border); }
+    .pill.ok { border-color: rgba(147,230,165,.55); }
+    .pill.warn { border-color: rgba(250,204,21,.55); }
+    .tag-results { display: flex; gap: 7px; flex-wrap: wrap; max-height: 220px; overflow: auto; }
+    .tag-cats { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+    .tag-cats button { width: auto; }
+    .tag-cats button.active { border-color: var(--accent); box-shadow: 0 0 0 3px var(--glow); }
+    pre, code { font-family: var(--mono); }
+    pre { white-space: pre-wrap; word-break: break-word; background: #05070a; color: #dbe7ff; padding: 10px; border-radius: 11px; overflow: auto; max-height: 240px; border: 1px solid rgba(255,255,255,.08); }
     .hidden { display: none !important; }
     .file-warning { margin-bottom: 14px; }
-    @media (max-width: 1080px) {
-      .hero-inner, .app-shell { grid-template-columns: 1fr; }
-      .right-stack { position: static; }
-      .quick-controls { grid-template-columns: repeat(3, 1fr); }
-    }
-    @media (max-width: 760px) {
-      main { padding: 12px; }
-      header.hero { padding: 16px 12px 10px; }
-      .grid { grid-template-columns: 1fr; }
-      .col-12, .col-9, .col-8, .col-6, .col-4, .col-3, .col-2 { grid-column: 1; }
-      .tag-helper-grid { grid-template-columns: 1fr; }
-      .quick-controls { grid-template-columns: 1fr 1fr; }
-      .suggest-row { grid-template-columns: 1fr; }
-      textarea { min-height: 210px; }
-    }
-
-    .composer-card, .latest-card {
-      border-color: rgba(49, 212, 134, .42);
-      background: linear-gradient(180deg, rgba(12, 40, 28, .96), rgba(8, 28, 19, .90));
-    }
-    .latest-card {
-      box-shadow: 0 22px 56px rgba(0,0,0,.38), 0 0 0 1px rgba(49,212,134,.10), 0 0 48px rgba(49,212,134,.08);
-    }
-    .empty-player {
-      background: linear-gradient(135deg, rgba(49,212,134,.10), rgba(255,255,255,.03));
-    }
-    textarea#inputText {
-      min-height: 260px;
-      line-height: 1.55;
-      background: linear-gradient(180deg, rgba(5, 18, 12, .96), rgba(9, 30, 21, .96));
-      border-color: rgba(49, 212, 134, .28);
-    }
-    .quick-controls button:nth-child(1), .quick-controls button:nth-child(2) {
-      border-color: rgba(49, 212, 134, .58);
-      background: rgba(49, 212, 134, .12);
-      color: var(--accent-2);
-    }
-    .suggest-box {
-      border-color: rgba(49, 212, 134, .42);
-      box-shadow: 0 18px 38px rgba(0,0,0,.38), 0 0 0 1px rgba(49,212,134,.08);
-    }
-    .metric {
-      background: rgba(49, 212, 134, .08);
-      border-color: rgba(49, 212, 134, .22);
-    }
-    .meter span { background: linear-gradient(90deg, #10b981, #86efac); }
-    @media (prefers-color-scheme: light) {
-      body {
-        background:
-          radial-gradient(circle at 18% -8%, rgba(15,159,104,.18), transparent 30%),
-          radial-gradient(circle at 88% 12%, rgba(52,211,153,.14), transparent 28%),
-          linear-gradient(180deg, #f1fbf5 0%, var(--bg) 52%, #e8f6ee 100%);
-      }
-      .composer-card, .latest-card {
-        background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(241,251,245,.92));
-      }
-      textarea#inputText {
-        background: linear-gradient(180deg, #ffffff, #f2fbf6);
-      }
-    }
+    @media (max-width: 1000px) { .app { grid-template-columns: 1fr; } .side { position: static; } .control-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 700px) { main { padding: 12px; } header { padding: 14px 12px 10px; } .top-controls, .grid, .control-grid { grid-template-columns: 1fr; } .col-12,.col-8,.col-6,.col-4,.col-3,.col-2 { grid-column: 1; } .suggest-row { grid-template-columns: 1fr; } .status { max-width: none; width: 100%; } textarea { min-height: 205px; } }
   </style>
 </head>
 <body>
-  <header class="hero">
-    <div class="hero-inner">
-      <div>
-        <h1>Higgs TTS 3 playground</h1>
-      </div>
+  <header>
+    <div class="topbar">
+      <h1>Higgs TTS 3 playground</h1>
       <div id="topStatus" class="status" role="status" aria-live="polite">Ready.</div>
     </div>
   </header>
@@ -442,83 +237,97 @@
   <main>
     <section id="fileProtocolWarning" class="file-warning hidden">
       <h2>Open through localhost or GitHub Pages</h2>
-      <p class="muted">This page is open with <span class="kbd">file://</span>. Use GitHub Pages or a small local server for reliable browser storage, downloads, and network calls.</p>
+      <p class="muted">This page is open with <code>file://</code>. Use GitHub Pages or a small local server for reliable browser storage, downloads, and network calls.</p>
       <pre>python3 -m http.server 8080</pre>
     </section>
 
-    <div class="app-shell">
-      <div class="left-stack">
-        <details class="panel" id="connectionPanel">
-          <summary>Connection and defaults</summary>
-          <div class="panel-body">
-            <div class="grid">
-              <div class="col-4">
-                <label for="apiKey">Boson API key</label>
-                <input id="apiKey" type="password" autocomplete="off" placeholder="bai-xxxx" />
-                <div class="hint">Keep this blank when your proxy owns the key.</div>
-              </div>
-              <div class="col-3">
-                <label for="endpoint">API base URL</label>
-                <input id="endpoint" value="https://api.boson.ai" />
-              </div>
-              <div class="col-3">
-                <label for="proxyBase">Optional proxy base URL</label>
-                <input id="proxyBase" placeholder="https://your-proxy.example.com" />
-              </div>
-              <div class="col-2">
-                <label for="model">Model</label>
-                <input id="model" value="higgs-tts-3" />
-              </div>
-              <div class="col-12 row">
-                <button type="button" id="testAuthBtn" class="secondary">Test connection</button>
-                <button type="button" id="saveSessionBtn">Save key for this tab</button>
-                <button type="button" id="saveLocalBtn">Save key in this browser</button>
-                <button type="button" id="clearKeyBtn" class="danger">Clear saved key</button>
-              </div>
-            </div>
-          </div>
-        </details>
-
+    <div class="app">
+      <div class="stack">
         <section class="composer-card">
-          <div class="composer-top">
+          <div class="composer-head">
             <div>
-              <h2>Playground</h2>
-              <div class="hint">Type normally. Add Higgs tags with <span class="kbd">&lt;|</span>, the helper drawer, or the quick controls.</div>
+              <h2>Write your line</h2>
+              <div class="hint">Type normally. Use quick controls or type <code>&lt;|</code> for tag suggestions.</div>
             </div>
             <div class="composer-actions">
               <button type="button" id="generateBtn" class="primary">Generate</button>
-              <button type="button" id="streamBtn" class="secondary">Stream PCM</button>
-              <button type="button" id="validateBtn">Check</button>
+              <button type="button" id="controlToggleBtn" class="secondary">+ Control</button>
             </div>
           </div>
 
-          <label for="inputText">Input text</label>
+          <label for="inputText">Text to speak</label>
           <div class="editor-wrap">
-            <textarea id="inputText"><|emotion:contemplation|><|prosody:expressive_low|>Okay, so let me think about that for a second. <|prosody:pause|> I think the key moment is when the speaker holds the turn.</textarea>
+            <textarea id="inputText">Okay, so let me think about that for a second. <|prosody:pause|> I think the key moment is when the speaker holds the turn.</textarea>
             <div id="tagSuggest" class="suggest-box hidden" role="listbox" aria-label="Tag suggestions"></div>
           </div>
-          <div class="row" style="margin-top: 8px;">
-            <div style="flex: 1 1 320px;">
+
+          <div class="row" style="margin-top:8px;">
+            <div style="flex:1 1 310px;">
               <div class="meter" aria-hidden="true"><span id="charMeter"></span></div>
-              <div id="charCount" class="hint" style="margin-top: 5px;">0 / 5000 characters</div>
+              <div id="charCount" class="hint" style="margin-top:5px;">0 / 5000 characters</div>
             </div>
-            <div id="inlineFeedback" class="hint" style="flex: 1 1 280px; text-align: right;">Tip: Ctrl+Enter generates. Pause buttons use boundary-safe tags.</div>
+            <div id="inlineFeedback" class="hint" style="flex:1 1 260px; text-align:right;">Tip: Ctrl+Enter generates.</div>
           </div>
 
-          <div class="quick-controls" style="margin-top: 12px;">
-            <button type="button" id="insertPauseBtn">Pause</button>
-            <button type="button" id="insertLongPauseBtn">Long pause</button>
-            <button type="button" id="insertHesitationBtn">Hesitation</button>
-            <button type="button" id="insertRepairBtn">Repair phrase</button>
-            <button type="button" id="convertSsmlBtn" class="warn">Convert SSML</button>
-            <button type="button" id="clearTagsBtn" class="danger">Remove tags</button>
+          <div class="toolbar">
+            <span class="label">Quick add:</span>
+            <button type="button" id="insertPauseBtn" class="chip">Pause</button>
+            <button type="button" id="insertLongPauseBtn" class="chip">Long pause</button>
+            <button type="button" id="insertHesitationBtn" class="chip">Hesitation</button>
+            <span id="modePill" class="mode-pill">Fast streaming on</span>
+          </div>
+        </section>
+
+        <section id="controlPanel" class="popover" aria-label="Add control panel">
+          <div class="composer-head">
+            <div>
+              <h2>Add control</h2>
+              <div class="hint">Insert timing, tone, conversation, sound, or examples without searching through panels.</div>
+            </div>
+            <button type="button" id="closeControlBtn" class="ghost" style="width:auto;">Close</button>
+          </div>
+          <div class="control-grid">
+            <div class="control-group">
+              <h3>Timing</h3>
+              <button type="button" id="controlPauseBtn">Pause</button>
+              <button type="button" id="controlLongPauseBtn">Long pause</button>
+              <button type="button" id="controlHesitationBtn">Hesitation</button>
+            </div>
+            <div class="control-group">
+              <h3>Tone</h3>
+              <div class="tone-grid">
+                <select id="emotionSelect" aria-label="Emotion"></select>
+                <select id="styleSelect" aria-label="Style"></select>
+                <select id="speedSelect" aria-label="Speed"></select>
+                <select id="pitchSelect" aria-label="Pitch"></select>
+                <select id="expressiveSelect" aria-label="Expressiveness"></select>
+              </div>
+              <div class="row tight" style="margin-top:8px;">
+                <button type="button" id="applyToneBtn">Apply to line</button>
+                <button type="button" id="insertToneBtn">Insert here</button>
+              </div>
+            </div>
+            <div class="control-group">
+              <h3>Conversation</h3>
+              <button type="button" id="insertRepairBtn">Self-repair</button>
+              <button type="button" id="insertBackchannelBtn">Backchannel</button>
+              <button type="button" id="okayQuestionBtn">Okay?</button>
+              <button type="button" id="okayPeriodBtn">Okay.</button>
+            </div>
+            <div class="control-group">
+              <h3>Sound & examples</h3>
+              <button type="button" data-sfx="laughter" class="sfxBtn">Laughter</button>
+              <button type="button" data-sfx="sigh" class="sfxBtn">Sigh</button>
+              <button type="button" data-example="turn" class="exampleBtn">Turn holding</button>
+              <button type="button" data-example="repair" class="exampleBtn">Repair example</button>
+            </div>
           </div>
         </section>
 
         <section>
-          <h2>Controls</h2>
-          <div class="grid">
-            <div class="col-3">
+          <h2>Voice</h2>
+          <div class="top-controls">
+            <div>
               <label for="presetVoice">Voice</label>
               <select id="presetVoice">
                 <option value="default">default</option>
@@ -530,1219 +339,553 @@
                 <option value="oliver">oliver</option>
               </select>
             </div>
-            <div class="col-3">
-              <label for="customVoice">Manual voice ID</label>
-              <input id="customVoice" placeholder="voice_... optional" />
-            </div>
-            <div class="col-2">
-              <label for="format">Format</label>
-              <select id="format">
-                <option>mp3</option>
-                <option>wav</option>
-                <option>flac</option>
-                <option>opus</option>
-                <option>aac</option>
-                <option>pcm</option>
-              </select>
-            </div>
-            <div class="col-2">
-              <label for="streamMode">Streaming</label>
-              <select id="streamMode">
-                <option value="false">off</option>
-                <option value="true">on</option>
-              </select>
-            </div>
-            <div class="col-2">
-              <label for="testLabel">Test label</label>
-              <input id="testLabel" placeholder="manual" />
+            <div>
+              <label for="toneSummary">Current tone</label>
+              <input id="toneSummary" value="none" readonly />
             </div>
           </div>
+        </section>
 
-          <details class="slim" open style="margin-top: 10px;">
-            <summary>Turn-level delivery tags</summary>
-            <div class="slim-body">
-              <div class="grid">
-                <div class="col-3">
-                  <label for="emotionSelect">Emotion</label>
-                  <select id="emotionSelect"></select>
-                </div>
-                <div class="col-3">
-                  <label for="styleSelect">Style</label>
-                  <select id="styleSelect"></select>
-                </div>
-                <div class="col-2">
-                  <label for="speedSelect">Speed</label>
-                  <select id="speedSelect"></select>
-                </div>
-                <div class="col-2">
-                  <label for="pitchSelect">Pitch</label>
-                  <select id="pitchSelect"></select>
-                </div>
-                <div class="col-2">
-                  <label for="expressiveSelect">Expressiveness</label>
-                  <select id="expressiveSelect"></select>
-                </div>
-                <div class="col-12 row">
-                  <button type="button" id="applyLeadingBtn" class="secondary">Apply to start</button>
-                  <button type="button" id="insertLeadingAtCursorBtn">Insert at cursor</button>
-                  <button type="button" id="clearLeadingBtn">Clear start tags</button>
-                </div>
+        <details class="panel" id="settingsPanel">
+          <summary>Settings and developer tools</summary>
+          <div class="panel-body">
+            <div class="grid">
+              <div class="col-4">
+                <label for="apiKey">Boson API key</label>
+                <input id="apiKey" type="password" autocomplete="off" placeholder="bai-xxxx" />
+                <div class="hint">Leave blank if a proxy owns the key.</div>
+              </div>
+              <div class="col-4">
+                <label for="endpoint">API base URL</label>
+                <input id="endpoint" value="https://api.boson.ai" />
+              </div>
+              <div class="col-4">
+                <label for="proxyBase">Optional proxy base URL</label>
+                <input id="proxyBase" placeholder="https://your-proxy.example.com" />
+              </div>
+              <div class="col-3">
+                <label for="model">Model</label>
+                <input id="model" value="higgs-tts-3" />
+              </div>
+              <div class="col-3">
+                <label for="streamMode">Playback mode</label>
+                <select id="streamMode">
+                  <option value="true" selected>fast stream</option>
+                  <option value="false">complete file</option>
+                </select>
+              </div>
+              <div class="col-3">
+                <label for="format">File format when not streaming</label>
+                <select id="format">
+                  <option>mp3</option>
+                  <option>wav</option>
+                  <option>flac</option>
+                  <option>opus</option>
+                  <option>aac</option>
+                  <option>pcm</option>
+                </select>
+              </div>
+              <div class="col-3">
+                <label for="customVoice">Manual voice ID</label>
+                <input id="customVoice" placeholder="voice_... optional" />
+              </div>
+              <div class="col-4">
+                <label for="testLabel">Label for this request</label>
+                <input id="testLabel" placeholder="manual" />
+              </div>
+              <div class="col-8">
+                <label for="extraJson">Extra JSON fields</label>
+                <textarea id="extraJson" class="tiny-textarea" placeholder='{"temperature":0.7}'></textarea>
+              </div>
+              <div class="col-12 row">
+                <button type="button" id="testAuthBtn" class="secondary">Test connection</button>
+                <button type="button" id="saveSessionBtn">Save key for this tab</button>
+                <button type="button" id="saveLocalBtn">Save key in this browser</button>
+                <button type="button" id="clearKeyBtn" class="danger">Clear saved key</button>
               </div>
             </div>
-          </details>
 
-          <details class="slim" style="margin-top: 10px;">
-            <summary>Sound effects, examples, and advanced options</summary>
-            <div class="slim-body">
-              <div class="grid">
-                <div class="col-3">
-                  <label for="sfxSelect">Sound effect</label>
-                  <select id="sfxSelect"></select>
-                </div>
-                <div class="col-3">
-                  <label for="sfxCue">Written cue</label>
-                  <input id="sfxCue" value="Haha" />
-                </div>
-                <div class="col-6 row" style="align-items: end;">
-                  <button type="button" id="insertSfxBtn" class="secondary">Insert sfx</button>
-                  <button type="button" id="insertOverlapBtn">Overlap resumption</button>
-                </div>
-                <div class="col-6">
-                  <label for="templateSelect">Example prompt</label>
-                  <select id="templateSelect"></select>
-                </div>
-                <div class="col-6 row" style="align-items: end;">
-                  <button type="button" id="loadTemplateBtn" class="secondary">Load example</button>
-                  <button type="button" id="appendTemplateBtn">Append example</button>
-                </div>
-                <div class="col-12 row">
-                  <button type="button" id="okayPeriodBtn">Okay.</button>
-                  <button type="button" id="okayQuestionBtn">Okay?</button>
+            <details class="slim">
+              <summary>Text tools and examples</summary>
+              <div class="slim-body">
+                <div class="row" style="margin-top:8px;">
+                  <button type="button" id="convertSsmlBtn" class="warn">Convert SSML</button>
+                  <button type="button" id="clearTagsBtn" class="danger">Remove all tags</button>
                   <button type="button" id="okayCommaBtn">Okay,</button>
                   <button type="button" id="okayExclaimBtn">Okay!</button>
                 </div>
-                <div class="col-12">
-                  <label for="extraJson">Extra JSON fields</label>
-                  <textarea id="extraJson" class="tiny-textarea" placeholder='{"temperature":0.7}'></textarea>
+              </div>
+            </details>
+
+            <details class="slim">
+              <summary>Tag reference</summary>
+              <div class="slim-body">
+                <label for="tagSearch" style="margin-top:8px;">Search tags</label>
+                <input id="tagSearch" placeholder="emotion, pause, fast, laughter" />
+                <div class="tag-cats" id="tagCategoryButtons"></div>
+                <div id="tagResults" class="tag-results" style="margin-top:8px;"></div>
+              </div>
+            </details>
+
+            <details class="slim">
+              <summary>Checks, payload, and log</summary>
+              <div class="slim-body">
+                <div class="grid" style="margin-top:8px;">
+                  <div class="col-6">
+                    <h3>Input check</h3>
+                    <ul id="analysisList" class="analysis-list"></ul>
+                  </div>
+                  <div class="col-6">
+                    <h3>Tags in current input</h3>
+                    <div id="tagPreview" class="pill-list"></div>
+                  </div>
+                  <div class="col-12 row">
+                    <button type="button" id="showPayloadBtn">Show request JSON</button>
+                    <button type="button" id="copyPayloadBtn">Copy request JSON</button>
+                    <button type="button" id="copyCurlBtn">Copy cURL</button>
+                    <button type="button" id="clearLogBtn">Clear log</button>
+                  </div>
+                  <div class="col-12"><pre id="log"></pre></div>
                 </div>
               </div>
-            </div>
-          </details>
-        </section>
-
-        <details class="panel" id="tagHelperPanel">
-          <summary>Tag helper and examples</summary>
-          <div class="panel-body">
-            <div class="tag-helper-grid">
-              <div>
-                <label for="tagSearch">Search tags</label>
-                <input id="tagSearch" placeholder="emotion, pause, fast, laughter" />
-                <div class="tag-cats" id="tagCategoryButtons" style="margin-top: 8px;"></div>
-              </div>
-              <div>
-                <div class="hint" style="margin-bottom: 8px;">Click a tag to insert it at the cursor. Start typing <span class="kbd">&lt;|</span> in the editor for suggestions.</div>
-                <div id="tagResults" class="tag-results"></div>
-              </div>
-            </div>
-          </div>
-        </details>
-
-        <details class="panel">
-          <summary>Validation, payload, and log</summary>
-          <div class="panel-body">
-            <div class="grid">
-              <div class="col-6">
-                <h3>Input check</h3>
-                <ul id="analysisList" class="analysis-list"></ul>
-              </div>
-              <div class="col-6">
-                <h3>Tags in current input</h3>
-                <div id="tagPreview" class="pill-list"></div>
-              </div>
-              <div class="col-12 row">
-                <button type="button" id="showPayloadBtn">Show request JSON</button>
-                <button type="button" id="copyPayloadBtn">Copy request JSON</button>
-                <button type="button" id="copyCurlBtn">Copy cURL</button>
-                <button type="button" id="clearLogBtn">Clear log</button>
-              </div>
-              <div class="col-12">
-                <pre id="log"></pre>
-              </div>
-            </div>
+            </details>
           </div>
         </details>
       </div>
 
-      <aside class="right-stack">
+      <aside class="side">
         <section class="latest-card">
           <h2>Latest audio</h2>
-          <div id="latestPlayer" class="empty-player">Generated audio will appear here, so you do not need to scroll.</div>
-          <div class="row" style="margin-top: 10px;">
-            <button type="button" id="playLatestBtn" class="secondary" disabled>Play latest</button>
-            <button type="button" id="reuseLatestBtn" disabled>Reuse input</button>
+          <div id="latestPlayer" class="empty-player">Generated audio will appear here.</div>
+          <div class="row" style="margin-top:10px;">
+            <button type="button" id="reuseLatestBtn" disabled>Reuse text</button>
             <button type="button" id="downloadLatestBtn" disabled>Download</button>
           </div>
-          <label for="latestNote" style="margin-top: 10px;">Analyst note for latest output</label>
-          <textarea id="latestNote" class="note-textarea" placeholder="Timing, intonation, affect, repair, or tag behavior." disabled></textarea>
+          <details class="slim">
+            <summary>Add note</summary>
+            <div class="slim-body">
+              <textarea id="latestNote" class="note-textarea" placeholder="Timing, intonation, affect, repair, or tag behavior." disabled style="margin-top:8px;"></textarea>
+            </div>
+          </details>
         </section>
 
         <section>
-          <h2>Session</h2>
-          <div class="metrics" id="sessionMetrics">
-            <span class="metric">0 outputs</span>
+          <h2>Recent</h2>
+          <div class="metrics" id="sessionMetrics"><span class="metric">0 outputs</span></div>
+          <div id="historyList" class="history-list" style="margin-top:10px;"></div>
+          <div class="row" style="margin-top:10px;">
+            <button type="button" id="exportResultsBtn">Export</button>
+            <button type="button" id="clearOutputsBtn" class="warn">Clear</button>
           </div>
-          <div class="row" style="margin-top: 10px;">
-            <button type="button" id="exportResultsBtn">Export session</button>
-            <button type="button" id="clearOutputsBtn" class="warn">Clear outputs</button>
-          </div>
-          <details class="slim" open style="margin-top: 10px;">
-            <summary>Output history</summary>
-            <div class="slim-body">
-              <div id="historyList" class="history-list"></div>
-            </div>
-          </details>
         </section>
       </aside>
     </div>
   </main>
 
-  <script>
-    const $ = (id) => document.getElementById(id);
+<script>
+const $ = (id) => document.getElementById(id);
 
-    const PRESET_VOICES = ["default", "chloe", "eleanor", "jake", "marcus", "nora", "oliver"];
-    const EMOTIONS = ["", "elation", "amusement", "enthusiasm", "determination", "pride", "contentment", "affection", "relief", "contemplation", "confusion", "surprise", "awe", "longing", "arousal", "anger", "fear", "disgust", "bitterness", "sadness", "shame", "helplessness"];
-    const STYLES = ["", "singing", "shouting", "whispering"];
-    const SPEEDS = ["", "speed_very_slow", "speed_slow", "speed_fast", "speed_very_fast"];
-    const PITCHES = ["", "pitch_low", "pitch_high"];
-    const EXPRESSIVENESS = ["", "expressive_high", "expressive_low"];
-    const PROSODY_POSITIONAL = ["pause", "long_pause"];
-    const SFX = ["", "cough", "laughter", "crying", "screaming", "burping", "humming", "sigh", "sniff", "sneeze"];
-    const SFX_CUES = {
-      cough: "Ahem",
-      laughter: "Haha",
-      crying: "Sob",
-      screaming: "Ahh",
-      burping: "Burp",
-      humming: "Hmm",
-      sigh: "Ahh",
-      sniff: "Sff",
-      sneeze: "Achoo"
-    };
-    const MIME_BY_FORMAT = {
-      mp3: "audio/mpeg",
-      wav: "audio/wav",
-      flac: "audio/flac",
-      opus: "audio/ogg; codecs=opus",
-      aac: "audio/aac",
-      pcm: "audio/wav"
-    };
-    const TEMPLATES = [
-      { name: "Turn holding with pause", text: "<|emotion:contemplation|><|prosody:expressive_low|>Uh, give me a second <|prosody:pause|> I’m trying to remember the exact word." },
-      { name: "Repair initiation", text: "<|emotion:confusion|>Wait, sorry, what did you mean by that?" },
-      { name: "Self-repair", text: "<|emotion:contemplation|>I went on Monday, no sorry, <|prosody:pause|> Tuesday, right after lunch." },
-      { name: "Backchannel sequence", text: "<|emotion:contentment|><|prosody:expressive_low|>Mm-hmm. <|prosody:pause|> Yeah. <|prosody:pause|> Right." },
-      { name: "News receipt", text: "<|emotion:surprise|>Oh wow. <|prosody:pause|> I didn’t expect that." },
-      { name: "Question contour test", text: "<|emotion:contemplation|><|prosody:pitch_high|>So you’re saying it changed after lunch?" },
-      { name: "Dispreferred response", text: "<|emotion:contemplation|><|prosody:speed_slow|>Well, <|prosody:pause|> I’m not sure that works for me." },
-      { name: "Laughter repair", text: "<|emotion:amusement|><|sfx:laughter|>Haha, no, I said Tuesday, not Thursday." },
-      { name: "Flat institutional reading", text: "<|prosody:expressive_low|>The meeting starts at noon. Bring the report. That is all." },
-      { name: "High involvement response", text: "<|emotion:enthusiasm|><|prosody:speed_fast|>Yes, exactly, that is the part I was trying to explain." }
-    ];
-    const TAG_CATALOG = buildTagCatalog();
-    const RECOGNIZED_TAGS = new Set(TAG_CATALOG.map((x) => x.key));
+const PRESET_VOICES = ["default", "chloe", "eleanor", "jake", "marcus", "nora", "oliver"];
+const EMOTIONS = ["", "elation", "amusement", "enthusiasm", "determination", "pride", "contentment", "affection", "relief", "contemplation", "confusion", "surprise", "awe", "longing", "arousal", "anger", "fear", "disgust", "bitterness", "sadness", "shame", "helplessness"];
+const STYLES = ["", "singing", "shouting", "whispering"];
+const SPEEDS = ["", "speed_very_slow", "speed_slow", "speed_fast", "speed_very_fast"];
+const PITCHES = ["", "pitch_low", "pitch_high"];
+const EXPRESSIVENESS = ["", "expressive_high", "expressive_low"];
+const PROSODY_POSITIONAL = ["pause", "long_pause"];
+const SFX = ["", "cough", "laughter", "crying", "screaming", "burping", "humming", "sigh", "sniff", "sneeze"];
+const SFX_CUES = { cough:"Ahem", laughter:"Haha", crying:"Sob", screaming:"Ahh", burping:"Burp", humming:"Hmm", sigh:"Ahh", sniff:"Sff", sneeze:"Achoo" };
+const MIME_BY_FORMAT = { mp3:"audio/mpeg", wav:"audio/wav", flac:"audio/flac", opus:"audio/ogg; codecs=opus", aac:"audio/aac", pcm:"audio/wav" };
+const EXAMPLES = {
+  turn: "Uh, give me a second <|prosody:pause|> I’m trying to remember the exact word.",
+  repair: "I went on Monday, no sorry, <|prosody:pause|> Tuesday, right after lunch."
+};
+const TAG_CATALOG = buildTagCatalog();
+const RECOGNIZED_TAGS = new Set(TAG_CATALOG.map((x) => x.key));
 
-    let outputs = [];
-    let audioContext = null;
-    let currentTagCategory = "all";
-    let activeSuggestIndex = 0;
-    let currentSuggestionRange = null;
+let outputs = [];
+let audioContext = null;
+let currentTagCategory = "all";
+let activeSuggestIndex = 0;
+let currentSuggestionRange = null;
 
-    function buildTagCatalog() {
-      const items = [];
-      EMOTIONS.filter(Boolean).forEach((value) => items.push({ category: "emotion", value, key: `emotion:${value}`, token: tag("emotion", value), help: "Turn-level affect tag. Best near the start of a turn." }));
-      STYLES.filter(Boolean).forEach((value) => items.push({ category: "style", value, key: `style:${value}`, token: tag("style", value), help: "Delivery style. Best near the start of a turn." }));
-      SPEEDS.filter(Boolean).forEach((value) => items.push({ category: "prosody", value, key: `prosody:${value}`, token: tag("prosody", value), help: "Speaking-rate control. Best near the start of a span." }));
-      PITCHES.filter(Boolean).forEach((value) => items.push({ category: "prosody", value, key: `prosody:${value}`, token: tag("prosody", value), help: "Pitch control for contour tests." }));
-      EXPRESSIVENESS.filter(Boolean).forEach((value) => items.push({ category: "prosody", value, key: `prosody:${value}`, token: tag("prosody", value), help: "Controls flatter or more expressive delivery." }));
-      PROSODY_POSITIONAL.forEach((value) => items.push({ category: "pause", value, key: `prosody:${value}`, token: tag("prosody", value), help: "Place after punctuation or let the pause helper add a boundary before sending." }));
-      SFX.filter(Boolean).forEach((value) => items.push({ category: "sfx", value, key: `sfx:${value}`, token: tag("sfx", value) + (SFX_CUES[value] || ""), help: "Sound effect plus written cue." }));
-      return items;
-    }
-
-    function initSelect(id, values) {
-      const el = $(id);
-      el.innerHTML = "";
-      values.forEach((value) => {
-        const opt = document.createElement("option");
-        opt.value = value;
-        opt.textContent = value || "none";
-        el.appendChild(opt);
-      });
-    }
-
-    function initTemplates() {
-      const el = $("templateSelect");
-      el.innerHTML = "";
-      TEMPLATES.forEach((item, index) => {
-        const opt = document.createElement("option");
-        opt.value = String(index);
-        opt.textContent = item.name;
-        el.appendChild(opt);
-      });
-    }
-
-    function initTagHelper() {
-      const cats = ["all", "emotion", "style", "prosody", "pause", "sfx"];
-      const wrap = $("tagCategoryButtons");
-      wrap.innerHTML = "";
-      cats.forEach((cat) => {
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = cat === currentTagCategory ? "active" : "";
-        button.textContent = cat;
-        button.addEventListener("click", () => {
-          currentTagCategory = cat;
-          renderTagHelper();
-          setStatus(`Showing ${cat} tags.`, "ok");
-        });
-        wrap.appendChild(button);
-      });
-      renderTagHelper();
-    }
-
-    function renderTagHelper() {
-      const query = ($("tagSearch").value || "").trim().toLowerCase();
-      const results = TAG_CATALOG.filter((item) => {
-        const catMatch = currentTagCategory === "all" || item.category === currentTagCategory;
-        const text = `${item.category} ${item.value} ${item.token} ${item.help}`.toLowerCase();
-        return catMatch && (!query || text.includes(query));
-      });
-      document.querySelectorAll("#tagCategoryButtons button").forEach((button) => {
-        button.classList.toggle("active", button.textContent === currentTagCategory);
-      });
-      const wrap = $("tagResults");
-      wrap.innerHTML = "";
-      if (!results.length) {
-        wrap.innerHTML = `<span class="muted">No matching tags.</span>`;
-        return;
-      }
-      results.forEach((item) => {
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = "pill";
-        button.innerHTML = `<span class="suggest-token">${escapeHtml(item.token)}</span>`;
-        button.title = item.help;
-        button.addEventListener("click", () => {
-          insertAtCursor($("inputText"), item.token + " ");
-          setStatus(`Inserted ${item.key}.`, "ok");
-        });
-        wrap.appendChild(button);
-      });
-    }
-
-    function setStatus(message, kind = "") {
-      const status = $("topStatus");
-      status.textContent = message;
-      status.className = "status" + (kind ? ` ${kind}` : "");
-      $("inlineFeedback").textContent = message;
-    }
-
-    function markButton(button) {
-      if (!button || button.disabled) return;
-      button.classList.add("pressed");
-      window.setTimeout(() => button.classList.remove("pressed"), 160);
-    }
-
-    function log(message, data) {
-      const stamp = new Date().toLocaleTimeString();
-      const suffix = data === undefined ? "" : "\n" + stringify(data);
-      $("log").textContent = `[${stamp}] ${message}${suffix}\n\n` + $("log").textContent;
-    }
-
-    function stringify(value) {
-      return JSON.stringify(value, null, 2);
-    }
-
-    function storageGet(store, key) {
-      try { return store.getItem(key) || ""; } catch (err) { return ""; }
-    }
-
-    function storageSet(store, key, value) {
-      try { store.setItem(key, value); return true; } catch (err) { return false; }
-    }
-
-    function storageRemove(store, key) {
-      try { store.removeItem(key); return true; } catch (err) { return false; }
-    }
-
-    function getApiKey() {
-      return $("apiKey").value.trim() || storageGet(sessionStorage, "boson_api_key") || storageGet(localStorage, "boson_api_key") || "";
-    }
-
-    function apiUrl(path) {
-      const proxy = $("proxyBase").value.trim().replace(/\/+$/, "");
-      const base = (proxy || $("endpoint").value.trim()).replace(/\/+$/, "");
-      return `${base}${path}`;
-    }
-
-    function authHeaders(json = true) {
-      const key = getApiKey();
-      if (!key && !$("proxyBase").value.trim()) throw new Error("Enter a Boson API key first, or use a proxy that owns the key.");
-      const headers = {};
-      if (key) headers.Authorization = `Bearer ${key}`;
-      if (json) headers["Content-Type"] = "application/json";
-      return headers;
-    }
-
-    function currentVoice() {
-      return $("customVoice").value.trim() || $("presetVoice").value;
-    }
-
-    function mergeExtraJson(payload) {
-      const raw = $("extraJson").value.trim();
-      if (!raw) return payload;
-      let extra;
-      try {
-        extra = JSON.parse(raw);
-      } catch (err) {
-        throw new Error("Extra JSON is not valid JSON: " + err.message);
-      }
-      return { ...payload, ...extra };
-    }
-
-    function prepareInputForRequest(text) {
-      return normalizePauseTokens(String(text || ""));
-    }
-
-    function normalizePauseTokens(text) {
-      return text.replace(/\s*<\|prosody:(pause|long_pause)\|>\s*/g, (match, kind, offset, full) => {
-        const before = full.slice(0, offset).replace(/\s+$/, "");
-        const boundary = kind === "long_pause" ? "." : ",";
-        const needsBoundary = before.length > 0 && !/[.!?,;:。？！،؛]$/.test(before);
-        const prefix = needsBoundary ? `${boundary} ` : " ";
-        return `${prefix}<|prosody:${kind}|> `;
-      }).replace(/[ 	]{2,}/g, " ").replace(/\s+([,.;:!?])/g, "$1").trim();
-    }
-
-    function pauseTokenForCursor(kind) {
-      const textarea = $("inputText");
-      const start = textarea.selectionStart ?? textarea.value.length;
-      const before = textarea.value.slice(0, start).replace(/\s+$/, "");
-      const boundary = kind === "long_pause" ? "." : ",";
-      const needsBoundary = before.length > 0 && !/[.!?,;:。？！،؛]$/.test(before);
-      return `${needsBoundary ? boundary : ""} <|prosody:${kind}|> `;
-    }
-
-    function insertPauseAtCursor(kind) {
-      insertAtCursor($("inputText"), pauseTokenForCursor(kind));
-      setStatus(kind === "long_pause" ? "Inserted boundary-safe long pause." : "Inserted boundary-safe pause.", "ok");
-    }
-
-    async function buildSpeechPayload(overrides = {}) {
-      const streamRequested = overrides.stream !== undefined ? overrides.stream : $("streamMode").value === "true";
-      const format = streamRequested ? "pcm" : (overrides.response_format || $("format").value);
-      let payload = {
-        model: overrides.model || $("model").value.trim() || "higgs-tts-3",
-        input: prepareInputForRequest(overrides.input || $("inputText").value),
-        voice: overrides.voice || currentVoice(),
-        response_format: format,
-        stream: !!streamRequested
-      };
-      if (!payload.input || !payload.input.trim()) throw new Error("Input text is required.");
-      if (payload.input.length > 5000) throw new Error("Input is longer than 5000 characters. Shorten it before sending.");
-      return mergeExtraJson(payload);
-    }
-
-    async function testAuth() {
-      setStatus("Testing connection.");
-      const response = await fetch(apiUrl("/v1/audio/voices"), { method: "GET", headers: authHeaders(false) });
-      const text = await safeResponseText(response);
-      if (!response.ok) throw new Error(`Connection test failed: ${response.status} ${response.statusText}\n${text}`);
-      let data = {};
-      try { data = JSON.parse(text || "{}"); } catch (err) { data = { raw: text }; }
-      const count = Array.isArray(data.data) ? data.data.length : 0;
-      setStatus(`Connection worked. ${count} reusable voice record${count === 1 ? "" : "s"} returned.`, "ok");
-      log("Connection test response", data);
-      return data;
-    }
-
-    async function postSpeech(payload) {
-      const t0 = performance.now();
-      const response = await fetch(apiUrl("/v1/audio/speech"), {
-        method: "POST",
-        headers: authHeaders(true),
-        body: JSON.stringify(payload)
-      });
-      const elapsed = performance.now() - t0;
-      if (!response.ok) {
-        const text = await safeResponseText(response);
-        throw new Error(`Speech request failed: ${response.status} ${response.statusText}\n${text}`);
-      }
-      const contentType = response.headers.get("content-type") || MIME_BY_FORMAT[payload.response_format] || "application/octet-stream";
-      const blob = await response.blob();
-      return { blob, contentType, elapsed, headers: response.headers };
-    }
-
-    async function safeResponseText(response) {
-      try { return await response.text(); } catch (err) { return String(err); }
-    }
-
-    function requestLabel(defaultLabel) {
-      const typed = $("testLabel").value.trim();
-      return typed || defaultLabel;
-    }
-
-    async function generateSpeech(overrides = {}, label = requestLabel("Manual request")) {
-      const payload = await buildSpeechPayload(overrides);
-      if (payload.stream) return generateStreaming({ ...overrides, stream: true }, label);
-      setStatus(`Generating ${label}.`);
-      log("Speech request", redactedPayload(payload));
-      const result = await postSpeech(payload);
-      let blob = result.blob;
-      let contentType = result.contentType;
-      if (payload.response_format === "pcm") {
-        const bytes = new Uint8Array(await blob.arrayBuffer());
-        const wav = encodeWavFromPcm(bytes, 24000, 1, 16);
-        blob = new Blob([wav], { type: "audio/wav" });
-        contentType = "audio/wav";
-      }
-      addOutput({
-        label,
-        payload: redactedPayload(payload),
-        blob,
-        contentType,
-        elapsed: result.elapsed,
-        stream: false,
-        ttfa: null,
-        size: blob.size,
-        extension: extForPayload(payload)
-      });
-      setStatus(`Done: ${label}. Audio is ready in the latest player.`, "ok");
-      return result;
-    }
-
-    async function generateStreaming(overrides = {}, label = requestLabel("Streaming request")) {
-      const payload = await buildSpeechPayload({ ...overrides, stream: true, response_format: "pcm" });
-      setStatus(`Streaming ${label}.`);
-      log("Streaming request", redactedPayload(payload));
-      const t0 = performance.now();
-      const response = await fetch(apiUrl("/v1/audio/speech"), {
-        method: "POST",
-        headers: authHeaders(true),
-        body: JSON.stringify(payload)
-      });
-      if (!response.ok) {
-        const text = await safeResponseText(response);
-        throw new Error(`Streaming request failed: ${response.status} ${response.statusText}\n${text}`);
-      }
-      if (!response.body) throw new Error("This browser did not expose a readable stream for the response.");
-      const sampleRate = parseInt(response.headers.get("x-sample-rate") || response.headers.get("x-audio-sample-rate") || "24000", 10);
-      const channels = parseInt(response.headers.get("x-channels") || "1", 10);
-      const bitDepth = parseInt(response.headers.get("x-bit-depth") || "16", 10);
-      audioContext = audioContext || new (window.AudioContext || window.webkitAudioContext)({ sampleRate });
-      if (audioContext.state === "suspended") await audioContext.resume();
-      const reader = response.body.getReader();
-      const chunks = [];
-      let bytesRead = 0;
-      let ttfa = null;
-      const scheduler = { nextTime: audioContext.currentTime + 0.12 };
-      let carry = new Uint8Array(0);
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        if (!value || !value.byteLength) continue;
-        if (ttfa === null) ttfa = performance.now() - t0;
-        chunks.push(value);
-        bytesRead += value.byteLength;
-        const combined = concatUint8(carry, value);
-        const evenLength = combined.byteLength - (combined.byteLength % 2);
-        const playable = combined.slice(0, evenLength);
-        carry = combined.slice(evenLength);
-        playPcm16Chunk(playable, sampleRate, scheduler);
-        setStatus(`Streaming ${label}: ${bytesRead.toLocaleString()} bytes received.`, "ok");
-      }
-      const elapsed = performance.now() - t0;
-      const pcm = concatManyUint8(chunks);
-      const wavBuffer = encodeWavFromPcm(pcm, sampleRate, channels, bitDepth);
-      const blob = new Blob([wavBuffer], { type: "audio/wav" });
-      addOutput({
-        label,
-        payload: redactedPayload(payload),
-        blob,
-        contentType: "audio/wav",
-        elapsed,
-        stream: true,
-        ttfa,
-        size: blob.size,
-        extension: "wav",
-        metadata: { sampleRate, channels, bitDepth }
-      });
-      setStatus(`Streaming done: ${label}. Audio is ready in the latest player.`, "ok");
-      return { blob, elapsed, ttfa };
-    }
-
-    function concatUint8(a, b) {
-      if (!a || a.byteLength === 0) return b;
-      const out = new Uint8Array(a.byteLength + b.byteLength);
-      out.set(a, 0);
-      out.set(b, a.byteLength);
-      return out;
-    }
-
-    function concatManyUint8(chunks) {
-      const total = chunks.reduce((sum, chunk) => sum + chunk.byteLength, 0);
-      const out = new Uint8Array(total);
-      let offset = 0;
-      chunks.forEach((chunk) => { out.set(chunk, offset); offset += chunk.byteLength; });
-      return out;
-    }
-
-    function playPcm16Chunk(bytes, sampleRate, scheduler) {
-      if (!bytes || bytes.byteLength < 2) return;
-      const samples = bytes.byteLength / 2;
-      const audioBuffer = audioContext.createBuffer(1, samples, sampleRate);
-      const channel = audioBuffer.getChannelData(0);
-      const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
-      for (let i = 0; i < samples; i++) channel[i] = Math.max(-1, Math.min(1, view.getInt16(i * 2, true) / 32768));
-      const source = audioContext.createBufferSource();
-      source.buffer = audioBuffer;
-      source.connect(audioContext.destination);
-      const startAt = Math.max(audioContext.currentTime + 0.03, scheduler.nextTime);
-      source.start(startAt);
-      scheduler.nextTime = startAt + audioBuffer.duration;
-    }
-
-    function encodeWavFromPcm(pcmBytes, sampleRate = 24000, channels = 1, bitDepth = 16) {
-      const dataLength = pcmBytes.byteLength;
-      const blockAlign = channels * bitDepth / 8;
-      const byteRate = sampleRate * blockAlign;
-      const buffer = new ArrayBuffer(44 + dataLength);
-      const view = new DataView(buffer);
-      writeAscii(view, 0, "RIFF");
-      view.setUint32(4, 36 + dataLength, true);
-      writeAscii(view, 8, "WAVE");
-      writeAscii(view, 12, "fmt ");
-      view.setUint32(16, 16, true);
-      view.setUint16(20, 1, true);
-      view.setUint16(22, channels, true);
-      view.setUint32(24, sampleRate, true);
-      view.setUint32(28, byteRate, true);
-      view.setUint16(32, blockAlign, true);
-      view.setUint16(34, bitDepth, true);
-      writeAscii(view, 36, "data");
-      view.setUint32(40, dataLength, true);
-      new Uint8Array(buffer, 44).set(pcmBytes);
-      return buffer;
-    }
-
-    function writeAscii(view, offset, str) {
-      for (let i = 0; i < str.length; i++) view.setUint8(offset + i, str.charCodeAt(i));
-    }
-
-    function extForPayload(payload) {
-      if (payload.stream || payload.response_format === "pcm") return "wav";
-      return payload.response_format || "mp3";
-    }
-
-    function redactedPayload(payload) {
-      return { ...payload };
-    }
-
-    function makeId() {
-      if (window.crypto && typeof window.crypto.randomUUID === "function") return window.crypto.randomUUID();
-      return `id-${Date.now()}-${Math.random().toString(16).slice(2)}`;
-    }
-
-    function addOutput(item) {
-      const url = URL.createObjectURL(item.blob);
-      outputs.unshift({ id: makeId(), createdAt: new Date().toISOString(), analystNote: "", objectUrl: url, ...item });
-      renderLatestOutput();
-      renderHistory();
-      renderSessionMetrics();
-    }
-
-    function latestOutput() {
-      return outputs[0] || null;
-    }
-
-    function renderLatestOutput() {
-      const item = latestOutput();
-      const wrap = $("latestPlayer");
-      if (!item) {
-        wrap.className = "empty-player";
-        wrap.textContent = "Generated audio will appear here, so you do not need to scroll.";
-        ["playLatestBtn", "reuseLatestBtn", "downloadLatestBtn"].forEach((id) => $(id).disabled = true);
-        $("latestNote").disabled = true;
-        $("latestNote").value = "";
-        return;
-      }
-      wrap.className = "";
-      const ttfa = item.ttfa == null ? "" : `<span class="metric">TTFA ${Math.round(item.ttfa)} ms</span>`;
-      const meta = item.metadata ? `<span class="metric">${item.metadata.sampleRate} Hz</span>` : "";
-      wrap.innerHTML = `
-        <h3>${escapeHtml(item.label)}</h3>
-        <div class="metrics">
-          <span class="metric">${item.stream ? "stream" : "blocking"}</span>
-          <span class="metric">${escapeHtml(item.payload.response_format || "")}</span>
-          <span class="metric">${Math.round(item.elapsed)} ms</span>
-          ${ttfa}
-          <span class="metric">${formatBytes(item.size)}</span>
-          ${meta}
-        </div>
-        <audio id="latestAudio" controls src="${item.objectUrl}"></audio>
-      `;
-      ["playLatestBtn", "reuseLatestBtn", "downloadLatestBtn"].forEach((id) => $(id).disabled = false);
-      $("latestNote").disabled = false;
-      $("latestNote").value = item.analystNote || "";
-    }
-
-    function renderHistory() {
-      const wrap = $("historyList");
-      wrap.innerHTML = "";
-      if (!outputs.length) {
-        wrap.innerHTML = `<div class="muted">No outputs yet.</div>`;
-        return;
-      }
-      outputs.slice(0, 8).forEach((item, index) => {
-        const div = document.createElement("div");
-        div.className = "history-item";
-        div.innerHTML = `
-          <strong>${index + 1}. ${escapeHtml(item.label)}</strong>
-          <div class="metrics" style="margin: 5px 0;">
-            <span class="metric">${escapeHtml(item.payload.voice || "")}</span>
-            <span class="metric">${escapeHtml(item.payload.response_format || "")}</span>
-            <span class="metric">${Math.round(item.elapsed)} ms</span>
-          </div>
-          <audio controls src="${item.objectUrl}"></audio>
-          <div class="row tight">
-            <button type="button" class="compact" data-action="make-latest" data-id="${item.id}">Make latest</button>
-            <button type="button" class="compact" data-action="reuse" data-id="${item.id}">Reuse</button>
-            <button type="button" class="compact" data-action="copy" data-id="${item.id}">Copy payload</button>
-          </div>
-        `;
-        wrap.appendChild(div);
-      });
-      wrap.querySelectorAll("button[data-action]").forEach((button) => {
-        button.addEventListener("click", () => {
-          markButton(button);
-          const item = outputs.find((x) => x.id === button.dataset.id);
-          if (!item) return;
-          if (button.dataset.action === "make-latest") {
-            outputs = [item, ...outputs.filter((x) => x.id !== item.id)];
-            renderLatestOutput();
-            renderHistory();
-            setStatus("Moved selected output to latest player.", "ok");
-          } else if (button.dataset.action === "reuse") {
-            $("inputText").value = item.payload.input || "";
-            setStatus("Copied output input back to editor.", "ok");
-            updateAnalysis();
-          } else if (button.dataset.action === "copy") {
-            copyText(stringify(item.payload));
-          }
-        });
-      });
-    }
-
-    function renderSessionMetrics() {
-      const wrap = $("sessionMetrics");
-      const total = outputs.length;
-      const latest = latestOutput();
-      wrap.innerHTML = `<span class="metric">${total} output${total === 1 ? "" : "s"}</span>`;
-      if (latest) {
-        wrap.innerHTML += `<span class="metric">latest ${escapeHtml(latest.payload.voice || "")}</span><span class="metric">${escapeHtml(latest.payload.response_format || "")}</span>`;
-      }
-    }
-
-    function playLatest() {
-      const audio = $("latestAudio");
-      if (!audio) throw new Error("No latest audio yet.");
-      audio.play();
-      setStatus("Playing latest audio.", "ok");
-    }
-
-    function reuseLatest() {
-      const item = latestOutput();
-      if (!item) throw new Error("No latest audio yet.");
-      $("inputText").value = item.payload.input || "";
-      setStatus("Copied latest input back to editor.", "ok");
-      updateAnalysis();
-    }
-
-    function downloadLatest() {
-      const item = latestOutput();
-      if (!item) throw new Error("No latest audio yet.");
-      const a = document.createElement("a");
-      a.href = item.objectUrl;
-      a.download = safeFileName(`${item.label}.${item.extension || "wav"}`);
-      a.click();
-      setStatus("Latest audio download started.", "ok");
-    }
-
-    function updateLatestNote() {
-      const item = latestOutput();
-      if (item) item.analystNote = $("latestNote").value;
-    }
-
-    function exportResults() {
-      const data = outputs.map((item) => ({
-        id: item.id,
-        createdAt: item.createdAt,
-        label: item.label,
-        payload: item.payload,
-        analystNote: item.analystNote || "",
-        stream: item.stream,
-        elapsedMs: Math.round(item.elapsed),
-        ttfaMs: item.ttfa == null ? null : Math.round(item.ttfa),
-        sizeBytes: item.size,
-        contentType: item.contentType,
-        metadata: item.metadata || null
-      }));
-      const blob = new Blob([stringify(data)], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `higgs-tts-ca-session-${Date.now()}.json`;
-      a.click();
-      URL.revokeObjectURL(url);
-      setStatus("Session JSON exported.", "ok");
-    }
-
-    function safeFileName(name) {
-      return name.toLowerCase().replace(/[^a-z0-9_.-]+/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");
-    }
-
-    function formatBytes(bytes) {
-      if (bytes < 1024) return `${bytes} B`;
-      if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-      return `${(bytes / 1024 / 1024).toFixed(2)} MB`;
-    }
-
-    function escapeHtml(str) {
-      return String(str).replace(/[&<>"]/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
-    }
-
-    async function copyText(text) {
-      await navigator.clipboard.writeText(text);
-      setStatus("Copied to clipboard.", "ok");
-    }
-
-    function currentCurl(payload) {
-      const body = JSON.stringify(payload, null, 2).replace(/'/g, "'\\''");
-      return `curl ${apiUrl("/v1/audio/speech")} \\\n  -H "Authorization: Bearer $BOSON_API_KEY" \\\n  -H "Content-Type: application/json" \\\n  -d '${body}' \\\n  --output out.${extForPayload(payload)}`;
-    }
-
-    function tag(category, value) {
-      return value ? `<|${category}:${value}|>` : "";
-    }
-
-    function removeControlTags(text) {
-      return text.replace(/<\|[^|]+\|>/g, "").replace(/\s+/g, " ").trim();
-    }
-
-    function removeLeadingDeliveryTags(text) {
-      return text.replace(/^(\s*<\|(emotion|style|prosody):(?!pause|long_pause)[^|]+\|>)+\s*/, "");
-    }
-
-    function buildLeadingTags() {
-      const parts = [];
-      if ($("emotionSelect").value) parts.push(tag("emotion", $("emotionSelect").value));
-      if ($("styleSelect").value) parts.push(tag("style", $("styleSelect").value));
-      if ($("speedSelect").value) parts.push(tag("prosody", $("speedSelect").value));
-      if ($("pitchSelect").value) parts.push(tag("prosody", $("pitchSelect").value));
-      if ($("expressiveSelect").value) parts.push(tag("prosody", $("expressiveSelect").value));
-      return parts.join("");
-    }
-
-    function applyLeadingTags() {
-      const leading = buildLeadingTags();
-      const clean = removeLeadingDeliveryTags($("inputText").value);
-      $("inputText").value = leading ? `${leading}${clean}` : clean;
-      setStatus(leading ? "Applied selected turn-level tags at the start." : "No turn-level tags selected. Start tags cleared.", "ok");
-      updateAnalysis();
-    }
-
-    function insertLeadingAtCursor() {
-      const leading = buildLeadingTags();
-      if (!leading) throw new Error("Choose at least one turn-level tag first.");
-      insertAtCursor($("inputText"), leading);
-      setStatus("Inserted selected tags at cursor.", "ok");
-    }
-
-    function clearLeadingTags() {
-      $("inputText").value = removeLeadingDeliveryTags($("inputText").value);
-      ["emotionSelect", "styleSelect", "speedSelect", "pitchSelect", "expressiveSelect"].forEach((id) => { $(id).value = ""; });
-      setStatus("Cleared start tags and delivery controls.", "ok");
-      updateAnalysis();
-    }
-
-    function insertAtCursor(textarea, insertion) {
-      const start = textarea.selectionStart ?? textarea.value.length;
-      const end = textarea.selectionEnd ?? textarea.value.length;
-      textarea.value = textarea.value.slice(0, start) + insertion + textarea.value.slice(end);
-      textarea.focus();
-      const pos = start + insertion.length;
-      textarea.setSelectionRange(pos, pos);
-      updateAnalysis();
-      updateTagSuggestions();
-    }
-
-    function loadTemplate(append = false) {
-      const item = TEMPLATES[Number($("templateSelect").value || 0)];
+function tag(category, value) { return value ? `<|${category}:${value}|>` : ""; }
+function buildTagCatalog() {
+  const items = [];
+  EMOTIONS.filter(Boolean).forEach((value) => items.push({ category:"emotion", value, key:`emotion:${value}`, token:tag("emotion", value), help:"Affect tag. Best near the start of a line." }));
+  STYLES.filter(Boolean).forEach((value) => items.push({ category:"style", value, key:`style:${value}`, token:tag("style", value), help:"Delivery style. Best near the start." }));
+  SPEEDS.filter(Boolean).forEach((value) => items.push({ category:"prosody", value, key:`prosody:${value}`, token:tag("prosody", value), help:"Speaking-rate control." }));
+  PITCHES.filter(Boolean).forEach((value) => items.push({ category:"prosody", value, key:`prosody:${value}`, token:tag("prosody", value), help:"Pitch contour control." }));
+  EXPRESSIVENESS.filter(Boolean).forEach((value) => items.push({ category:"prosody", value, key:`prosody:${value}`, token:tag("prosody", value), help:"Expressive or flatter delivery." }));
+  PROSODY_POSITIONAL.forEach((value) => items.push({ category:"pause", value, key:`prosody:${value}`, token:tag("prosody", value), help:"Place where timing matters." }));
+  SFX.filter(Boolean).forEach((value) => items.push({ category:"sfx", value, key:`sfx:${value}`, token:tag("sfx", value) + (SFX_CUES[value] || ""), help:"Sound effect plus written cue." }));
+  return items;
+}
+function initSelect(id, values) {
+  const el = $(id);
+  el.innerHTML = "";
+  values.forEach((value) => {
+    const opt = document.createElement("option");
+    opt.value = value;
+    opt.textContent = value || "none";
+    el.appendChild(opt);
+  });
+}
+function setStatus(message, kind = "") {
+  const status = $("topStatus");
+  status.textContent = message;
+  status.className = "status" + (kind ? ` ${kind}` : "");
+  $("inlineFeedback").textContent = message;
+}
+function markButton(button) {
+  if (!button || button.disabled) return;
+  button.classList.add("pressed");
+  setTimeout(() => button.classList.remove("pressed"), 160);
+}
+function stringify(value) { return JSON.stringify(value, null, 2); }
+function log(message, data) {
+  const stamp = new Date().toLocaleTimeString();
+  const suffix = data === undefined ? "" : "\n" + stringify(data);
+  $("log").textContent = `[${stamp}] ${message}${suffix}\n\n` + $("log").textContent;
+}
+function storageGet(store, key) { try { return store.getItem(key) || ""; } catch (err) { return ""; } }
+function storageSet(store, key, value) { try { store.setItem(key, value); return true; } catch (err) { return false; } }
+function storageRemove(store, key) { try { store.removeItem(key); return true; } catch (err) { return false; } }
+function getApiKey() { return $("apiKey").value.trim() || storageGet(sessionStorage, "boson_api_key") || storageGet(localStorage, "boson_api_key") || ""; }
+function apiUrl(path) { const proxy = $("proxyBase").value.trim().replace(/\/+$/, ""); const base = (proxy || $("endpoint").value.trim()).replace(/\/+$/, ""); return `${base}${path}`; }
+function authHeaders(json = true) {
+  const key = getApiKey();
+  if (!key && !$("proxyBase").value.trim()) {
+    openSettingsForKey();
+    throw new Error("Enter a Boson API key first, or use a proxy that owns the key.");
+  }
+  const headers = {};
+  if (key) headers.Authorization = `Bearer ${key}`;
+  if (json) headers["Content-Type"] = "application/json";
+  return headers;
+}
+function openSettingsForKey() {
+  $("settingsPanel").open = true;
+  setTimeout(() => $("apiKey").focus(), 0);
+}
+function currentVoice() { return $("customVoice").value.trim() || $("presetVoice").value; }
+function mergeExtraJson(payload) {
+  const raw = $("extraJson").value.trim();
+  if (!raw) return payload;
+  let extra;
+  try { extra = JSON.parse(raw); } catch (err) { throw new Error("Extra JSON is not valid JSON: " + err.message); }
+  return { ...payload, ...extra };
+}
+function normalizePauseTokens(text) {
+  return String(text || "").replace(/\s*<\|prosody:(pause|long_pause)\|>\s*/g, (match, kind, offset, full) => {
+    const before = full.slice(0, offset).replace(/\s+$/, "");
+    const boundary = kind === "long_pause" ? "." : ",";
+    const needsBoundary = before.length > 0 && !/[.!?,;:。？！،؛]$/.test(before);
+    const prefix = needsBoundary ? `${boundary} ` : " ";
+    return `${prefix}<|prosody:${kind}|> `;
+  }).replace(/[ \t]{2,}/g, " ").replace(/\s+([,.;:!?])/g, "$1").trim();
+}
+function prepareInputForRequest(text) { return normalizePauseTokens(text); }
+async function buildSpeechPayload(overrides = {}) {
+  const streamRequested = overrides.stream !== undefined ? overrides.stream : $("streamMode").value === "true";
+  const format = streamRequested ? "pcm" : (overrides.response_format || $("format").value);
+  let payload = {
+    model: overrides.model || $("model").value.trim() || "higgs-tts-3",
+    input: prepareInputForRequest(overrides.input || $("inputText").value),
+    voice: overrides.voice || currentVoice(),
+    response_format: format,
+    stream: !!streamRequested
+  };
+  if (!payload.input || !payload.input.trim()) throw new Error("Input text is required.");
+  if (payload.input.length > 5000) throw new Error("Input is longer than 5000 characters. Shorten it before sending.");
+  return mergeExtraJson(payload);
+}
+function requestLabel(defaultLabel) { return $("testLabel").value.trim() || defaultLabel; }
+async function postSpeech(payload) {
+  const t0 = performance.now();
+  const response = await fetch(apiUrl("/v1/audio/speech"), { method:"POST", headers:authHeaders(true), body:JSON.stringify(payload) });
+  const elapsed = performance.now() - t0;
+  if (!response.ok) { const text = await safeResponseText(response); throw new Error(`Speech request failed: ${response.status} ${response.statusText}\n${text}`); }
+  const contentType = response.headers.get("content-type") || MIME_BY_FORMAT[payload.response_format] || "application/octet-stream";
+  const blob = await response.blob();
+  return { blob, contentType, elapsed, headers: response.headers };
+}
+async function safeResponseText(response) { try { return await response.text(); } catch (err) { return String(err); } }
+async function testAuth() {
+  setStatus("Testing connection.");
+  const response = await fetch(apiUrl("/v1/audio/voices"), { method:"GET", headers:authHeaders(false) });
+  const text = await safeResponseText(response);
+  if (!response.ok) throw new Error(`Connection test failed: ${response.status} ${response.statusText}\n${text}`);
+  let data = {};
+  try { data = JSON.parse(text || "{}"); } catch (err) { data = { raw:text }; }
+  const count = Array.isArray(data.data) ? data.data.length : 0;
+  setStatus(`Connection worked. ${count} reusable voice record${count === 1 ? "" : "s"} returned.`, "ok");
+  log("Connection test response", data);
+  return data;
+}
+async function generateCurrent() {
+  const label = requestLabel("Manual request");
+  const stream = $("streamMode").value === "true";
+  if (stream) return generateStreaming({}, label);
+  return generateSpeech({}, label);
+}
+async function generateSpeech(overrides = {}, label = requestLabel("Manual request")) {
+  const payload = await buildSpeechPayload({ ...overrides, stream:false });
+  setStatus(`Generating ${label}.`);
+  log("Speech request", redactedPayload(payload));
+  const result = await postSpeech(payload);
+  let blob = result.blob;
+  let contentType = result.contentType;
+  if (payload.response_format === "pcm") {
+    const bytes = new Uint8Array(await blob.arrayBuffer());
+    const wav = encodeWavFromPcm(bytes, 24000, 1, 16);
+    blob = new Blob([wav], { type:"audio/wav" });
+    contentType = "audio/wav";
+  }
+  addOutput({ label, payload:redactedPayload(payload), blob, contentType, elapsed:result.elapsed, stream:false, ttfa:null, size:blob.size, extension:extForPayload(payload) });
+  setStatus(`Done: ${label}.`, "ok");
+  playLatestSoon();
+  return result;
+}
+async function generateStreaming(overrides = {}, label = requestLabel("Manual request")) {
+  const payload = await buildSpeechPayload({ ...overrides, stream:true, response_format:"pcm" });
+  setStatus(`Streaming ${label}.`);
+  log("Streaming request", redactedPayload(payload));
+  const t0 = performance.now();
+  const response = await fetch(apiUrl("/v1/audio/speech"), { method:"POST", headers:authHeaders(true), body:JSON.stringify(payload) });
+  if (!response.ok) { const text = await safeResponseText(response); throw new Error(`Streaming request failed: ${response.status} ${response.statusText}\n${text}`); }
+  if (!response.body) throw new Error("This browser did not expose a readable stream for the response.");
+  const sampleRate = parseInt(response.headers.get("x-sample-rate") || response.headers.get("x-audio-sample-rate") || "24000", 10);
+  const channels = parseInt(response.headers.get("x-channels") || "1", 10);
+  const bitDepth = parseInt(response.headers.get("x-bit-depth") || "16", 10);
+  audioContext = audioContext || new (window.AudioContext || window.webkitAudioContext)({ sampleRate });
+  if (audioContext.state === "suspended") await audioContext.resume();
+  const reader = response.body.getReader();
+  const chunks = [];
+  let bytesRead = 0;
+  let ttfa = null;
+  const scheduler = { nextTime: audioContext.currentTime + 0.12 };
+  let carry = new Uint8Array(0);
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    if (!value || !value.byteLength) continue;
+    if (ttfa === null) ttfa = performance.now() - t0;
+    chunks.push(value);
+    bytesRead += value.byteLength;
+    const combined = concatUint8(carry, value);
+    const evenLength = combined.byteLength - (combined.byteLength % 2);
+    const playable = combined.slice(0, evenLength);
+    carry = combined.slice(evenLength);
+    playPcm16Chunk(playable, sampleRate, scheduler);
+    setStatus(`Streaming ${label}: ${bytesRead.toLocaleString()} bytes received.`, "ok");
+  }
+  const elapsed = performance.now() - t0;
+  const pcm = concatManyUint8(chunks);
+  const wavBuffer = encodeWavFromPcm(pcm, sampleRate, channels, bitDepth);
+  const blob = new Blob([wavBuffer], { type:"audio/wav" });
+  addOutput({ label, payload:redactedPayload(payload), blob, contentType:"audio/wav", elapsed, stream:true, ttfa, size:blob.size, extension:"wav", metadata:{ sampleRate, channels, bitDepth } });
+  setStatus(`Done: ${label}. Audio saved in latest.`, "ok");
+  return { blob, elapsed, ttfa };
+}
+function concatUint8(a, b) { if (!a || a.byteLength === 0) return b; const out = new Uint8Array(a.byteLength + b.byteLength); out.set(a,0); out.set(b,a.byteLength); return out; }
+function concatManyUint8(chunks) { const total = chunks.reduce((sum, chunk) => sum + chunk.byteLength, 0); const out = new Uint8Array(total); let offset = 0; chunks.forEach((chunk) => { out.set(chunk, offset); offset += chunk.byteLength; }); return out; }
+function playPcm16Chunk(bytes, sampleRate, scheduler) {
+  if (!bytes || bytes.byteLength < 2) return;
+  const samples = bytes.byteLength / 2;
+  const audioBuffer = audioContext.createBuffer(1, samples, sampleRate);
+  const channel = audioBuffer.getChannelData(0);
+  const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  for (let i = 0; i < samples; i++) channel[i] = Math.max(-1, Math.min(1, view.getInt16(i * 2, true) / 32768));
+  const source = audioContext.createBufferSource();
+  source.buffer = audioBuffer;
+  source.connect(audioContext.destination);
+  const startAt = Math.max(audioContext.currentTime + 0.03, scheduler.nextTime);
+  source.start(startAt);
+  scheduler.nextTime = startAt + audioBuffer.duration;
+}
+function encodeWavFromPcm(pcmBytes, sampleRate = 24000, channels = 1, bitDepth = 16) {
+  const dataLength = pcmBytes.byteLength;
+  const blockAlign = channels * bitDepth / 8;
+  const byteRate = sampleRate * blockAlign;
+  const buffer = new ArrayBuffer(44 + dataLength);
+  const view = new DataView(buffer);
+  writeAscii(view, 0, "RIFF"); view.setUint32(4, 36 + dataLength, true); writeAscii(view, 8, "WAVE"); writeAscii(view, 12, "fmt ");
+  view.setUint32(16, 16, true); view.setUint16(20, 1, true); view.setUint16(22, channels, true); view.setUint32(24, sampleRate, true); view.setUint32(28, byteRate, true); view.setUint16(32, blockAlign, true); view.setUint16(34, bitDepth, true);
+  writeAscii(view, 36, "data"); view.setUint32(40, dataLength, true); new Uint8Array(buffer, 44).set(pcmBytes); return buffer;
+}
+function writeAscii(view, offset, str) { for (let i = 0; i < str.length; i++) view.setUint8(offset + i, str.charCodeAt(i)); }
+function extForPayload(payload) { if (payload.stream || payload.response_format === "pcm") return "wav"; return payload.response_format || "mp3"; }
+function redactedPayload(payload) { return { ...payload }; }
+function makeId() { if (window.crypto && typeof window.crypto.randomUUID === "function") return window.crypto.randomUUID(); return `id-${Date.now()}-${Math.random().toString(16).slice(2)}`; }
+function addOutput(item) {
+  const url = URL.createObjectURL(item.blob);
+  outputs.unshift({ id:makeId(), createdAt:new Date().toISOString(), analystNote:"", objectUrl:url, ...item });
+  renderLatestOutput(); renderHistory(); renderSessionMetrics();
+}
+function latestOutput() { return outputs[0] || null; }
+function renderLatestOutput() {
+  const item = latestOutput();
+  const wrap = $("latestPlayer");
+  if (!item) {
+    wrap.className = "empty-player";
+    wrap.textContent = "Generated audio will appear here.";
+    ["reuseLatestBtn", "downloadLatestBtn"].forEach((id) => $(id).disabled = true);
+    $("latestNote").disabled = true; $("latestNote").value = "";
+    return;
+  }
+  wrap.className = "";
+  const ttfa = item.ttfa == null ? "" : `<span class="metric">TTFA ${Math.round(item.ttfa)} ms</span>`;
+  const meta = item.metadata ? `<span class="metric">${item.metadata.sampleRate} Hz</span>` : "";
+  wrap.innerHTML = `<h3>${escapeHtml(item.label)}</h3><div class="metrics"><span class="metric">${item.stream ? "stream" : "file"}</span><span class="metric">${escapeHtml(item.payload.voice || "")}</span><span class="metric">${escapeHtml(item.payload.response_format || "")}</span><span class="metric">${Math.round(item.elapsed)} ms</span>${ttfa}<span class="metric">${formatBytes(item.size)}</span>${meta}</div><audio id="latestAudio" controls src="${item.objectUrl}"></audio>`;
+  ["reuseLatestBtn", "downloadLatestBtn"].forEach((id) => $(id).disabled = false);
+  $("latestNote").disabled = false; $("latestNote").value = item.analystNote || "";
+}
+function renderHistory() {
+  const wrap = $("historyList");
+  wrap.innerHTML = "";
+  if (!outputs.length) { wrap.innerHTML = `<div class="muted">No outputs yet.</div>`; return; }
+  outputs.slice(0, 8).forEach((item, index) => {
+    const div = document.createElement("div");
+    div.className = "history-row";
+    div.innerHTML = `<div><div class="history-title">${index + 1}. ${escapeHtml(item.label)}</div><div class="history-sub">${escapeHtml(item.payload.voice || "")} · ${escapeHtml(item.payload.response_format || "")} · ${Math.round(item.elapsed)} ms</div></div><div class="history-actions"><button type="button" data-action="play" data-id="${item.id}">Play</button><button type="button" data-action="reuse" data-id="${item.id}">Reuse</button></div>`;
+    wrap.appendChild(div);
+  });
+  wrap.querySelectorAll("button[data-action]").forEach((button) => {
+    button.addEventListener("click", () => {
+      markButton(button);
+      const item = outputs.find((x) => x.id === button.dataset.id);
       if (!item) return;
-      if (append) {
-        const spacer = $("inputText").value.trim() ? "\n\n" : "";
-        $("inputText").value += spacer + item.text;
-        setStatus(`Appended example: ${item.name}.`, "ok");
-      } else {
-        $("inputText").value = item.text;
-        setStatus(`Loaded example: ${item.name}.`, "ok");
+      if (button.dataset.action === "play") {
+        outputs = [item, ...outputs.filter((x) => x.id !== item.id)];
+        renderLatestOutput(); renderHistory(); renderSessionMetrics(); playLatestSoon(); setStatus("Moved selected output to latest.", "ok");
+      } else if (button.dataset.action === "reuse") {
+        $("inputText").value = item.payload.input || ""; updateAnalysis(); setStatus("Copied output text back to editor.", "ok");
       }
-      updateAnalysis();
-    }
-
-    function convertSimpleSsml() {
-      let text = $("inputText").value;
-      text = text.replace(/<\s*break\s+[^>]*time=["']?(\d+(?:\.\d+)?)(ms|s)["']?[^>]*\/?>/gi, (match, amount, unit) => {
-        const ms = unit.toLowerCase() === "s" ? Number(amount) * 1000 : Number(amount);
-        return ms >= 700 ? " <|prosody:long_pause|> " : " <|prosody:pause|> ";
-      });
-      text = text.replace(/<\s*emphasis[^>]*>/gi, "<|prosody:expressive_high|>");
-      text = text.replace(/<\s*\/\s*(speak|emphasis|p|s)\s*>/gi, " ");
-      text = text.replace(/<\s*(speak|p|s)[^>]*>/gi, " ");
-      text = text.replace(/<(?!\|)[^>]+>/g, " ").replace(/[ \t]+/g, " ").replace(/\n\s+/g, "\n").trim();
-      $("inputText").value = text;
-      setStatus("Converted simple SSML-like tags to Higgs inline tags or plain text.", "ok");
-      updateAnalysis();
-    }
-
-    function getTags(text) {
-      const tags = [];
-      const re = /<\|([^:|]+):([^|]+)\|>/g;
-      let match;
-      while ((match = re.exec(text)) !== null) {
-        tags.push({ raw: match[0], category: match[1], value: match[2], key: `${match[1]}:${match[2]}`, index: match.index });
-      }
-      return tags;
-    }
-
-    function hasPauseBoundaryBefore(text, index) {
-      const before = text.slice(0, index).replace(/\s+$/, "");
-      return before.length === 0 || /[.!?,;:。？！،؛]$/.test(before);
-    }
-
-    function analyzeInput() {
-      const text = $("inputText").value || "";
-      const issues = [];
-      const plain = removeControlTags(text);
-      const tags = getTags(text);
-      if (!text.trim()) issues.push({ kind: "danger", text: "Input text is empty." });
-      if (text.length > 5000) issues.push({ kind: "danger", text: `Input has ${text.length} characters. The API limit is 5000.` });
-      if (/<\/?speak|<break\b|<prosody\b|<emphasis\b/i.test(text)) issues.push({ kind: "warn", text: "SSML-like markup detected. Use Higgs inline tags or press Convert SSML." });
-      const unknown = tags.filter((item) => !RECOGNIZED_TAGS.has(item.key));
-      if (unknown.length) issues.push({ kind: "warn", text: `Unknown Higgs tags: ${unknown.map((x) => x.raw).join(", ")}.` });
-      const streamOn = $("streamMode").value === "true";
-      if (streamOn && /<\|prosody:speed_[^|]+\|>/.test(text)) issues.push({ kind: "warn", text: "Streaming forces PCM. Speed tags have limited support during streaming." });
-      const weakPause = tags.some((item) => item.key === "prosody:pause" || item.key === "prosody:long_pause" ? !hasPauseBoundaryBefore(text, item.index) : false);
-      if (weakPause) issues.push({ kind: "warn", text: "A pause tag sits after a word without punctuation. The request will add a comma or period before that pause." });
-      const lateDelivery = tags.some((item) => ["emotion", "style"].includes(item.category) && item.index > Math.max(5, Math.round(text.length * 0.25)) && plain.length > 0);
-      if (lateDelivery) issues.push({ kind: "warn", text: "Emotion and style tags usually work best near the start of a turn or span." });
-      const sfxWithoutCue = tags.some((item) => item.category === "sfx" && !/\|>[A-Za-z]/.test(text.slice(item.index, item.index + item.raw.length + 14)));
-      if (sfxWithoutCue) issues.push({ kind: "warn", text: "Sound-effect tags work best with a written cue after the tag." });
-      if (!issues.length) issues.push({ kind: "ok", text: tags.length ? "Ready to generate." : "Ready to generate plain speech. Add tags when testing controls." });
-      return issues;
-    }
-
-    function validateInput(showStatus = true) {
-      const issues = analyzeInput();
-      renderAnalysis(issues);
-      if (showStatus) {
-        const errors = issues.filter((x) => x.kind === "danger").length;
-        const warnings = issues.filter((x) => x.kind === "warn").length;
-        setStatus(errors ? `${errors} issue${errors === 1 ? "" : "s"} must be fixed before sending.` : warnings ? `Input usable with ${warnings} warning${warnings === 1 ? "" : "s"}.` : "Input looks ready.", errors ? "danger" : warnings ? "warn" : "ok");
-      }
-      return issues;
-    }
-
-    function renderAnalysis(issues) {
-      const list = $("analysisList");
-      list.innerHTML = "";
-      issues.forEach((item) => {
-        const li = document.createElement("li");
-        li.className = item.kind;
-        li.textContent = item.text;
-        list.appendChild(li);
-      });
-    }
-
-    function renderTagPreview() {
-      const wrap = $("tagPreview");
-      const tags = getTags($("inputText").value || "");
-      wrap.innerHTML = "";
-      if (!tags.length) {
-        wrap.innerHTML = `<span class="muted">No inline tags in the current input.</span>`;
-        return;
-      }
-      tags.forEach((item) => {
-        const span = document.createElement("span");
-        span.className = "pill" + (RECOGNIZED_TAGS.has(item.key) ? " ok" : " warn");
-        span.textContent = item.raw;
-        wrap.appendChild(span);
-      });
-    }
-
-    function updateCharCount() {
-      const len = ($("inputText").value || "").length;
-      const pct = Math.min(100, Math.round((len / 5000) * 100));
-      $("charCount").textContent = `${len} / 5000 characters`;
-      $("charMeter").style.width = `${pct}%`;
-    }
-
-    function updateAnalysis() {
-      updateCharCount();
-      renderTagPreview();
-      validateInput(false);
-    }
-
-    function detectTagPrefix() {
-      const textarea = $("inputText");
-      const pos = textarea.selectionStart ?? 0;
-      const before = textarea.value.slice(0, pos);
-      const start = before.lastIndexOf("<|");
-      if (start < 0) return null;
-      const between = before.slice(start);
-      if (between.includes("|>") || between.includes("\n") || between.length > 40) return null;
-      return { start, end: pos, query: between.slice(2).toLowerCase() };
-    }
-
-    function updateTagSuggestions() {
-      const box = $("tagSuggest");
-      const range = detectTagPrefix();
-      currentSuggestionRange = range;
-      if (!range) {
-        box.classList.add("hidden");
-        box.innerHTML = "";
-        return;
-      }
-      const matches = TAG_CATALOG.filter((item) => item.key.toLowerCase().includes(range.query) || item.token.toLowerCase().includes(range.query)).slice(0, 8);
-      if (!matches.length) {
-        box.classList.add("hidden");
-        return;
-      }
-      activeSuggestIndex = Math.min(activeSuggestIndex, matches.length - 1);
-      box.innerHTML = `<div class="suggest-head"><span>Tag suggestions</span><span>Enter inserts, Esc closes</span></div>` + matches.map((item, index) => `
-        <div class="suggest-row ${index === activeSuggestIndex ? "active" : ""}" data-index="${index}" role="option">
-          <div class="suggest-token">${escapeHtml(item.token)}</div>
-          <div class="suggest-help">${escapeHtml(item.help)}</div>
-        </div>
-      `).join("");
-      box.classList.remove("hidden");
-      box.querySelectorAll(".suggest-row").forEach((row) => {
-        row.addEventListener("mousedown", (event) => {
-          event.preventDefault();
-          const item = matches[Number(row.dataset.index)];
-          applySuggestion(item.token);
-        });
-      });
-    }
-
-    function applySuggestion(token) {
-      const range = currentSuggestionRange;
-      if (!range) return;
-      const textarea = $("inputText");
-      textarea.value = textarea.value.slice(0, range.start) + token + textarea.value.slice(range.end);
-      const pos = range.start + token.length;
-      textarea.focus();
-      textarea.setSelectionRange(pos, pos);
-      $("tagSuggest").classList.add("hidden");
-      updateAnalysis();
-      setStatus(`Inserted ${token}.`, "ok");
-    }
-
-    function handleSuggestionKeys(event) {
-      const box = $("tagSuggest");
-      if (box.classList.contains("hidden")) return false;
-      const rows = [...box.querySelectorAll(".suggest-row")];
-      if (!rows.length) return false;
-      if (event.key === "ArrowDown") {
-        event.preventDefault();
-        activeSuggestIndex = (activeSuggestIndex + 1) % rows.length;
-        updateTagSuggestions();
-        return true;
-      }
-      if (event.key === "ArrowUp") {
-        event.preventDefault();
-        activeSuggestIndex = (activeSuggestIndex - 1 + rows.length) % rows.length;
-        updateTagSuggestions();
-        return true;
-      }
-      if (event.key === "Enter") {
-        event.preventDefault();
-        const token = rows[activeSuggestIndex].querySelector(".suggest-token").textContent;
-        applySuggestion(token);
-        return true;
-      }
-      if (event.key === "Escape") {
-        event.preventDefault();
-        box.classList.add("hidden");
-        return true;
-      }
-      return false;
-    }
-
-    async function showPayload() {
-      const payload = await buildSpeechPayload();
-      log("Current request JSON", redactedPayload(payload));
-      setStatus("Request JSON added to log.", "ok");
-    }
-
-    async function copyPayload() {
-      const payload = await buildSpeechPayload();
-      await copyText(stringify(redactedPayload(payload)));
-    }
-
-    async function copyCurl() {
-      const payload = await buildSpeechPayload();
-      await copyText(currentCurl(payload));
-    }
-
-    function loadSavedKey() {
-      const saved = storageGet(sessionStorage, "boson_api_key") || storageGet(localStorage, "boson_api_key") || "";
-      if (saved) $("apiKey").value = saved;
-    }
-
-    function attachHandlers() {
-      document.addEventListener("click", (event) => {
-        const button = event.target.closest("button");
-        if (button) markButton(button);
-      }, true);
-      $("inputText").addEventListener("input", () => { updateAnalysis(); updateTagSuggestions(); });
-      $("inputText").addEventListener("click", updateTagSuggestions);
-      $("inputText").addEventListener("keyup", updateTagSuggestions);
-      $("inputText").addEventListener("keydown", (event) => {
-        if (handleSuggestionKeys(event)) return;
-        if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
-          event.preventDefault();
-          handle(() => generateSpeech({}, requestLabel("Manual request")));
-        }
-        if ((event.ctrlKey || event.metaKey) && event.key === " ") {
-          event.preventDefault();
-          const textarea = $("inputText");
-          const pos = textarea.selectionStart ?? textarea.value.length;
-          textarea.value = textarea.value.slice(0, pos) + "<|" + textarea.value.slice(pos);
-          textarea.setSelectionRange(pos + 2, pos + 2);
-          updateTagSuggestions();
-        }
-      });
-
-      $("testAuthBtn").addEventListener("click", () => handle(testAuth));
-      $("saveSessionBtn").addEventListener("click", () => {
-        const ok = storageSet(sessionStorage, "boson_api_key", $("apiKey").value.trim());
-        setStatus(ok ? "Saved key for this tab." : "This browser blocked session storage.", ok ? "ok" : "warn");
-      });
-      $("saveLocalBtn").addEventListener("click", () => {
-        const ok = storageSet(localStorage, "boson_api_key", $("apiKey").value.trim());
-        setStatus(ok ? "Saved key in this browser." : "This browser blocked local storage.", ok ? "ok" : "warn");
-      });
-      $("clearKeyBtn").addEventListener("click", () => {
-        storageRemove(sessionStorage, "boson_api_key");
-        storageRemove(localStorage, "boson_api_key");
-        $("apiKey").value = "";
-        setStatus("Cleared saved key.", "ok");
-      });
-      $("streamMode").addEventListener("change", () => {
-        if ($("streamMode").value === "true") {
-          $("format").value = "pcm";
-          setStatus("Streaming enabled. Format changed to PCM.", "ok");
-        } else setStatus("Streaming disabled.", "ok");
-        updateAnalysis();
-      });
-      $("format").addEventListener("change", () => setStatus(`Format set to ${$("format").value}.`, "ok"));
-      $("presetVoice").addEventListener("change", () => setStatus(`Voice set to ${$("presetVoice").value}.`, "ok"));
-      $("sfxSelect").addEventListener("change", () => {
-        const cue = SFX_CUES[$("sfxSelect").value] || "";
-        if (cue) $("sfxCue").value = cue;
-      });
-      ["extraJson", "customVoice", "model", "endpoint", "proxyBase", "testLabel"].forEach((id) => $(id).addEventListener("input", updateAnalysis));
-      $("tagSearch").addEventListener("input", renderTagHelper);
-
-      $("generateBtn").addEventListener("click", () => handle(() => generateSpeech({}, requestLabel("Manual request"))));
-      $("streamBtn").addEventListener("click", () => handle(() => generateStreaming({}, requestLabel("Manual streaming request"))));
-      $("validateBtn").addEventListener("click", () => validateInput(true));
-      $("insertPauseBtn").addEventListener("click", () => insertPauseAtCursor("pause"));
-      $("insertLongPauseBtn").addEventListener("click", () => insertPauseAtCursor("long_pause"));
-      $("insertHesitationBtn").addEventListener("click", () => { insertAtCursor($("inputText"), " uh, <|prosody:pause|> "); setStatus("Inserted hesitation cue plus pause.", "ok"); });
-      $("insertRepairBtn").addEventListener("click", () => { insertAtCursor($("inputText"), " sorry, I mean, <|prosody:pause|> "); setStatus("Inserted repair phrase.", "ok"); });
-      $("insertOverlapBtn").addEventListener("click", () => { insertAtCursor($("inputText"), " no wait, let me finish that thought, "); setStatus("Inserted overlap resumption phrase.", "ok"); });
-      $("convertSsmlBtn").addEventListener("click", convertSimpleSsml);
-      $("clearTagsBtn").addEventListener("click", () => { $("inputText").value = removeControlTags($("inputText").value); setStatus("Removed inline tags.", "ok"); updateAnalysis(); });
-      $("applyLeadingBtn").addEventListener("click", applyLeadingTags);
-      $("insertLeadingAtCursorBtn").addEventListener("click", () => handle(insertLeadingAtCursor));
-      $("clearLeadingBtn").addEventListener("click", clearLeadingTags);
-      $("insertSfxBtn").addEventListener("click", () => handle(() => {
-        const effect = $("sfxSelect").value;
-        if (!effect) throw new Error("Choose a sound effect first.");
-        const cue = $("sfxCue").value.trim() || SFX_CUES[effect] || "";
-        insertAtCursor($("inputText"), `${tag("sfx", effect)}${cue}${cue ? ", " : ""}`);
-        setStatus(`Inserted ${effect} sound effect.`, "ok");
-      }));
-      $("loadTemplateBtn").addEventListener("click", () => loadTemplate(false));
-      $("appendTemplateBtn").addEventListener("click", () => loadTemplate(true));
-      $("okayPeriodBtn").addEventListener("click", () => { $("inputText").value = "Okay."; setStatus("Loaded Okay. token test.", "ok"); updateAnalysis(); });
-      $("okayQuestionBtn").addEventListener("click", () => { $("inputText").value = "Okay?"; setStatus("Loaded Okay? token test.", "ok"); updateAnalysis(); });
-      $("okayCommaBtn").addEventListener("click", () => { $("inputText").value = "Okay,"; setStatus("Loaded Okay, token test.", "ok"); updateAnalysis(); });
-      $("okayExclaimBtn").addEventListener("click", () => { $("inputText").value = "Okay!"; setStatus("Loaded Okay! token test.", "ok"); updateAnalysis(); });
-
-      $("showPayloadBtn").addEventListener("click", () => handle(showPayload));
-      $("copyPayloadBtn").addEventListener("click", () => handle(copyPayload));
-      $("copyCurlBtn").addEventListener("click", () => handle(copyCurl));
-      $("clearLogBtn").addEventListener("click", () => { $("log").textContent = ""; setStatus("Log cleared.", "ok"); });
-      $("playLatestBtn").addEventListener("click", () => handle(playLatest));
-      $("reuseLatestBtn").addEventListener("click", () => handle(reuseLatest));
-      $("downloadLatestBtn").addEventListener("click", () => handle(downloadLatest));
-      $("latestNote").addEventListener("input", updateLatestNote);
-      $("exportResultsBtn").addEventListener("click", exportResults);
-      $("clearOutputsBtn").addEventListener("click", () => {
-        outputs.forEach((item) => { if (item.objectUrl) URL.revokeObjectURL(item.objectUrl); });
-        outputs = [];
-        renderLatestOutput();
-        renderHistory();
-        renderSessionMetrics();
-        setStatus("Outputs cleared.", "ok");
-      });
-    }
-
-    async function handle(fn) {
-      try {
-        await fn();
-      } catch (err) {
-        const message = String(err && err.message ? err.message : err);
-        const friendly = message.includes("Failed to fetch") ? "Request failed. Check CORS, network, endpoint, or proxy settings." : message;
-        setStatus(friendly, "danger");
-        log("Error", String(err && err.stack ? err.stack : err));
-      }
-    }
-
-    function boot() {
-      const warning = $("fileProtocolWarning");
-      if (warning && window.location.protocol === "file:") warning.classList.remove("hidden");
-      initSelect("emotionSelect", EMOTIONS);
-      initSelect("styleSelect", STYLES);
-      initSelect("speedSelect", SPEEDS);
-      initSelect("pitchSelect", PITCHES);
-      initSelect("expressiveSelect", EXPRESSIVENESS);
-      initSelect("sfxSelect", SFX);
-      initTemplates();
-      initTagHelper();
-      loadSavedKey();
-      attachHandlers();
-      renderLatestOutput();
-      renderHistory();
-      renderSessionMetrics();
-      updateAnalysis();
-      log("Playground loaded. Use the editor, controls, or tag helper to generate a test." );
-    }
-
-    boot();
-  </script>
+    });
+  });
+}
+function renderSessionMetrics() {
+  const total = outputs.length;
+  const latest = latestOutput();
+  $("sessionMetrics").innerHTML = `<span class="metric">${total} output${total === 1 ? "" : "s"}</span>` + (latest ? `<span class="metric">latest ${escapeHtml(latest.payload.voice || "")}</span>` : "");
+}
+function playLatestSoon() { setTimeout(() => { const audio = $("latestAudio"); if (audio) audio.play().catch(() => {}); }, 50); }
+function reuseLatest() { const item = latestOutput(); if (!item) throw new Error("No latest audio yet."); $("inputText").value = item.payload.input || ""; updateAnalysis(); setStatus("Copied latest text back to editor.", "ok"); }
+function downloadLatest() { const item = latestOutput(); if (!item) throw new Error("No latest audio yet."); const a = document.createElement("a"); a.href = item.objectUrl; a.download = safeFileName(`${item.label}.${item.extension || "wav"}`); a.click(); setStatus("Download started.", "ok"); }
+function updateLatestNote() { const item = latestOutput(); if (item) item.analystNote = $("latestNote").value; }
+function exportResults() {
+  const data = outputs.map((item) => ({ id:item.id, createdAt:item.createdAt, label:item.label, payload:item.payload, analystNote:item.analystNote || "", stream:item.stream, elapsedMs:Math.round(item.elapsed), ttfaMs:item.ttfa == null ? null : Math.round(item.ttfa), sizeBytes:item.size, contentType:item.contentType, metadata:item.metadata || null }));
+  const blob = new Blob([stringify(data)], { type:"application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a"); a.href = url; a.download = `higgs-tts-session-${Date.now()}.json`; a.click(); URL.revokeObjectURL(url); setStatus("Session exported.", "ok");
+}
+function safeFileName(name) { return name.toLowerCase().replace(/[^a-z0-9_.-]+/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, ""); }
+function formatBytes(bytes) { if (bytes < 1024) return `${bytes} B`; if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`; return `${(bytes / 1024 / 1024).toFixed(2)} MB`; }
+function escapeHtml(str) { return String(str).replace(/[&<>"]/g, (ch) => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[ch])); }
+async function copyText(text) { await navigator.clipboard.writeText(text); setStatus("Copied to clipboard.", "ok"); }
+function currentCurl(payload) { const body = JSON.stringify(payload, null, 2).replace(/'/g, "'\\''"); return `curl ${apiUrl("/v1/audio/speech")} \\\n  -H "Authorization: Bearer $BOSON_API_KEY" \\\n  -H "Content-Type: application/json" \\\n  -d '${body}' \\\n  --output out.${extForPayload(payload)}`; }
+function removeControlTags(text) { return text.replace(/<\|[^|]+\|>/g, "").replace(/\s+/g, " ").trim(); }
+function removeLeadingDeliveryTags(text) { return text.replace(/^(\s*<\|(emotion|style|prosody):(?!pause|long_pause)[^|]+\|>)+\s*/, ""); }
+function buildToneTags() {
+  const parts = [];
+  if ($("emotionSelect").value) parts.push(tag("emotion", $("emotionSelect").value));
+  if ($("styleSelect").value) parts.push(tag("style", $("styleSelect").value));
+  if ($("speedSelect").value) parts.push(tag("prosody", $("speedSelect").value));
+  if ($("pitchSelect").value) parts.push(tag("prosody", $("pitchSelect").value));
+  if ($("expressiveSelect").value) parts.push(tag("prosody", $("expressiveSelect").value));
+  return parts.join("");
+}
+function selectedToneLabel() {
+  const vals = [$("emotionSelect").value, $("styleSelect").value, $("speedSelect").value, $("pitchSelect").value, $("expressiveSelect").value].filter(Boolean);
+  return vals.length ? vals.join(" + ") : "none";
+}
+function applyToneToLine() { const tone = buildToneTags(); const clean = removeLeadingDeliveryTags($("inputText").value); $("inputText").value = tone ? `${tone}${clean}` : clean; $("toneSummary").value = selectedToneLabel(); updateAnalysis(); setStatus(tone ? "Applied tone to the line." : "No tone selected.", tone ? "ok" : "warn"); }
+function insertToneAtCursor() { const tone = buildToneTags(); if (!tone) throw new Error("Choose at least one tone control first."); insertAtCursor($("inputText"), tone); $("toneSummary").value = selectedToneLabel(); setStatus("Inserted tone at cursor.", "ok"); }
+function clearToneSelections() { ["emotionSelect", "styleSelect", "speedSelect", "pitchSelect", "expressiveSelect"].forEach((id) => $(id).value = ""); $("toneSummary").value = "none"; }
+function pauseTokenForCursor(kind) { const textarea = $("inputText"); const start = textarea.selectionStart ?? textarea.value.length; const before = textarea.value.slice(0, start).replace(/\s+$/, ""); const boundary = kind === "long_pause" ? "." : ","; const needsBoundary = before.length > 0 && !/[.!?,;:。？！،؛]$/.test(before); return `${needsBoundary ? boundary : ""} <|prosody:${kind}|> `; }
+function insertPauseAtCursor(kind) { insertAtCursor($("inputText"), pauseTokenForCursor(kind)); setStatus(kind === "long_pause" ? "Inserted long pause." : "Inserted pause.", "ok"); }
+function insertAtCursor(textarea, insertion) { const start = textarea.selectionStart ?? textarea.value.length; const end = textarea.selectionEnd ?? textarea.value.length; textarea.value = textarea.value.slice(0, start) + insertion + textarea.value.slice(end); textarea.focus(); const pos = start + insertion.length; textarea.setSelectionRange(pos, pos); updateAnalysis(); updateTagSuggestions(); }
+function insertSfx(kind) { const cue = SFX_CUES[kind] || ""; insertAtCursor($("inputText"), `${tag("sfx", kind)}${cue}${cue ? ", " : ""}`); setStatus(`Inserted ${kind}.`, "ok"); }
+function loadExample(key) { if (!EXAMPLES[key]) return; $("inputText").value = EXAMPLES[key]; updateAnalysis(); setStatus("Loaded example.", "ok"); }
+function convertSimpleSsml() { let text = $("inputText").value; text = text.replace(/<\s*break\s+[^>]*time=["']?(\d+(?:\.\d+)?)(ms|s)["']?[^>]*\/?>/gi, (match, amount, unit) => { const ms = unit.toLowerCase() === "s" ? Number(amount) * 1000 : Number(amount); return ms >= 700 ? " <|prosody:long_pause|> " : " <|prosody:pause|> "; }); text = text.replace(/<\s*emphasis[^>]*>/gi, "<|prosody:expressive_high|>"); text = text.replace(/<\s*\/\s*(speak|emphasis|p|s)\s*>/gi, " "); text = text.replace(/<\s*(speak|p|s)[^>]*>/gi, " "); text = text.replace(/<(?!\|)[^>]+>/g, " ").replace(/[ \t]+/g, " ").replace(/\n\s+/g, "\n").trim(); $("inputText").value = text; setStatus("Converted simple SSML-like tags.", "ok"); updateAnalysis(); }
+function getTags(text) { const tags = []; const re = /<\|([^:|]+):([^|]+)\|>/g; let match; while ((match = re.exec(text)) !== null) tags.push({ raw:match[0], category:match[1], value:match[2], key:`${match[1]}:${match[2]}`, index:match.index }); return tags; }
+function hasPauseBoundaryBefore(text, index) { const before = text.slice(0, index).replace(/\s+$/, ""); return before.length === 0 || /[.!?,;:。？！،؛]$/.test(before); }
+function analyzeInput() { const text = $("inputText").value || ""; const issues = []; const tags = getTags(text); if (!text.trim()) issues.push({ kind:"danger", text:"Input text is empty." }); if (text.length > 5000) issues.push({ kind:"danger", text:`Input has ${text.length} characters. The API limit is 5000.` }); if (/<\/?speak|<break\b|<prosody\b|<emphasis\b/i.test(text)) issues.push({ kind:"warn", text:"SSML-like markup detected. Use Higgs tags or Convert SSML." }); const unknown = tags.filter((item) => !RECOGNIZED_TAGS.has(item.key)); if (unknown.length) issues.push({ kind:"warn", text:`Unknown tags: ${unknown.map((x) => x.raw).join(", ")}.` }); const weakPause = tags.some((item) => (item.key === "prosody:pause" || item.key === "prosody:long_pause") && !hasPauseBoundaryBefore(text, item.index)); if (weakPause) issues.push({ kind:"warn", text:"A pause lacks punctuation before it. The request will add a comma or period." }); if ($("streamMode").value === "true" && /<\|prosody:speed_[^|]+\|>/.test(text)) issues.push({ kind:"warn", text:"Fast streaming is on. Speed tags may be less reliable while streaming." }); if (!issues.length) issues.push({ kind:"ok", text:tags.length ? "Ready to generate." : "Ready to generate plain speech." }); return issues; }
+function validateInput(showStatus = true) { const issues = analyzeInput(); renderAnalysis(issues); if (showStatus) { const errors = issues.filter((x) => x.kind === "danger").length; const warnings = issues.filter((x) => x.kind === "warn").length; setStatus(errors ? `${errors} issue${errors === 1 ? "" : "s"} must be fixed.` : warnings ? `Input usable with ${warnings} warning${warnings === 1 ? "" : "s"}.` : "Input looks ready.", errors ? "danger" : warnings ? "warn" : "ok"); } return issues; }
+function renderAnalysis(issues) { const list = $("analysisList"); list.innerHTML = ""; issues.forEach((item) => { const li = document.createElement("li"); li.className = item.kind; li.textContent = item.text; list.appendChild(li); }); }
+function renderTagPreview() { const wrap = $("tagPreview"); const tags = getTags($("inputText").value || ""); wrap.innerHTML = ""; if (!tags.length) { wrap.innerHTML = `<span class="muted">No inline tags.</span>`; return; } tags.forEach((item) => { const span = document.createElement("span"); span.className = "pill " + (RECOGNIZED_TAGS.has(item.key) ? "ok" : "warn"); span.textContent = item.raw; wrap.appendChild(span); }); }
+function updateCharCount() { const len = ($("inputText").value || "").length; const pct = Math.min(100, Math.round((len / 5000) * 100)); $("charCount").textContent = `${len} / 5000 characters`; $("charMeter").style.width = `${pct}%`; }
+function updateAnalysis() { updateCharCount(); renderTagPreview(); validateInput(false); updateModePill(); }
+function updateModePill() { const stream = $("streamMode").value === "true"; $("modePill").textContent = stream ? "Fast streaming on" : `File mode: ${$("format").value}`; }
+function detectTagPrefix() { const textarea = $("inputText"); const pos = textarea.selectionStart ?? 0; const before = textarea.value.slice(0, pos); const start = before.lastIndexOf("<|"); if (start < 0) return null; const between = before.slice(start); if (between.includes("|>") || between.includes("\n") || between.length > 40) return null; return { start, end:pos, query:between.slice(2).toLowerCase() }; }
+function updateTagSuggestions() { const box = $("tagSuggest"); const range = detectTagPrefix(); currentSuggestionRange = range; if (!range) { box.classList.add("hidden"); box.innerHTML = ""; return; } const matches = TAG_CATALOG.filter((item) => item.key.toLowerCase().includes(range.query) || item.token.toLowerCase().includes(range.query)).slice(0, 8); if (!matches.length) { box.classList.add("hidden"); return; } activeSuggestIndex = Math.min(activeSuggestIndex, matches.length - 1); box.innerHTML = `<div class="suggest-head"><span>Tag suggestions</span><span>Enter inserts, Esc closes</span></div>` + matches.map((item, index) => `<div class="suggest-row ${index === activeSuggestIndex ? "active" : ""}" data-index="${index}" role="option"><div class="suggest-token">${escapeHtml(item.token)}</div><div class="suggest-help">${escapeHtml(item.help)}</div></div>`).join(""); box.classList.remove("hidden"); box.querySelectorAll(".suggest-row").forEach((row) => row.addEventListener("mousedown", (event) => { event.preventDefault(); const item = matches[Number(row.dataset.index)]; applySuggestion(item.token); })); }
+function applySuggestion(token) { const range = currentSuggestionRange; if (!range) return; const textarea = $("inputText"); textarea.value = textarea.value.slice(0, range.start) + token + textarea.value.slice(range.end); const pos = range.start + token.length; textarea.focus(); textarea.setSelectionRange(pos, pos); $("tagSuggest").classList.add("hidden"); updateAnalysis(); setStatus(`Inserted ${token}.`, "ok"); }
+function handleSuggestionKeys(event) { const box = $("tagSuggest"); if (box.classList.contains("hidden")) return false; const rows = [...box.querySelectorAll(".suggest-row")]; if (!rows.length) return false; if (event.key === "ArrowDown") { event.preventDefault(); activeSuggestIndex = (activeSuggestIndex + 1) % rows.length; updateTagSuggestions(); return true; } if (event.key === "ArrowUp") { event.preventDefault(); activeSuggestIndex = (activeSuggestIndex - 1 + rows.length) % rows.length; updateTagSuggestions(); return true; } if (event.key === "Enter") { event.preventDefault(); const token = rows[activeSuggestIndex].querySelector(".suggest-token").textContent; applySuggestion(token); return true; } if (event.key === "Escape") { event.preventDefault(); box.classList.add("hidden"); return true; } return false; }
+async function showPayload() { const payload = await buildSpeechPayload(); log("Current request JSON", redactedPayload(payload)); setStatus("Request JSON added to log.", "ok"); }
+async function copyPayload() { const payload = await buildSpeechPayload(); await copyText(stringify(redactedPayload(payload))); }
+async function copyCurl() { const payload = await buildSpeechPayload(); await copyText(currentCurl(payload)); }
+function initTagHelper() { const cats = ["all", "emotion", "style", "prosody", "pause", "sfx"]; const wrap = $("tagCategoryButtons"); wrap.innerHTML = ""; cats.forEach((cat) => { const button = document.createElement("button"); button.type = "button"; button.className = cat === currentTagCategory ? "active" : ""; button.textContent = cat; button.addEventListener("click", () => { currentTagCategory = cat; renderTagHelper(); }); wrap.appendChild(button); }); renderTagHelper(); }
+function renderTagHelper() { const query = ($("tagSearch").value || "").trim().toLowerCase(); const results = TAG_CATALOG.filter((item) => { const catMatch = currentTagCategory === "all" || item.category === currentTagCategory; const text = `${item.category} ${item.value} ${item.token} ${item.help}`.toLowerCase(); return catMatch && (!query || text.includes(query)); }); document.querySelectorAll("#tagCategoryButtons button").forEach((button) => button.classList.toggle("active", button.textContent === currentTagCategory)); const wrap = $("tagResults"); wrap.innerHTML = ""; if (!results.length) { wrap.innerHTML = `<span class="muted">No matching tags.</span>`; return; } results.forEach((item) => { const button = document.createElement("button"); button.type = "button"; button.className = "pill"; button.textContent = item.token; button.title = item.help; button.addEventListener("click", () => { insertAtCursor($("inputText"), item.token + " "); setStatus(`Inserted ${item.key}.`, "ok"); }); wrap.appendChild(button); }); }
+function loadSavedKey() { const saved = storageGet(sessionStorage, "boson_api_key") || storageGet(localStorage, "boson_api_key") || ""; if (saved) $("apiKey").value = saved; }
+function attachHandlers() {
+  document.addEventListener("click", (event) => { const button = event.target.closest("button"); if (button) markButton(button); }, true);
+  $("inputText").addEventListener("input", () => { updateAnalysis(); updateTagSuggestions(); });
+  $("inputText").addEventListener("click", updateTagSuggestions);
+  $("inputText").addEventListener("keyup", updateTagSuggestions);
+  $("inputText").addEventListener("keydown", (event) => {
+    if (handleSuggestionKeys(event)) return;
+    if ((event.ctrlKey || event.metaKey) && event.key === "Enter") { event.preventDefault(); handle(generateCurrent); }
+    if ((event.ctrlKey || event.metaKey) && event.key === " ") { event.preventDefault(); const textarea = $("inputText"); const pos = textarea.selectionStart ?? textarea.value.length; textarea.value = textarea.value.slice(0, pos) + "<|" + textarea.value.slice(pos); textarea.setSelectionRange(pos + 2, pos + 2); updateTagSuggestions(); }
+  });
+  $("generateBtn").addEventListener("click", () => handle(generateCurrent));
+  $("controlToggleBtn").addEventListener("click", () => { $("controlPanel").classList.toggle("open"); setStatus($("controlPanel").classList.contains("open") ? "Control palette opened." : "Control palette closed.", "ok"); });
+  $("closeControlBtn").addEventListener("click", () => { $("controlPanel").classList.remove("open"); setStatus("Control palette closed.", "ok"); });
+  $("insertPauseBtn").addEventListener("click", () => insertPauseAtCursor("pause"));
+  $("insertLongPauseBtn").addEventListener("click", () => insertPauseAtCursor("long_pause"));
+  $("insertHesitationBtn").addEventListener("click", () => { insertAtCursor($("inputText"), " uh, <|prosody:pause|> "); setStatus("Inserted hesitation.", "ok"); });
+  $("controlPauseBtn").addEventListener("click", () => insertPauseAtCursor("pause"));
+  $("controlLongPauseBtn").addEventListener("click", () => insertPauseAtCursor("long_pause"));
+  $("controlHesitationBtn").addEventListener("click", () => { insertAtCursor($("inputText"), " uh, <|prosody:pause|> "); setStatus("Inserted hesitation.", "ok"); });
+  $("insertRepairBtn").addEventListener("click", () => { insertAtCursor($("inputText"), " sorry, I mean, <|prosody:pause|> "); setStatus("Inserted self-repair.", "ok"); });
+  $("insertBackchannelBtn").addEventListener("click", () => { insertAtCursor($("inputText"), " Mm-hmm. <|prosody:pause|> Yeah. "); setStatus("Inserted backchannel.", "ok"); });
+  $("okayQuestionBtn").addEventListener("click", () => { $("inputText").value = "Okay?"; updateAnalysis(); setStatus("Loaded Okay?", "ok"); });
+  $("okayPeriodBtn").addEventListener("click", () => { $("inputText").value = "Okay."; updateAnalysis(); setStatus("Loaded Okay.", "ok"); });
+  $("okayCommaBtn").addEventListener("click", () => { $("inputText").value = "Okay,"; updateAnalysis(); setStatus("Loaded Okay,", "ok"); });
+  $("okayExclaimBtn").addEventListener("click", () => { $("inputText").value = "Okay!"; updateAnalysis(); setStatus("Loaded Okay!", "ok"); });
+  document.querySelectorAll(".sfxBtn").forEach((button) => button.addEventListener("click", () => insertSfx(button.dataset.sfx)));
+  document.querySelectorAll(".exampleBtn").forEach((button) => button.addEventListener("click", () => loadExample(button.dataset.example)));
+  $("applyToneBtn").addEventListener("click", applyToneToLine);
+  $("insertToneBtn").addEventListener("click", () => handle(insertToneAtCursor));
+  ["emotionSelect", "styleSelect", "speedSelect", "pitchSelect", "expressiveSelect"].forEach((id) => $(id).addEventListener("change", () => { $("toneSummary").value = selectedToneLabel(); }));
+  $("presetVoice").addEventListener("change", () => setStatus(`Voice set to ${$("presetVoice").value}.`, "ok"));
+  $("streamMode").addEventListener("change", () => { updateModePill(); setStatus($("streamMode").value === "true" ? "Fast streaming is on." : "Complete file mode is on.", "ok"); updateAnalysis(); });
+  $("format").addEventListener("change", () => { updateModePill(); setStatus(`File format set to ${$("format").value}.`, "ok"); });
+  ["extraJson", "customVoice", "model", "endpoint", "proxyBase", "testLabel"].forEach((id) => $(id).addEventListener("input", updateAnalysis));
+  $("tagSearch").addEventListener("input", renderTagHelper);
+  $("testAuthBtn").addEventListener("click", () => handle(testAuth));
+  $("saveSessionBtn").addEventListener("click", () => { const ok = storageSet(sessionStorage, "boson_api_key", $("apiKey").value.trim()); setStatus(ok ? "Saved key for this tab." : "This browser blocked session storage.", ok ? "ok" : "warn"); });
+  $("saveLocalBtn").addEventListener("click", () => { const ok = storageSet(localStorage, "boson_api_key", $("apiKey").value.trim()); setStatus(ok ? "Saved key in this browser." : "This browser blocked local storage.", ok ? "ok" : "warn"); });
+  $("clearKeyBtn").addEventListener("click", () => { storageRemove(sessionStorage, "boson_api_key"); storageRemove(localStorage, "boson_api_key"); $("apiKey").value = ""; setStatus("Cleared saved key.", "ok"); });
+  $("convertSsmlBtn").addEventListener("click", convertSimpleSsml);
+  $("clearTagsBtn").addEventListener("click", () => { $("inputText").value = removeControlTags($("inputText").value); clearToneSelections(); updateAnalysis(); setStatus("Removed tags.", "ok"); });
+  $("showPayloadBtn").addEventListener("click", () => handle(showPayload));
+  $("copyPayloadBtn").addEventListener("click", () => handle(copyPayload));
+  $("copyCurlBtn").addEventListener("click", () => handle(copyCurl));
+  $("clearLogBtn").addEventListener("click", () => { $("log").textContent = ""; setStatus("Log cleared.", "ok"); });
+  $("reuseLatestBtn").addEventListener("click", () => handle(reuseLatest));
+  $("downloadLatestBtn").addEventListener("click", () => handle(downloadLatest));
+  $("latestNote").addEventListener("input", updateLatestNote);
+  $("exportResultsBtn").addEventListener("click", exportResults);
+  $("clearOutputsBtn").addEventListener("click", () => { outputs = []; renderLatestOutput(); renderHistory(); renderSessionMetrics(); setStatus("Outputs cleared.", "ok"); });
+}
+async function handle(fn) { try { await fn(); } catch (err) { const message = String(err && err.message ? err.message : err); const friendly = message.includes("Failed to fetch") ? "Request failed. Check CORS, network, endpoint, or proxy settings." : message; setStatus(friendly, "danger"); log("Error", String(err && err.stack ? err.stack : err)); } }
+function boot() {
+  if (window.location.protocol === "file:") { $("fileProtocolWarning").classList.remove("hidden"); }
+  initSelect("emotionSelect", EMOTIONS); initSelect("styleSelect", STYLES); initSelect("speedSelect", SPEEDS); initSelect("pitchSelect", PITCHES); initSelect("expressiveSelect", EXPRESSIVENESS);
+  loadSavedKey(); initTagHelper(); attachHandlers(); renderLatestOutput(); renderHistory(); renderSessionMetrics(); updateAnalysis(); updateModePill();
+  log("Playground loaded. Fast streaming is on by default.");
+}
+boot();
+</script>
 </body>
 </html>
