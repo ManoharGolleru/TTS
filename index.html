@@ -252,6 +252,7 @@
             <div class="composer-actions">
               <button type="button" id="generateBtn" class="primary">Generate</button>
               <button type="button" id="controlToggleBtn" class="secondary">+ Control</button>
+              <button type="button" id="tagReferenceToggleBtn" class="secondary">Tags</button>
             </div>
           </div>
 
@@ -320,6 +321,27 @@
               <button type="button" data-sfx="sigh" class="sfxBtn">Sigh</button>
               <button type="button" data-example="turn" class="exampleBtn">Turn holding</button>
               <button type="button" data-example="repair" class="exampleBtn">Repair example</button>
+            </div>
+          </div>
+        </section>
+
+        <section id="tagReferencePanel" class="popover" aria-label="Tag reference panel">
+          <div class="composer-head">
+            <div>
+              <h2>Tag reference</h2>
+              <div class="hint">Search or click a tag to insert it at the cursor. You can also type <code>&lt;|</code> in the editor for suggestions.</div>
+            </div>
+            <button type="button" id="closeTagReferenceBtn" class="ghost" style="width:auto;">Close</button>
+          </div>
+          <div class="grid">
+            <div class="col-4">
+              <label for="tagSearch">Search tags</label>
+              <input id="tagSearch" placeholder="emotion, pause, fast, laughter" />
+              <div class="tag-cats" id="tagCategoryButtons"></div>
+            </div>
+            <div class="col-8">
+              <div class="hint" style="margin-bottom:8px;">Common tags are kept here so the main editor stays simple.</div>
+              <div id="tagResults" class="tag-results"></div>
             </div>
           </div>
         </section>
@@ -414,16 +436,6 @@
                   <button type="button" id="okayCommaBtn">Okay,</button>
                   <button type="button" id="okayExclaimBtn">Okay!</button>
                 </div>
-              </div>
-            </details>
-
-            <details class="slim">
-              <summary>Tag reference</summary>
-              <div class="slim-body">
-                <label for="tagSearch" style="margin-top:8px;">Search tags</label>
-                <input id="tagSearch" placeholder="emotion, pause, fast, laughter" />
-                <div class="tag-cats" id="tagCategoryButtons"></div>
-                <div id="tagResults" class="tag-results" style="margin-top:8px;"></div>
               </div>
             </details>
 
@@ -838,8 +850,18 @@ function attachHandlers() {
     if ((event.ctrlKey || event.metaKey) && event.key === " ") { event.preventDefault(); const textarea = $("inputText"); const pos = textarea.selectionStart ?? textarea.value.length; textarea.value = textarea.value.slice(0, pos) + "<|" + textarea.value.slice(pos); textarea.setSelectionRange(pos + 2, pos + 2); updateTagSuggestions(); }
   });
   $("generateBtn").addEventListener("click", () => handle(generateCurrent));
-  $("controlToggleBtn").addEventListener("click", () => { $("controlPanel").classList.toggle("open"); setStatus($("controlPanel").classList.contains("open") ? "Control palette opened." : "Control palette closed.", "ok"); });
+  $("controlToggleBtn").addEventListener("click", () => {
+    $("controlPanel").classList.toggle("open");
+    if ($("controlPanel").classList.contains("open")) $("tagReferencePanel").classList.remove("open");
+    setStatus($("controlPanel").classList.contains("open") ? "Control palette opened." : "Control palette closed.", "ok");
+  });
   $("closeControlBtn").addEventListener("click", () => { $("controlPanel").classList.remove("open"); setStatus("Control palette closed.", "ok"); });
+  $("tagReferenceToggleBtn").addEventListener("click", () => {
+    $("tagReferencePanel").classList.toggle("open");
+    if ($("tagReferencePanel").classList.contains("open")) $("controlPanel").classList.remove("open");
+    setStatus($("tagReferencePanel").classList.contains("open") ? "Tag reference opened." : "Tag reference closed.", "ok");
+  });
+  $("closeTagReferenceBtn").addEventListener("click", () => { $("tagReferencePanel").classList.remove("open"); setStatus("Tag reference closed.", "ok"); });
   $("insertPauseBtn").addEventListener("click", () => insertPauseAtCursor("pause"));
   $("insertLongPauseBtn").addEventListener("click", () => insertPauseAtCursor("long_pause"));
   $("insertHesitationBtn").addEventListener("click", () => { insertAtCursor($("inputText"), " uh, <|prosody:pause|> "); setStatus("Inserted hesitation.", "ok"); });
