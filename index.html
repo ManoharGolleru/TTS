@@ -243,6 +243,75 @@
 
     <div class="app">
       <div class="stack">
+        <details class="panel" id="settingsPanel" open>
+          <summary>API key and settings</summary>
+          <div class="panel-body">
+            <div class="grid">
+              <div class="col-6">
+                <label for="apiKey">Boson API key</label>
+                <input id="apiKey" type="password" autocomplete="off" placeholder="bai-xxxx" />
+                <div class="hint">Add your key once, then write and generate below. Leave blank only if your proxy owns the key.</div>
+              </div>
+              <div class="col-6 row" style="align-items:end;">
+                <button type="button" id="testAuthBtn" class="secondary">Test connection</button>
+                <button type="button" id="saveSessionBtn">Save for this tab</button>
+                <button type="button" id="saveLocalBtn">Save in browser</button>
+                <button type="button" id="clearKeyBtn" class="danger">Clear</button>
+              </div>
+            </div>
+
+            <details class="slim">
+              <summary>Advanced API settings</summary>
+              <div class="slim-body">
+                <div class="grid" style="margin-top:8px;">
+                  <div class="col-4">
+                    <label for="endpoint">API base URL</label>
+                    <input id="endpoint" value="https://api.boson.ai" />
+                  </div>
+                  <div class="col-4">
+                    <label for="proxyBase">Optional proxy base URL</label>
+                    <input id="proxyBase" placeholder="https://your-proxy.example.com" />
+                  </div>
+                  <div class="col-4">
+                    <label for="model">Model</label>
+                    <input id="model" value="higgs-tts-3" />
+                  </div>
+                  <div class="col-3">
+                    <label for="streamMode">Playback mode</label>
+                    <select id="streamMode">
+                      <option value="true" selected>fast stream</option>
+                      <option value="false">complete file</option>
+                    </select>
+                  </div>
+                  <div class="col-3">
+                    <label for="format">File format when not streaming</label>
+                    <select id="format">
+                      <option>mp3</option>
+                      <option>wav</option>
+                      <option>flac</option>
+                      <option>opus</option>
+                      <option>aac</option>
+                      <option>pcm</option>
+                    </select>
+                  </div>
+                  <div class="col-3">
+                    <label for="customVoice">Manual voice ID</label>
+                    <input id="customVoice" placeholder="voice_... optional" />
+                  </div>
+                  <div class="col-3">
+                    <label for="testLabel">Label for this request</label>
+                    <input id="testLabel" placeholder="manual" />
+                  </div>
+                  <div class="col-12">
+                    <label for="extraJson">Extra JSON fields</label>
+                    <textarea id="extraJson" class="tiny-textarea" placeholder='{"temperature":0.7}'></textarea>
+                  </div>
+                </div>
+              </div>
+            </details>
+          </div>
+        </details>
+
         <section class="composer-card">
           <div class="composer-head">
             <div>
@@ -268,6 +337,22 @@
               <div id="charCount" class="hint" style="margin-top:5px;">0 / 5000 characters</div>
             </div>
             <div id="inlineFeedback" class="hint" style="flex:1 1 260px; text-align:right;">Tip: Ctrl+Enter generates.</div>
+          </div>
+
+          <div class="top-controls" style="margin-top:12px;">
+            <div>
+              <label for="presetVoice">Voice</label>
+              <select id="presetVoice">
+                <option value="default">default</option>
+                <option value="chloe">chloe</option>
+                <option value="eleanor">eleanor</option>
+                <option value="jake">jake</option>
+                <option value="marcus">marcus</option>
+                <option value="nora">nora</option>
+                <option value="oliver">oliver</option>
+              </select>
+            </div>
+            <input id="toneSummary" class="hidden" value="none" readonly />
           </div>
 
           <div class="toolbar">
@@ -346,123 +431,7 @@
           </div>
         </section>
 
-        <section>
-          <h2>Voice</h2>
-          <div class="top-controls">
-            <div>
-              <label for="presetVoice">Voice</label>
-              <select id="presetVoice">
-                <option value="default">default</option>
-                <option value="chloe">chloe</option>
-                <option value="eleanor">eleanor</option>
-                <option value="jake">jake</option>
-                <option value="marcus">marcus</option>
-                <option value="nora">nora</option>
-                <option value="oliver">oliver</option>
-              </select>
-            </div>
-            <div>
-              <label for="toneSummary">Current tone</label>
-              <input id="toneSummary" value="none" readonly />
-            </div>
-          </div>
-        </section>
 
-        <details class="panel" id="settingsPanel">
-          <summary>Settings and developer tools</summary>
-          <div class="panel-body">
-            <div class="grid">
-              <div class="col-4">
-                <label for="apiKey">Boson API key</label>
-                <input id="apiKey" type="password" autocomplete="off" placeholder="bai-xxxx" />
-                <div class="hint">Leave blank if a proxy owns the key.</div>
-              </div>
-              <div class="col-4">
-                <label for="endpoint">API base URL</label>
-                <input id="endpoint" value="https://api.boson.ai" />
-              </div>
-              <div class="col-4">
-                <label for="proxyBase">Optional proxy base URL</label>
-                <input id="proxyBase" placeholder="https://your-proxy.example.com" />
-              </div>
-              <div class="col-3">
-                <label for="model">Model</label>
-                <input id="model" value="higgs-tts-3" />
-              </div>
-              <div class="col-3">
-                <label for="streamMode">Playback mode</label>
-                <select id="streamMode">
-                  <option value="true" selected>fast stream</option>
-                  <option value="false">complete file</option>
-                </select>
-              </div>
-              <div class="col-3">
-                <label for="format">File format when not streaming</label>
-                <select id="format">
-                  <option>mp3</option>
-                  <option>wav</option>
-                  <option>flac</option>
-                  <option>opus</option>
-                  <option>aac</option>
-                  <option>pcm</option>
-                </select>
-              </div>
-              <div class="col-3">
-                <label for="customVoice">Manual voice ID</label>
-                <input id="customVoice" placeholder="voice_... optional" />
-              </div>
-              <div class="col-4">
-                <label for="testLabel">Label for this request</label>
-                <input id="testLabel" placeholder="manual" />
-              </div>
-              <div class="col-8">
-                <label for="extraJson">Extra JSON fields</label>
-                <textarea id="extraJson" class="tiny-textarea" placeholder='{"temperature":0.7}'></textarea>
-              </div>
-              <div class="col-12 row">
-                <button type="button" id="testAuthBtn" class="secondary">Test connection</button>
-                <button type="button" id="saveSessionBtn">Save key for this tab</button>
-                <button type="button" id="saveLocalBtn">Save key in this browser</button>
-                <button type="button" id="clearKeyBtn" class="danger">Clear saved key</button>
-              </div>
-            </div>
-
-            <details class="slim">
-              <summary>Text tools and examples</summary>
-              <div class="slim-body">
-                <div class="row" style="margin-top:8px;">
-                  <button type="button" id="convertSsmlBtn" class="warn">Convert SSML</button>
-                  <button type="button" id="clearTagsBtn" class="danger">Remove all tags</button>
-                  <button type="button" id="okayCommaBtn">Okay,</button>
-                  <button type="button" id="okayExclaimBtn">Okay!</button>
-                </div>
-              </div>
-            </details>
-
-            <details class="slim">
-              <summary>Checks, payload, and log</summary>
-              <div class="slim-body">
-                <div class="grid" style="margin-top:8px;">
-                  <div class="col-6">
-                    <h3>Input check</h3>
-                    <ul id="analysisList" class="analysis-list"></ul>
-                  </div>
-                  <div class="col-6">
-                    <h3>Tags in current input</h3>
-                    <div id="tagPreview" class="pill-list"></div>
-                  </div>
-                  <div class="col-12 row">
-                    <button type="button" id="showPayloadBtn">Show request JSON</button>
-                    <button type="button" id="copyPayloadBtn">Copy request JSON</button>
-                    <button type="button" id="copyCurlBtn">Copy cURL</button>
-                    <button type="button" id="clearLogBtn">Clear log</button>
-                  </div>
-                  <div class="col-12"><pre id="log"></pre></div>
-                </div>
-              </div>
-            </details>
-          </div>
-        </details>
       </div>
 
       <aside class="side">
@@ -555,9 +524,11 @@ function markButton(button) {
 }
 function stringify(value) { return JSON.stringify(value, null, 2); }
 function log(message, data) {
+  const logEl = $("log");
+  if (!logEl) return;
   const stamp = new Date().toLocaleTimeString();
   const suffix = data === undefined ? "" : "\n" + stringify(data);
-  $("log").textContent = `[${stamp}] ${message}${suffix}\n\n` + $("log").textContent;
+  logEl.textContent = `[${stamp}] ${message}${suffix}\n\n` + logEl.textContent;
 }
 function storageGet(store, key) { try { return store.getItem(key) || ""; } catch (err) { return ""; } }
 function storageSet(store, key, value) { try { store.setItem(key, value); return true; } catch (err) { return false; } }
@@ -824,8 +795,8 @@ function getTags(text) { const tags = []; const re = /<\|([^:|]+):([^|]+)\|>/g; 
 function hasPauseBoundaryBefore(text, index) { const before = text.slice(0, index).replace(/\s+$/, ""); return before.length === 0 || /[.!?,;:。？！،؛]$/.test(before); }
 function analyzeInput() { const text = $("inputText").value || ""; const issues = []; const tags = getTags(text); if (!text.trim()) issues.push({ kind:"danger", text:"Input text is empty." }); if (text.length > 5000) issues.push({ kind:"danger", text:`Input has ${text.length} characters. The API limit is 5000.` }); if (/<\/?speak|<break\b|<prosody\b|<emphasis\b/i.test(text)) issues.push({ kind:"warn", text:"SSML-like markup detected. Use Higgs tags or Convert SSML." }); const unknown = tags.filter((item) => !RECOGNIZED_TAGS.has(item.key)); if (unknown.length) issues.push({ kind:"warn", text:`Unknown tags: ${unknown.map((x) => x.raw).join(", ")}.` }); const weakPause = tags.some((item) => (item.key === "prosody:pause" || item.key === "prosody:long_pause") && !hasPauseBoundaryBefore(text, item.index)); if (weakPause) issues.push({ kind:"warn", text:"A pause lacks punctuation before it. The request will add a comma or period." }); if ($("streamMode").value === "true" && /<\|prosody:speed_[^|]+\|>/.test(text)) issues.push({ kind:"warn", text:"Fast streaming is on. Speed tags may be less reliable while streaming." }); if (!issues.length) issues.push({ kind:"ok", text:tags.length ? "Ready to generate." : "Ready to generate plain speech." }); return issues; }
 function validateInput(showStatus = true) { const issues = analyzeInput(); renderAnalysis(issues); if (showStatus) { const errors = issues.filter((x) => x.kind === "danger").length; const warnings = issues.filter((x) => x.kind === "warn").length; setStatus(errors ? `${errors} issue${errors === 1 ? "" : "s"} must be fixed.` : warnings ? `Input usable with ${warnings} warning${warnings === 1 ? "" : "s"}.` : "Input looks ready.", errors ? "danger" : warnings ? "warn" : "ok"); } return issues; }
-function renderAnalysis(issues) { const list = $("analysisList"); list.innerHTML = ""; issues.forEach((item) => { const li = document.createElement("li"); li.className = item.kind; li.textContent = item.text; list.appendChild(li); }); }
-function renderTagPreview() { const wrap = $("tagPreview"); const tags = getTags($("inputText").value || ""); wrap.innerHTML = ""; if (!tags.length) { wrap.innerHTML = `<span class="muted">No inline tags.</span>`; return; } tags.forEach((item) => { const span = document.createElement("span"); span.className = "pill " + (RECOGNIZED_TAGS.has(item.key) ? "ok" : "warn"); span.textContent = item.raw; wrap.appendChild(span); }); }
+function renderAnalysis(issues) { const list = $("analysisList"); if (!list) return; list.innerHTML = ""; issues.forEach((item) => { const li = document.createElement("li"); li.className = item.kind; li.textContent = item.text; list.appendChild(li); }); }
+function renderTagPreview() { const wrap = $("tagPreview"); if (!wrap) return; const tags = getTags($("inputText").value || ""); wrap.innerHTML = ""; if (!tags.length) { wrap.innerHTML = `<span class="muted">No inline tags.</span>`; return; } tags.forEach((item) => { const span = document.createElement("span"); span.className = "pill " + (RECOGNIZED_TAGS.has(item.key) ? "ok" : "warn"); span.textContent = item.raw; wrap.appendChild(span); }); }
 function updateCharCount() { const len = ($("inputText").value || "").length; const pct = Math.min(100, Math.round((len / 5000) * 100)); $("charCount").textContent = `${len} / 5000 characters`; $("charMeter").style.width = `${pct}%`; }
 function updateAnalysis() { updateCharCount(); renderTagPreview(); validateInput(false); updateModePill(); }
 function updateModePill() { const stream = $("streamMode").value === "true"; $("modePill").textContent = stream ? "Fast streaming on" : `File mode: ${$("format").value}`; }
@@ -872,8 +843,6 @@ function attachHandlers() {
   $("insertBackchannelBtn").addEventListener("click", () => { insertAtCursor($("inputText"), " Mm-hmm. <|prosody:pause|> Yeah. "); setStatus("Inserted backchannel.", "ok"); });
   $("okayQuestionBtn").addEventListener("click", () => { $("inputText").value = "Okay?"; updateAnalysis(); setStatus("Loaded Okay?", "ok"); });
   $("okayPeriodBtn").addEventListener("click", () => { $("inputText").value = "Okay."; updateAnalysis(); setStatus("Loaded Okay.", "ok"); });
-  $("okayCommaBtn").addEventListener("click", () => { $("inputText").value = "Okay,"; updateAnalysis(); setStatus("Loaded Okay,", "ok"); });
-  $("okayExclaimBtn").addEventListener("click", () => { $("inputText").value = "Okay!"; updateAnalysis(); setStatus("Loaded Okay!", "ok"); });
   document.querySelectorAll(".sfxBtn").forEach((button) => button.addEventListener("click", () => insertSfx(button.dataset.sfx)));
   document.querySelectorAll(".exampleBtn").forEach((button) => button.addEventListener("click", () => loadExample(button.dataset.example)));
   $("applyToneBtn").addEventListener("click", applyToneToLine);
@@ -888,12 +857,6 @@ function attachHandlers() {
   $("saveSessionBtn").addEventListener("click", () => { const ok = storageSet(sessionStorage, "boson_api_key", $("apiKey").value.trim()); setStatus(ok ? "Saved key for this tab." : "This browser blocked session storage.", ok ? "ok" : "warn"); });
   $("saveLocalBtn").addEventListener("click", () => { const ok = storageSet(localStorage, "boson_api_key", $("apiKey").value.trim()); setStatus(ok ? "Saved key in this browser." : "This browser blocked local storage.", ok ? "ok" : "warn"); });
   $("clearKeyBtn").addEventListener("click", () => { storageRemove(sessionStorage, "boson_api_key"); storageRemove(localStorage, "boson_api_key"); $("apiKey").value = ""; setStatus("Cleared saved key.", "ok"); });
-  $("convertSsmlBtn").addEventListener("click", convertSimpleSsml);
-  $("clearTagsBtn").addEventListener("click", () => { $("inputText").value = removeControlTags($("inputText").value); clearToneSelections(); updateAnalysis(); setStatus("Removed tags.", "ok"); });
-  $("showPayloadBtn").addEventListener("click", () => handle(showPayload));
-  $("copyPayloadBtn").addEventListener("click", () => handle(copyPayload));
-  $("copyCurlBtn").addEventListener("click", () => handle(copyCurl));
-  $("clearLogBtn").addEventListener("click", () => { $("log").textContent = ""; setStatus("Log cleared.", "ok"); });
   $("reuseLatestBtn").addEventListener("click", () => handle(reuseLatest));
   $("downloadLatestBtn").addEventListener("click", () => handle(downloadLatest));
   $("latestNote").addEventListener("input", updateLatestNote);
